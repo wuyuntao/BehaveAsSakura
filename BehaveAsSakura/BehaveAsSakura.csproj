@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BehaviorTree.cs" />
+    <Compile Include="BehaviorTreeBuilder.cs" />
     <Compile Include="BehaviorTreeManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\DecoratorTask.cs" />
