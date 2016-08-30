@@ -101,6 +101,11 @@ namespace BehaveAsSakura
 			get { return rootTask; }
 		}
 
+		internal BehaviorTreeManager TreeManager
+		{
+			get { return treeManager; }
+		}
+
 		internal TimerManager TimerManager
 		{
 			get { return timerManager; }

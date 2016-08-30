@@ -6,6 +6,11 @@ namespace BehaveAsSakura.Events
 	public class TimerTriggeredEvent : IEvent
 	{
 		[ProtoMember( 1 )]
-		public uint TimerId;
+		public uint TimerId { get; set; }
+
+		public TimerTriggeredEvent(uint timerId)
+		{
+			TimerId = timerId;
+		}
 	}
 }

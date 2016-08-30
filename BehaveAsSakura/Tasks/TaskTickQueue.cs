@@ -27,7 +27,7 @@ namespace BehaveAsSakura.Tasks
 				tree.RootTask.EnqueueForUpdate();
 			}
 
-			// Process enqueued nodes until none left
+			// Process enqueued tasks until none left
 			while( queue.Count > 0 )
 			{
 				stack.Push( queue );

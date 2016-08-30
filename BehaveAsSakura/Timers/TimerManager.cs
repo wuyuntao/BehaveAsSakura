@@ -45,7 +45,7 @@ namespace BehaveAsSakura.Timers
 			{
 				if( t.RemainingTime == 0 )
 				{
-					tree.Owner.EventBus.Publish( new TimerTriggeredEvent() { TimerId = t.Id } );
+					tree.Owner.EventBus.Publish( new TimerTriggeredEvent( t.Id ) );
 
 					return true;
 				}

@@ -7,7 +7,7 @@
     <ProjectGuid>{B37A9B12-4B4C-428C-947C-388E8A09B981}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BehaveAsSakuraTests</RootNamespace>
+    <RootNamespace>BehaveAsSakura.Tests</RootNamespace>
     <AssemblyName>BehaveAsSakuraTests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

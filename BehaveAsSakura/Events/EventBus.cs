@@ -1,4 +1,5 @@
 ﻿using System;
+using BehaveAsSakura.Tasks;
 
 namespace BehaveAsSakura.Events
 {
@@ -26,7 +27,7 @@ namespace BehaveAsSakura.Events
 		internal void Subscribe<TEvent>(ISubscriber subscriber)
 			where TEvent : IEvent
 		{
-			throw new NotImplementedException();
+
 		}
 
 		internal void Unsubscribe<TEvent>(ISubscriber subscriber)

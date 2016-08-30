@@ -21,7 +21,7 @@ namespace BehaveAsSakura.Variables
 	{
 		GlobalConstant,
 		OwnerPropertySet,
-		AncestorNodePropertySet,
+		AncestorTaskPropertySet,
 		LiteralConstant,
 	}
 
