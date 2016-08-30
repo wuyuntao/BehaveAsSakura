@@ -4,7 +4,7 @@ using ProtoBuf;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class SubTreeTaskDesc : TaskDesc
+	public class SubTreeTaskDesc : LeafTaskDesc
 	{
 		[ProtoMember( 1 )]
 		public VariableDesc SubTreePath { get; set; }

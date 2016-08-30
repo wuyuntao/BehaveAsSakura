@@ -6,7 +6,7 @@ using ProtoBuf;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class WaitTimerTaskDesc : TaskDesc
+	public class WaitTimerTaskDesc : LeafTaskDesc
 	{
 		[ProtoMember( 1 )]
 		public VariableDesc Time { get; set; }

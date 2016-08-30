@@ -6,7 +6,7 @@ using System;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class ConditionalEvaluatorTaskDesc : TaskDesc
+	public class ConditionalEvaluatorTaskDesc : LeafTaskDesc
 	{
 		[ProtoMember( 1 )]
 		public VariableDesc Left { get; set; }

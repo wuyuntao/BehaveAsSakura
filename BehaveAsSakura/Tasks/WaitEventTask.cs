@@ -4,7 +4,7 @@ using ProtoBuf;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class WaitEventTaskDesc : TaskDesc
+	public class WaitEventTaskDesc : LeafTaskDesc
 	{
 		[ProtoMember( 1 )]
 		public string EventType { get; set; }

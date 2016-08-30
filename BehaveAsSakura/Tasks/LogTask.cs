@@ -5,7 +5,7 @@ using System;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public sealed class LogTaskDesc : TaskDesc
+	public sealed class LogTaskDesc : LeafTaskDesc
 	{
 		[ProtoMember( 1 )]
 		public string Message { get; set; }

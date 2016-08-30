@@ -5,7 +5,7 @@ namespace BehaveAsSakura.Tasks
 {
 
 	[ProtoContract]
-	public class SendEventTaskDesc : TaskDesc
+	public class SendEventTaskDesc : LeafTaskDesc
 	{
 		[ProtoMember( 1 )]
 		public string EventType { get; set; }

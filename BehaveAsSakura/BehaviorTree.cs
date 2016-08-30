@@ -2,6 +2,7 @@
 using BehaveAsSakura.Tasks;
 using BehaveAsSakura.Timers;
 using ProtoBuf;
+using System.Collections.Generic;
 
 namespace BehaveAsSakura
 {
@@ -26,6 +27,11 @@ namespace BehaveAsSakura
 	[ProtoContract]
 	public class BehaviorTreeDesc
 	{
+		[ProtoMember( 1 )]
+		public TaskDesc[] Tasks;
+
+		[ProtoMember( 2 )]
+		public uint RootTaskId;
 	}
 
 	[ProtoContract]
@@ -53,6 +59,7 @@ namespace BehaveAsSakura
 			this.parentTask = parentTask;
 			timerManager = new TimerManager( this );
 			taskTickQueue = new TaskTickQueue( this );
+			rootTask = treeManager.CreateTask( this, description.RootTaskId, parentTask );
 		}
 
 		#region Life-cycle
