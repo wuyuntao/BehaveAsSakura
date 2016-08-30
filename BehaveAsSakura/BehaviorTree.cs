@@ -2,7 +2,6 @@
 using BehaveAsSakura.Tasks;
 using BehaveAsSakura.Timers;
 using ProtoBuf;
-using System.Collections.Generic;
 
 namespace BehaveAsSakura
 {
@@ -67,6 +66,7 @@ namespace BehaveAsSakura
 		public void Update()
 		{
 			timerManager.Update();
+
 			taskTickQueue.Update();
 		}
 

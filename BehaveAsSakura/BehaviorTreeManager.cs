@@ -10,7 +10,12 @@ namespace BehaveAsSakura
 			throw new NotImplementedException();
 		}
 
-		public BehaviorTree CreateTree(IBehaviorTreeOwner owner, string path, Task parentTask = null)
+		public BehaviorTree CreateTree(IBehaviorTreeOwner owner, string path)
+		{
+			return CreateTree( owner, path, null );
+		}
+
+		internal BehaviorTree CreateTree(IBehaviorTreeOwner owner, string path, Task parentTask = null)
 		{
 			var treeDesc = LoadTree( path );
 			var tree = new BehaviorTree( this, owner, treeDesc, parentTask );
