@@ -4,38 +4,43 @@ using System;
 
 namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public sealed class LogTaskDesc : ITaskDesc
-	{
-		[ProtoMember( 1 )]
-		public string Message { get; set; }
+    [ProtoContract]
+    public sealed class LogTaskDesc : ITaskDesc
+    {
+        [ProtoMember(1)]
+        public string Message { get; set; }
 
-		[ProtoMember( 2, IsRequired = false )]
-		public VariableDesc[] MessageParameters { get; set; }
-	}
+        [ProtoMember(2, IsRequired = false)]
+        public VariableDesc[] MessageParameters { get; set; }
 
-	class LogTask : LeafTask
-	{
-		private LogTaskDesc description;
-		private Variable[] variables;
+        Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
+        {
+            return new LogTask(tree, parentTask, id, this);
+        }
+    }
 
-		public LogTask(BehaviorTree tree, Task parentTask, uint id, LogTaskDesc description)
-			: base( tree, parentTask, id, description )
-		{
-			this.description = description;
+    class LogTask : LeafTask
+    {
+        private LogTaskDesc description;
+        private Variable[] variables;
 
-			if( description.MessageParameters != null )
-				variables = Array.ConvertAll( description.MessageParameters, desc => new Variable( desc ) );
-		}
+        public LogTask(BehaviorTree tree, Task parentTask, uint id, LogTaskDesc description)
+            : base(tree, parentTask, id, description)
+        {
+            this.description = description;
 
-		protected override TaskResult OnUpdate()
-		{
-			if( variables != null )
-				LogInfo( description.Message, Array.ConvertAll( variables, v => v.GetValue( this ) ) );
-			else
-				LogInfo( description.Message );
+            if (description.MessageParameters != null)
+                variables = Array.ConvertAll(description.MessageParameters, desc => new Variable(desc));
+        }
 
-			return TaskResult.Success;
-		}
-	}
+        protected override TaskResult OnUpdate()
+        {
+            if (variables != null)
+                LogInfo(description.Message, Array.ConvertAll(variables, v => v.GetValue(this)));
+            else
+                LogInfo(description.Message);
+
+            return TaskResult.Success;
+        }
+    }
 }

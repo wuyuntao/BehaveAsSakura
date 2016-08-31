@@ -13,20 +13,20 @@ namespace BehaveAsSakura.Events
 
     public interface ISubscriber
     {
-        void OnEventTriggered(IEvent @event);
+        void OnEventTriggered(IPublisher publisher, IEvent @event);
     }
 
     public sealed class EventBus
     {
         private Dictionary<Type, Subscription> subscriptions = new Dictionary<Type, Subscription>();
 
-        public void Publish(IEvent @event)
+        public void Publish(IPublisher publisher, IEvent @event)
         {
             var subscription = GetSubscription(@event.GetType(), false);
             if (subscription != null)
             {
                 foreach (var subscriber in subscription.Subscribers)
-                    subscriber.OnEventTriggered(@event);
+                    subscriber.OnEventTriggered(publisher, @event);
             }
         }
 

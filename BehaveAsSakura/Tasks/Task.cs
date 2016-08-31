@@ -22,6 +22,7 @@ namespace BehaveAsSakura.Tasks
 
 	public interface ITaskDesc
 	{
+        Task CreateTask(BehaviorTree tree, Task parentTask, uint id);
 	}
 
 	public interface ITaskProps
@@ -62,7 +63,7 @@ namespace BehaveAsSakura.Tasks
 		public object CustomProps { get; set; }
 	}
 
-	public abstract class Task : ILogger, ISubscriber
+	public abstract class Task : ILogger, ISubscriber, IPublisher
 	{
 		private BehaviorTree tree;
 		private Task parentTask;
@@ -185,7 +186,7 @@ namespace BehaveAsSakura.Tasks
 		{
 		}
 
-		protected virtual void OnEventTriggered(IEvent @event)
+		protected virtual void OnEventTriggered(IPublisher publisher, IEvent @event)
 		{
 		}
 
@@ -217,7 +218,7 @@ namespace BehaveAsSakura.Tasks
 
 		#region ISubscriber
 
-		void ISubscriber.OnEventTriggered(IEvent @event)
+		void ISubscriber.OnEventTriggered(IPublisher publisher, IEvent @event)
 		{
 			var timerTriggered = @event as TimerTriggeredEvent;
 			if( timerTriggered != null && immediateTimer != null && immediateTimer.Id == timerTriggered.TimerId )
@@ -227,7 +228,7 @@ namespace BehaveAsSakura.Tasks
 				EnqueueForUpdate();
 			}
 
-			OnEventTriggered( @event );
+			OnEventTriggered( publisher, @event );
 		}
 
 		#endregion
@@ -273,7 +274,7 @@ namespace BehaveAsSakura.Tasks
 			get { return props; }
 		}
 
-		internal protected TaskResult LastResult
+		public TaskResult LastResult
 		{
 			get { return lastResult; }
 		}

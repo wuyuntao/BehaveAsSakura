@@ -1,58 +1,63 @@
-﻿using ProtoBuf;
+﻿using System;
+using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public class ParallelTaskDesc : ITaskDesc
-	{
-	}
+    [ProtoContract]
+    public class ParallelTaskDesc : ITaskDesc
+    {
+        Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
+        {
+            return new ParallelTask(tree, parentTask, id, this);
+        }
+    }
 
-	class ParallelTask : CompositeTask
-	{
-		public ParallelTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, ParallelTaskDesc description)
-			: this( tree, parentTask, id, childTaskIds, description, null )
-		{ }
+    class ParallelTask : CompositeTask
+    {
+        public ParallelTask(BehaviorTree tree, Task parentTask, uint id, ParallelTaskDesc description)
+            : this(tree, parentTask, id, description, null)
+        { }
 
-		protected ParallelTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, ParallelTaskDesc description, ITaskProps props)
-			: base( tree, parentTask, id, childTaskIds, description, props )
-		{ }
+        protected ParallelTask(BehaviorTree tree, Task parentTask, uint id, ParallelTaskDesc description, ITaskProps props)
+            : base(tree, parentTask, id, description, props)
+        { }
 
-		protected override void OnStart()
-		{
-			base.OnStart();
+        protected override void OnStart()
+        {
+            base.OnStart();
 
-			foreach( var child in ChildTasks )
-				child.EnqueueForUpdate();
-		}
+            foreach (var child in ChildTasks)
+                child.EnqueueForUpdate();
+        }
 
-		protected override TaskResult OnUpdate()
-		{
-			return IterateChildTasks( TaskResult.Success );
-		}
+        protected override TaskResult OnUpdate()
+        {
+            return IterateChildTasks(TaskResult.Success);
+        }
 
-		protected TaskResult IterateChildTasks(TaskResult expectingResult)
-		{
-			var allCompleted = true;
+        protected TaskResult IterateChildTasks(TaskResult expectingResult)
+        {
+            var allCompleted = true;
 
-			foreach( var child in ChildTasks )
-			{
-				if( child.LastResult == TaskResult.Running )
-				{
-					allCompleted = false;
-				}
-				else if( child.LastResult != expectingResult )
-				{
-					foreach( var c in ChildTasks )        // Abort other children
-						c.EnqueueForAbort();
+            foreach (var child in ChildTasks)
+            {
+                if (child.LastResult == TaskResult.Running)
+                {
+                    allCompleted = false;
+                }
+                else if (child.LastResult != expectingResult)
+                {
+                    foreach (var c in ChildTasks)        // Abort other children
+                        c.EnqueueForAbort();
 
-					return child.LastResult;
-				}
-			}
+                    return child.LastResult;
+                }
+            }
 
-			if( !allCompleted )
-				return TaskResult.Running;
+            if (!allCompleted)
+                return TaskResult.Running;
 
-			return expectingResult;
-		}
-	}
+            return expectingResult;
+        }
+    }
 }

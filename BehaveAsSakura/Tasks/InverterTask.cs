@@ -1,39 +1,43 @@
-﻿using ProtoBuf;
+﻿using System;
+using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public class InverterTaskDesc : ITaskDesc
-	{
-	}
+    [ProtoContract]
+    public class InverterTaskDesc : ITaskDesc
+    {
+        Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
+        {
+            return new InverterTask(tree, parentTask, id, this);
+        }
+    }
 
-	class InverterTask : DecoratorTask
-	{
-		public InverterTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, InverterTaskDesc description)
-			: base( tree, parentTask, id, childTaskId, description )
-		{
-		}
+    class InverterTask : DecoratorTask
+    {
+        public InverterTask(BehaviorTree tree, Task parentTask, uint id, InverterTaskDesc description)
+            : base(tree, parentTask, id, description)
+        { }
 
-		protected override void OnStart()
-		{
-			base.OnStart();
+        protected override void OnStart()
+        {
+            base.OnStart();
 
-			ChildTask.EnqueueForUpdate();
-		}
+            ChildTask.EnqueueForUpdate();
+        }
 
-		protected override TaskResult OnUpdate()
-		{
-			switch( ChildTask.LastResult )
-			{
-				case TaskResult.Failure:
-					return TaskResult.Success;
+        protected override TaskResult OnUpdate()
+        {
+            switch (ChildTask.LastResult)
+            {
+                case TaskResult.Failure:
+                    return TaskResult.Success;
 
-				case TaskResult.Success:
-					return TaskResult.Failure;
+                case TaskResult.Success:
+                    return TaskResult.Failure;
 
-				default:
-					return TaskResult.Running;
-			}
-		}
-	}
+                default:
+                    return TaskResult.Running;
+            }
+        }
+    }
 }

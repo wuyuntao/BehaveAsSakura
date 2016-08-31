@@ -5,79 +5,84 @@ using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public class WaitTimerTaskDesc : ITaskDesc
-	{
-		[ProtoMember( 1 )]
-		public VariableDesc Time { get; set; }
-	}
+    [ProtoContract]
+    public class WaitTimerTaskDesc : ITaskDesc
+    {
+        [ProtoMember(1)]
+        public VariableDesc Time { get; set; }
 
-	[ProtoContract]
-	class WaitTimerTaskProps : ITaskProps
-	{
-		[ProtoMember( 1 )]
-		public TimerProps Timer { get; set; }
+        Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
+        {
+            return new WaitTimerTask(tree, parentTask, id, this);
+        }
+    }
 
-		[ProtoMember( 2 )]
-		public bool IsTimerTriggered { get; set; }
-	}
+    [ProtoContract]
+    class WaitTimerTaskProps : ITaskProps
+    {
+        [ProtoMember(1)]
+        public TimerProps Timer { get; set; }
 
-	class WaitTimerTask : LeafTask
-	{
-		private WaitTimerTaskDesc description;
-		private WaitTimerTaskProps props;
-		private Variable timeVariable;
-		private Timer timer;
+        [ProtoMember(2)]
+        public bool IsTimerTriggered { get; set; }
+    }
 
-		public WaitTimerTask(BehaviorTree tree, Task parentTask, uint id, WaitTimerTaskDesc description)
-			: base( tree, parentTask, id, description, new WaitTimerTaskProps() )
-		{
-			this.description = description;
-			props = (WaitTimerTaskProps)Props;
-			timeVariable = new Variable( description.Time );
-		}
+    class WaitTimerTask : LeafTask
+    {
+        private WaitTimerTaskDesc description;
+        private WaitTimerTaskProps props;
+        private Variable timeVariable;
+        private Timer timer;
 
-		protected override void OnStart()
-		{
-			base.OnStart();
+        public WaitTimerTask(BehaviorTree tree, Task parentTask, uint id, WaitTimerTaskDesc description)
+            : base(tree, parentTask, id, description, new WaitTimerTaskProps())
+        {
+            this.description = description;
+            props = (WaitTimerTaskProps)Props;
+            timeVariable = new Variable(description.Time);
+        }
 
-			props.IsTimerTriggered = false;
-			timer = Tree.TimerManager.StartTimer( timeVariable.GetUInt( this ) );
+        protected override void OnStart()
+        {
+            base.OnStart();
 
-			Owner.EventBus.Subscribe<TimerTriggeredEvent>( this );
-		}
+            props.IsTimerTriggered = false;
+            timer = Tree.TimerManager.StartTimer(timeVariable.GetUInt(this));
 
-		protected override TaskResult OnUpdate()
-		{
-			return props.IsTimerTriggered ? TaskResult.Success : TaskResult.Running;
-		}
+            Owner.EventBus.Subscribe<TimerTriggeredEvent>(this);
+        }
 
-		protected override void OnEnd()
-		{
-			if( !props.IsTimerTriggered && props.Timer != null )
-				Tree.TimerManager.CancelTimer( timer );
+        protected override TaskResult OnUpdate()
+        {
+            return props.IsTimerTriggered ? TaskResult.Success : TaskResult.Running;
+        }
 
-			Owner.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
+        protected override void OnEnd()
+        {
+            if (!props.IsTimerTriggered && props.Timer != null)
+                Tree.TimerManager.CancelTimer(timer);
 
-			base.OnEnd();
-		}
+            Owner.EventBus.Unsubscribe<TimerTriggeredEvent>(this);
 
-		protected override void OnEventTriggered(IEvent @event)
-		{
-			base.OnEventTriggered( @event );
+            base.OnEnd();
+        }
 
-			if( !props.IsTimerTriggered )
-			{
-				var e = @event as TimerTriggeredEvent;
-				if( e != null && e.TimerId == timer.Id )
-				{
-					props.IsTimerTriggered = true;
+        protected override void OnEventTriggered(IPublisher publisher, IEvent @event)
+        {
+            base.OnEventTriggered(publisher, @event);
 
-					Owner.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
+            if (!props.IsTimerTriggered)
+            {
+                var e = @event as TimerTriggeredEvent;
+                if (e != null && e.TimerId == timer.Id)
+                {
+                    props.IsTimerTriggered = true;
 
-					EnqueueForUpdate();
-				}
-			}
-		}
-	}
+                    Owner.EventBus.Unsubscribe<TimerTriggeredEvent>(this);
+
+                    EnqueueForUpdate();
+                }
+            }
+        }
+    }
 }

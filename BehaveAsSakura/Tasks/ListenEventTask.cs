@@ -1,81 +1,87 @@
-﻿using BehaveAsSakura.Events;
+﻿using System;
+using BehaveAsSakura.Events;
 using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public class ListenEventTaskDesc : ITaskDesc
-	{
-		[ProtoMember( 1 )]
-		public string EventType { get; set; }
-	}
+    [ProtoContract]
+    public class ListenEventTaskDesc : ITaskDesc
+    {
+        [ProtoMember(1)]
+        public string EventType { get; set; }
 
-	[ProtoContract]
-	class ListenEventTaskProps : ITaskProps
-	{
-		[ProtoMember( 1 )]
-		public bool IsEventTriggered { get; set; }
-	}
+        Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
+        {
+            return new ListenEventTask(tree, parentTask, id, this);
+        }
+    }
 
-	class ListenEventTask : DecoratorTask
-	{
-		private ListenEventTaskDesc description;
-		private ListenEventTaskProps props;
+    [ProtoContract]
+    class ListenEventTaskProps : ITaskProps
+    {
+        [ProtoMember(1)]
+        public bool IsEventTriggered { get; set; }
+    }
 
-		public ListenEventTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, ListenEventTaskDesc description)
-			: base( tree, parentTask, id, childTaskId, description, new ListenEventTaskProps() )
-		{
-			this.description = description;
-			props = (ListenEventTaskProps)Props;
-		}
+    class ListenEventTask : DecoratorTask
+    {
+        private ListenEventTaskDesc description;
+        private ListenEventTaskProps props;
 
-		protected override void OnStart()
-		{
-			base.OnStart();
+        public ListenEventTask(BehaviorTree tree, Task parentTask, uint id, ListenEventTaskDesc description)
+            : base(tree, parentTask, id, description, new ListenEventTaskProps())
+        {
+            this.description = description;
+            props = (ListenEventTaskProps)Props;
+        }
 
-			props.IsEventTriggered = false;
+        protected override void OnStart()
+        {
+            base.OnStart();
 
-			Owner.EventBus.Subscribe<SimpleEventTriggeredEvent>( this );
+            props.IsEventTriggered = false;
 
-			ChildTask.EnqueueForUpdate();
-		}
+            Owner.EventBus.Subscribe<SimpleEventTriggeredEvent>(this);
 
-		protected override TaskResult OnUpdate()
-		{
-			if( props.IsEventTriggered )
-			{
-				ChildTask.EnqueueForAbort();
+            ChildTask.EnqueueForUpdate();
+        }
 
-				return TaskResult.Success;
-			}
+        protected override TaskResult OnUpdate()
+        {
+            if (props.IsEventTriggered)
+            {
+                ChildTask.EnqueueForAbort();
 
-			return ChildTask.LastResult;
-		}
+                return TaskResult.Success;
+            }
 
-		protected override void OnEnd()
-		{
-			if( !props.IsEventTriggered )
-				Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>( this );
+            return ChildTask.LastResult;
+        }
 
-			base.OnEnd();
-		}
+        protected override void OnEnd()
+        {
+            if (!props.IsEventTriggered)
+                Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
 
-		protected override void OnEventTriggered(IEvent @event)
-		{
-			base.OnEventTriggered( @event );
+            base.OnEnd();
+        }
 
-			if( !props.IsEventTriggered )
-			{
-				var e = @event as SimpleEventTriggeredEvent;
-				if( e != null && e.EventType == description.EventType )
-				{
-					props.IsEventTriggered = true;
+        protected override void OnEventTriggered(IPublisher publisher, IEvent @event)
+        {
+            base.OnEventTriggered(publisher, @event);
 
-					Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>( this );
+            if (!props.IsEventTriggered)
+            {
+                var e = @event as SimpleEventTriggeredEvent;
+                if (e != null && e.EventType == description.EventType)
+                {
+                    props.IsEventTriggered = true;
 
-					EnqueueForUpdate();
-				}
-			}
-		}
-	}
+                    Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
+
+                    EnqueueForUpdate();
+                }
+            }
+        }
+    }
 }

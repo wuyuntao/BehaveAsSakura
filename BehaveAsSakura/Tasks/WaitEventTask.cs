@@ -3,69 +3,74 @@ using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public class WaitEventTaskDesc : ITaskDesc
-	{
-		[ProtoMember( 1 )]
-		public string EventType { get; set; }
-	}
+    [ProtoContract]
+    public class WaitEventTaskDesc : ITaskDesc
+    {
+        [ProtoMember(1)]
+        public string EventType { get; set; }
 
-	[ProtoContract]
-	class WaitEventTaskProps : ITaskProps
-	{
-		[ProtoMember( 1 )]
-		public bool IsEventTriggered { get; set; }
-	}
+        Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
+        {
+            return new WaitEventTask(tree, parentTask, id, this);
+        }
+    }
 
-	class WaitEventTask : LeafTask
-	{
-		private WaitEventTaskDesc description;
-		private WaitEventTaskProps props;
+    [ProtoContract]
+    class WaitEventTaskProps : ITaskProps
+    {
+        [ProtoMember(1)]
+        public bool IsEventTriggered { get; set; }
+    }
 
-		public WaitEventTask(BehaviorTree tree, Task parentTask, uint id, WaitEventTaskDesc description)
-			: base( tree, parentTask, id, description, new WaitEventTaskProps() )
-		{
-			this.description = description;
-			props = (WaitEventTaskProps)Props;
-		}
+    class WaitEventTask : LeafTask
+    {
+        private WaitEventTaskDesc description;
+        private WaitEventTaskProps props;
 
-		protected override void OnStart()
-		{
-			base.OnStart();
+        public WaitEventTask(BehaviorTree tree, Task parentTask, uint id, WaitEventTaskDesc description)
+            : base(tree, parentTask, id, description, new WaitEventTaskProps())
+        {
+            this.description = description;
+            props = (WaitEventTaskProps)Props;
+        }
 
-			props.IsEventTriggered = false;
+        protected override void OnStart()
+        {
+            base.OnStart();
 
-			Owner.EventBus.Subscribe<SimpleEventTriggeredEvent>( this );
-		}
+            props.IsEventTriggered = false;
 
-		protected override TaskResult OnUpdate()
-		{
-			return props.IsEventTriggered ? TaskResult.Success : TaskResult.Running;
-		}
+            Owner.EventBus.Subscribe<SimpleEventTriggeredEvent>(this);
+        }
 
-		protected override void OnEnd()
-		{
-			Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>( this );
+        protected override TaskResult OnUpdate()
+        {
+            return props.IsEventTriggered ? TaskResult.Success : TaskResult.Running;
+        }
 
-			base.OnEnd();
-		}
+        protected override void OnEnd()
+        {
+            Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
 
-		protected override void OnEventTriggered(IEvent @event)
-		{
-			base.OnEventTriggered( @event );
+            base.OnEnd();
+        }
 
-			if( !props.IsEventTriggered )
-			{
-				var e = @event as SimpleEventTriggeredEvent;
-				if( e != null && e.EventType == description.EventType )
-				{
-					props.IsEventTriggered = true;
+        protected override void OnEventTriggered(IPublisher publisher, IEvent @event)
+        {
+            base.OnEventTriggered(publisher, @event);
 
-					Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>( this );
+            if (!props.IsEventTriggered)
+            {
+                var e = @event as SimpleEventTriggeredEvent;
+                if (e != null && e.EventType == description.EventType)
+                {
+                    props.IsEventTriggered = true;
 
-					EnqueueForUpdate();
-				}
-			}
-		}
-	}
+                    Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
+
+                    EnqueueForUpdate();
+                }
+            }
+        }
+    }
 }

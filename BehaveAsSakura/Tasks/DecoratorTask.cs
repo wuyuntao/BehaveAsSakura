@@ -1,34 +1,47 @@
-﻿using ProtoBuf;
+﻿using System;
+using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	class DecoratorTaskDescWrapper : TaskDescWrapper
-	{
-		[ProtoMember( 1 )]
-		public uint ChildTask { get; set; }
-	}
+    [ProtoContract]
+    class DecoratorTaskDescWrapper : TaskDescWrapper
+    {
+        [ProtoMember(1)]
+        public uint ChildTask { get; set; }
+    }
 
-	public abstract class DecoratorTask : Task
-	{
-		private Task childTask;
+    public abstract class DecoratorTask : Task
+    {
+        private Task childTask;
 
-		protected DecoratorTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, ITaskDesc description, ITaskProps props = null)
-			: base( tree, parentTask, id, description, props )
-		{
-			childTask = Tree.TreeManager.CreateTask( Tree, childTaskId, this );
-		}
+        protected DecoratorTask(BehaviorTree tree, Task parentTask, uint id, ITaskDesc description, ITaskProps props = null)
+            : base(tree, parentTask, id, description, props)
+        { }
 
-		protected override void OnAbort()
-		{
-			childTask.EnqueueForAbort();
+        internal void InitializeChild(Task childTask)
+        {
+            if (this.childTask != null)
+                throw new InvalidOperationException("Child task is already initialized");
 
-			base.OnAbort();
-		}
+            this.childTask = childTask;
+        }
 
-		protected Task ChildTask
-		{
-			get { return childTask; }
-		}
-	}
+        protected override void OnAbort()
+        {
+            childTask.EnqueueForAbort();
+
+            base.OnAbort();
+        }
+
+        protected Task ChildTask
+        {
+            get
+            {
+                if (childTask == null)
+                    throw new InvalidOperationException("Child task is not initialized yet");
+
+                return childTask;
+            }
+        }
+    }
 }
