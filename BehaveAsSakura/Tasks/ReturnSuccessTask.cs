@@ -3,16 +3,15 @@
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class ReturnSuccessTaskDesc : DecoratorTaskDesc
+	public class ReturnSuccessTaskDesc : ITaskDesc
 	{
 	}
 
 	class ReturnSuccessTask : DecoratorTask
 	{
-		public ReturnSuccessTask(BehaviorTree tree, Task parent, ReturnSuccessTaskDesc description)
-			: base( tree, parent, description, new DecoratorTaskProps( description.Id ) )
-		{
-		}
+		public ReturnSuccessTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, ReturnSuccessTaskDesc description)
+			: base( tree, parentTask, id, childTaskId, description )
+		{ }
 
 		protected override void OnStart()
 		{

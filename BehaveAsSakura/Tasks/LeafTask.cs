@@ -1,16 +1,9 @@
-﻿using ProtoBuf;
-
-namespace BehaveAsSakura.Tasks
+﻿namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public class LeafTaskDesc : TaskDesc
-	{
-	}
-
 	public abstract class LeafTask : Task
     {
-        protected LeafTask(BehaviorTree tree, Task parent, LeafTaskDesc description, TaskProps props)
-            : base(tree, parent, description, props)
+        protected LeafTask(BehaviorTree tree, Task parentTask, uint id, ITaskDesc description, ITaskProps props = null)
+            : base(tree, parentTask, id, description, props)
         { }
     }
 }

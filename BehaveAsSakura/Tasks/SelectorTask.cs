@@ -7,10 +7,10 @@ namespace BehaveAsSakura.Tasks
 	{
 	}
 
-	public class SelectorTask : SequenceTask
+	class SelectorTask : SequenceTask
 	{
-		public SelectorTask(BehaviorTree tree, Task parent, SelectorTaskDesc description)
-			: base( tree, parent, description, new SequenceTaskProps( description.Id ) )
+		public SelectorTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, SelectorTaskDesc description)
+			: base( tree, parentTask, id, childTaskIds, description )
 		{ }
 
 		protected override TaskResult OnUpdate()

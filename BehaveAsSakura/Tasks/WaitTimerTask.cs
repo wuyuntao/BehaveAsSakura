@@ -6,35 +6,31 @@ using ProtoBuf;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class WaitTimerTaskDesc : LeafTaskDesc
+	public class WaitTimerTaskDesc : ITaskDesc
 	{
 		[ProtoMember( 1 )]
 		public VariableDesc Time { get; set; }
 	}
 
 	[ProtoContract]
-	class WaitTimerTaskProps : TaskProps
+	class WaitTimerTaskProps : ITaskProps
 	{
 		[ProtoMember( 1 )]
-		public TimerProps Timer;
+		public TimerProps Timer { get; set; }
 
 		[ProtoMember( 2 )]
-		public bool IsTimerTriggered;
-
-		public WaitTimerTaskProps(uint id)
-			: base( id )
-		{ }
+		public bool IsTimerTriggered { get; set; }
 	}
 
-	public sealed class WaitTimerTask : LeafTask
+	class WaitTimerTask : LeafTask
 	{
 		private WaitTimerTaskDesc description;
 		private WaitTimerTaskProps props;
 		private Variable timeVariable;
 		private Timer timer;
 
-		public WaitTimerTask(BehaviorTree tree, Task parent, WaitTimerTaskDesc description)
-			: base( tree, parent, description, new WaitTimerTaskProps( description.Id ) )
+		public WaitTimerTask(BehaviorTree tree, Task parentTask, uint id, WaitTimerTaskDesc description)
+			: base( tree, parentTask, id, description, new WaitTimerTaskProps() )
 		{
 			this.description = description;
 			props = (WaitTimerTaskProps)Props;

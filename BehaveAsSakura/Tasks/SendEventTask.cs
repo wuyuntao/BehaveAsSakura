@@ -3,9 +3,8 @@ using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-
 	[ProtoContract]
-	public class SendEventTaskDesc : LeafTaskDesc
+	public class SendEventTaskDesc : ITaskDesc
 	{
 		[ProtoMember( 1 )]
 		public string EventType { get; set; }
@@ -15,8 +14,8 @@ namespace BehaveAsSakura.Tasks
 	{
 		private SendEventTaskDesc description;
 
-		public SendEventTask(BehaviorTree tree, Task parent, SendEventTaskDesc description)
-			: base( tree, parent, description, new TaskProps( description.Id ) )
+		public SendEventTask(BehaviorTree tree, Task parentTask, uint id, SendEventTaskDesc description)
+			: base( tree, parentTask, id, description )
 		{
 			this.description = description;
 		}

@@ -7,10 +7,10 @@ namespace BehaveAsSakura
 	public sealed class BehaviorTreeBuilder
 	{
 		private uint maxTaskId;
-		private List<TaskDesc> tasks = new List<TaskDesc>();
+		private List<ITaskDesc> tasks = new List<ITaskDesc>();
 
 		public CompositeTaskBuilder Composite<T>(string name, Action<T> initializer = null)
-			where T : CompositeTaskDesc, new()
+			where T : ITaskDesc, new()
 		{
 			var description = CreateDescription<T>( name, initializer );
 
@@ -18,13 +18,13 @@ namespace BehaveAsSakura
 		}
 
 		public CompositeTaskBuilder Composite<T>(Action<T> initializer = null)
-			where T : CompositeTaskDesc, new()
+			where T : ITaskDesc, new()
 		{
 			return Composite<T>( null, initializer );
 		}
 
 		public DecoratorTaskBuilder Decorator<T>(string name, Action<T> initializer = null)
-			where T : DecoratorTaskDesc, new()
+			where T : ITaskDesc, new()
 		{
 			var description = CreateDescription<T>( name, initializer );
 
@@ -32,13 +32,13 @@ namespace BehaveAsSakura
 		}
 
 		public DecoratorTaskBuilder Decorator<T>(Action<T> initializer = null)
-			where T : DecoratorTaskDesc, new()
+			where T : ITaskDesc, new()
 		{
 			return Decorator<T>( null, initializer );
 		}
 
 		public LeafTaskBuilder Leaf<T>(string name, Action<T> initializer = null)
-			where T : LeafTaskDesc, new()
+			where T : ITaskDesc, new()
 		{
 			var description = CreateDescription<T>( name, initializer );
 
@@ -46,7 +46,7 @@ namespace BehaveAsSakura
 		}
 
 		public LeafTaskBuilder Leaf<T>(Action<T> initializer = null)
-			where T : LeafTaskDesc, new()
+			where T : ITaskDesc, new()
 		{
 			return Leaf( null, initializer );
 		}
@@ -61,7 +61,7 @@ namespace BehaveAsSakura
 		}
 
 		T CreateDescription<T>(string name, Action<T> initializer)
-			where T : TaskDesc, new()
+			where T : ITaskDesc, new()
 		{
 			var description = new T();
 			description.Id = ++maxTaskId;
@@ -77,14 +77,14 @@ namespace BehaveAsSakura
 
 	public abstract class TaskBuilder
 	{
-		private TaskDesc description;
+		private ITaskDesc description;
 
-		protected TaskBuilder(TaskDesc description)
+		protected TaskBuilder(ITaskDesc description)
 		{
 			this.description = description;
 		}
 
-		internal TaskDesc Description
+		internal ITaskDesc Description
 		{
 			get { return description; }
 		}
@@ -92,9 +92,9 @@ namespace BehaveAsSakura
 
 	public sealed class CompositeTaskBuilder : TaskBuilder
 	{
-		private CompositeTaskDesc description;
+		private ITaskDesc description;
 
-		public CompositeTaskBuilder(CompositeTaskDesc description)
+		public CompositeTaskBuilder(ITaskDesc description)
 			: base( description )
 		{
 			this.description = description;
@@ -120,9 +120,9 @@ namespace BehaveAsSakura
 
 	public sealed class DecoratorTaskBuilder : TaskBuilder
 	{
-		private DecoratorTaskDesc description;
+		private ITaskDesc description;
 
-		public DecoratorTaskBuilder(DecoratorTaskDesc description)
+		public DecoratorTaskBuilder(ITaskDesc description)
 			: base( description )
 		{
 			this.description = description;
@@ -138,7 +138,7 @@ namespace BehaveAsSakura
 
 	public sealed class LeafTaskBuilder : TaskBuilder
 	{
-		public LeafTaskBuilder(LeafTaskDesc description)
+		public LeafTaskBuilder(ITaskDesc description)
 			: base( description )
 		{
 		}

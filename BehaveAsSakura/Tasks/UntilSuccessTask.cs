@@ -7,10 +7,10 @@ namespace BehaveAsSakura.Tasks
 	{
 	}
 
-	public sealed class UntilSuccessTask : RepeaterTask
+	class UntilSuccessTask : RepeaterTask
 	{
-		public UntilSuccessTask(BehaviorTree tree, Task parent, UntilSuccessDesc description)
-			: base( tree, parent, description, new RepeaterTaskProps( description.Id ) )
+		public UntilSuccessTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, UntilSuccessDesc description)
+			: base( tree, parentTask, id, childTaskId, description )
 		{
 		}
 

@@ -6,7 +6,7 @@ using System;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class ConditionalEvaluatorTaskDesc : LeafTaskDesc
+	public class ConditionalEvaluatorTaskDesc : ITaskDesc
 	{
 		[ProtoMember( 1 )]
 		public VariableDesc Left { get; set; }
@@ -18,14 +18,14 @@ namespace BehaveAsSakura.Tasks
 		public VariableDesc Right { get; set; }
 	}
 
-	public sealed class ConditionalEvaluatorTask : LeafTask
+	class ConditionalEvaluatorTask : LeafTask
 	{
 		ConditionalEvaluatorTaskDesc description;
 		Variable leftVariable;
 		Variable rightVariable;
 
-		public ConditionalEvaluatorTask(BehaviorTree tree, Task parent, ConditionalEvaluatorTaskDesc description)
-			: base( tree, parent, description, new TaskProps( description.Id ) )
+		public ConditionalEvaluatorTask(BehaviorTree tree, Task parent, uint id, ConditionalEvaluatorTaskDesc description)
+			: base( tree, parent, id, description )
 		{
 			this.description = description;
 			leftVariable = new Variable( description.Left );

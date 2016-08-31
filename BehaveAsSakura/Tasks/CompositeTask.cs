@@ -1,35 +1,16 @@
-﻿using ProtoBuf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public class CompositeTaskDesc : TaskDesc
-	{
-		[ProtoMember( 1 )]
-		public uint[] Children;
-	}
-
-	[ProtoContract]
-	public class CompositeTaskProps : TaskProps
-	{
-		[ProtoMember( 1 )]
-		public TaskProps[] Children;
-
-		public CompositeTaskProps(uint id)
-			: base( id )
-		{ }
-	}
-
 	public abstract class CompositeTask : Task
 	{
-		Task[] childTasks;
+		private Task[] childTasks;
 
-		protected CompositeTask(BehaviorTree tree, Task parent, CompositeTaskDesc description, CompositeTaskProps props)
-			: base( tree, parent, description, props )
+		protected CompositeTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, ITaskDesc description, ITaskProps props = null)
+			: base( tree, parentTask, id, description, props )
 		{
-			childTasks = Array.ConvertAll( description.Children, id => Tree.TreeManager.CreateTask( Tree, id, this ) );
+			childTasks = Array.ConvertAll( childTaskIds, t => Tree.TreeManager.CreateTask( Tree, t, this ) );
 		}
 
 		protected override void OnAbort()

@@ -46,12 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BehaviorTree.cs" />
-    <Compile Include="BehaviorTreeBuilder.cs" />
     <Compile Include="BehaviorTreeManager.cs" />
     <Compile Include="Events\EventBus.cs" />
     <Compile Include="Events\SimpleEventTriggeredEvent.cs" />
     <Compile Include="Events\TimerTriggeredEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\DescSerializer.cs" />
+    <Compile Include="Serialization\PropsSerializer.cs" />
     <Compile Include="Tasks\ConditionalEvaluatorTask.cs" />
     <Compile Include="Tasks\DecoratorTask.cs" />
     <Compile Include="Tasks\CompositeTask.cs" />
@@ -59,8 +60,8 @@
     <Compile Include="Tasks\LeafTask.cs" />
     <Compile Include="Tasks\ListenEventTask.cs" />
     <Compile Include="Tasks\LogTask.cs" />
-    <Compile Include="Tasks\ParallelTask.cs" />
     <Compile Include="Tasks\ParallelSelectorTask.cs" />
+    <Compile Include="Tasks\ParallelTask.cs" />
     <Compile Include="Tasks\RepeaterTask.cs" />
     <Compile Include="Tasks\ReturnFailureTask.cs" />
     <Compile Include="Tasks\ReturnSuccessTask.cs" />

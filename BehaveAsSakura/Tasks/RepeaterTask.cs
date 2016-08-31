@@ -3,41 +3,37 @@
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class RepeaterTaskDesc : DecoratorTaskDesc
+	public class RepeaterTaskDesc : ITaskDesc
 	{
 		[ProtoMember( 1 )]
 		public uint Count { get; set; }
 	}
 
 	[ProtoContract]
-	public class RepeaterTaskProps : DecoratorTaskProps
+	class RepeaterTaskProps : ITaskProps
 	{
 		[ProtoMember( 1 )]
-		public bool WaitForChildCompleted;
+		public bool WaitForChildCompleted { get; set; }
 
 		[ProtoMember( 2 )]
-		public uint LastUpdateTime;
+		public uint LastUpdateTime { get; set; }
 
 		[ProtoMember( 3 )]
-		public uint Count;
-
-		public RepeaterTaskProps(uint id)
-			: base( id )
-		{ }
+		public uint Count { get; set; }
 	}
 
-	public class RepeaterTask : DecoratorTask
+	class RepeaterTask : DecoratorTask
 	{
 		private RepeaterTaskDesc description;
 		private RepeaterTaskProps props;
 
-		public RepeaterTask(BehaviorTree tree, Task parent, RepeaterTaskDesc description)
-			: this( tree, parent, description, new RepeaterTaskProps( description.Id ) )
+		public RepeaterTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, RepeaterTaskDesc description)
+			: this( tree, parentTask, id, childTaskId, description, new RepeaterTaskProps() )
 		{
 		}
 
-		protected RepeaterTask(BehaviorTree tree, Task parent, RepeaterTaskDesc description, RepeaterTaskProps props)
-			: base( tree, parent, description, props )
+		protected RepeaterTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, RepeaterTaskDesc description, RepeaterTaskProps props)
+			: base( tree, parentTask, id, childTaskId, description, props )
 		{
 			this.description = description;
 			this.props = props;

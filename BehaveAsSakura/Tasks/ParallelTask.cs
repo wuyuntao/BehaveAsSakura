@@ -3,18 +3,18 @@
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class ParallelTaskDesc : CompositeTaskDesc
+	public class ParallelTaskDesc : ITaskDesc
 	{
 	}
 
-	public class ParallelTask : CompositeTask
+	class ParallelTask : CompositeTask
 	{
-		public ParallelTask(BehaviorTree tree, Task parent, ParallelTaskDesc description)
-			: this( tree, parent, description, new CompositeTaskProps( description.Id ) )
+		public ParallelTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, ParallelTaskDesc description)
+			: this( tree, parentTask, id, childTaskIds, description, null )
 		{ }
 
-		protected ParallelTask(BehaviorTree tree, Task parent, ParallelTaskDesc description, CompositeTaskProps props)
-			: base( tree, parent, description, props )
+		protected ParallelTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, ParallelTaskDesc description, ITaskProps props)
+			: base( tree, parentTask, id, childTaskIds, description, props )
 		{ }
 
 		protected override void OnStart()

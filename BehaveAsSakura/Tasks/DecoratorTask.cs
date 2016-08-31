@@ -1,33 +1,13 @@
-﻿using ProtoBuf;
-
-namespace BehaveAsSakura.Tasks
+﻿namespace BehaveAsSakura.Tasks
 {
-	[ProtoContract]
-	public class DecoratorTaskDesc : TaskDesc
-	{
-		[ProtoMember( 1 )]
-		public uint Child;
-	}
-
-	[ProtoContract]
-	public class DecoratorTaskProps : TaskProps
-	{
-		[ProtoMember( 1 )]
-		public TaskProps Child;
-
-		public DecoratorTaskProps(uint id)
-			: base( id )
-		{ }
-	}
-
 	public abstract class DecoratorTask : Task
 	{
 		private Task childTask;
 
-		protected DecoratorTask(BehaviorTree tree, Task parent, DecoratorTaskDesc description, DecoratorTaskProps props)
-			: base( tree, parent, description, props )
+		protected DecoratorTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, ITaskDesc description, ITaskProps props = null)
+			: base( tree, parentTask, id, description, props )
 		{
-			childTask = Tree.TreeManager.CreateTask( Tree, description.Child, this );
+			childTask = Tree.TreeManager.CreateTask( Tree, childTaskId, this );
 		}
 
 		protected override void OnAbort()

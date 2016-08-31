@@ -5,11 +5,6 @@ namespace BehaveAsSakura
 {
 	public class BehaviorTreeManager
 	{
-		public BehaviorTreeDesc LoadTree(string path)
-		{
-			throw new NotImplementedException();
-		}
-
 		public BehaviorTree CreateTree(IBehaviorTreeOwner owner, string path)
 		{
 			return CreateTree( owner, path, null );
@@ -24,6 +19,11 @@ namespace BehaveAsSakura
 		}
 
 		internal Task CreateTask(BehaviorTree tree, uint taskId, Task parentTask = null)
+		{
+			throw new NotImplementedException();
+		}
+
+		BehaviorTreeDesc LoadTree(string path)
 		{
 			throw new NotImplementedException();
 		}

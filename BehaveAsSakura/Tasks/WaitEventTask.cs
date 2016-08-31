@@ -4,30 +4,26 @@ using ProtoBuf;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class WaitEventTaskDesc : LeafTaskDesc
+	public class WaitEventTaskDesc : ITaskDesc
 	{
 		[ProtoMember( 1 )]
 		public string EventType { get; set; }
 	}
 
 	[ProtoContract]
-	class WaitEventTaskProps : TaskProps
+	class WaitEventTaskProps : ITaskProps
 	{
 		[ProtoMember( 1 )]
 		public bool IsEventTriggered { get; set; }
-
-		public WaitEventTaskProps(uint id)
-			: base( id )
-		{ }
 	}
 
-	public sealed class WaitEventTask : LeafTask
+	class WaitEventTask : LeafTask
 	{
 		private WaitEventTaskDesc description;
 		private WaitEventTaskProps props;
 
-		public WaitEventTask(BehaviorTree tree, Task parent, WaitEventTaskDesc description)
-			: base( tree, parent, description, new WaitEventTaskProps( description.Id ) )
+		public WaitEventTask(BehaviorTree tree, Task parentTask, uint id, WaitEventTaskDesc description)
+			: base( tree, parentTask, id, description, new WaitEventTaskProps() )
 		{
 			this.description = description;
 			props = (WaitEventTaskProps)Props;

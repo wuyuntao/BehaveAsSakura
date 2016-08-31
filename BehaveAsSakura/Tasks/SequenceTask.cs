@@ -3,33 +3,29 @@
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class SequenceTaskDesc : CompositeTaskDesc
+	public class SequenceTaskDesc : ITaskDesc
 	{
 	}
 
 	[ProtoContract]
-	public class SequenceTaskProps : CompositeTaskProps
+	class SequenceTaskProps : ITaskProps
 	{
 		[ProtoMember( 1 )]
-		public int CurrentChildIndex;
-
-		public SequenceTaskProps(uint id)
-			: base( id )
-		{ }
+		public int CurrentChildIndex { get; set; }
 	}
 
-	public class SequenceTask : CompositeTask
+	class SequenceTask : CompositeTask
 	{
 		private SequenceTaskProps props;
 
-		public SequenceTask(BehaviorTree tree, Task parent, SequenceTaskDesc description)
-			: this( tree, parent, description, new SequenceTaskProps( description.Id ) )
+		internal SequenceTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, SequenceTaskDesc description)
+			: this( tree, parentTask, id, childTaskIds, description, new SequenceTaskProps() )
 		{
 			props = (SequenceTaskProps)Props;
 		}
 
-		protected SequenceTask(BehaviorTree tree, Task parent, SequenceTaskDesc description, SequenceTaskProps props)
-			: base( tree, parent, description, props )
+		protected SequenceTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, SequenceTaskDesc description, SequenceTaskProps props)
+			: base( tree, parentTask, id, childTaskIds, description, props )
 		{
 			props = (SequenceTaskProps)Props;
 		}

@@ -4,21 +4,17 @@ using ProtoBuf;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class ListenEventTaskDesc : DecoratorTaskDesc
+	public class ListenEventTaskDesc : ITaskDesc
 	{
 		[ProtoMember( 1 )]
 		public string EventType { get; set; }
 	}
 
 	[ProtoContract]
-	class ListenEventTaskProps : DecoratorTaskProps
+	class ListenEventTaskProps : ITaskProps
 	{
 		[ProtoMember( 1 )]
 		public bool IsEventTriggered { get; set; }
-
-		public ListenEventTaskProps(uint id)
-			: base( id )
-		{ }
 	}
 
 	class ListenEventTask : DecoratorTask
@@ -26,8 +22,8 @@ namespace BehaveAsSakura.Tasks
 		private ListenEventTaskDesc description;
 		private ListenEventTaskProps props;
 
-		public ListenEventTask(BehaviorTree tree, Task parent, ListenEventTaskDesc description)
-			: base( tree, parent, description, new ListenEventTaskProps( description.Id ) )
+		public ListenEventTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, ListenEventTaskDesc description)
+			: base( tree, parentTask, id, childTaskId, description, new ListenEventTaskProps() )
 		{
 			this.description = description;
 			props = (ListenEventTaskProps)Props;

@@ -5,7 +5,7 @@ using System;
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public sealed class LogTaskDesc : LeafTaskDesc
+	public sealed class LogTaskDesc : ITaskDesc
 	{
 		[ProtoMember( 1 )]
 		public string Message { get; set; }
@@ -14,13 +14,13 @@ namespace BehaveAsSakura.Tasks
 		public VariableDesc[] MessageParameters { get; set; }
 	}
 
-	public sealed class LogTask : LeafTask
+	class LogTask : LeafTask
 	{
 		private LogTaskDesc description;
 		private Variable[] variables;
 
-		public LogTask(BehaviorTree tree, Task parent, LogTaskDesc description)
-			: base( tree, parent, description, new TaskProps( description.Id ) )
+		public LogTask(BehaviorTree tree, Task parentTask, uint id, LogTaskDesc description)
+			: base( tree, parentTask, id, description )
 		{
 			this.description = description;
 

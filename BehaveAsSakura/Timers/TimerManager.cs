@@ -8,10 +8,10 @@ namespace BehaveAsSakura.Timers
 	class TimerManagerProps
 	{
 		[ProtoMember( 1 )]
-		public uint MaxTimerId;
+		public uint MaxTimerId { get; set; }
 
 		[ProtoMember( 2 )]
-		public TimerProps[] Timers;
+		public TimerProps[] Timers { get; set; }
 	}
 
 	class TimerManager

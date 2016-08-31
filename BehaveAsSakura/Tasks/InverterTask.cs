@@ -3,14 +3,14 @@
 namespace BehaveAsSakura.Tasks
 {
 	[ProtoContract]
-	public class InverterTaskDesc : DecoratorTaskDesc
+	public class InverterTaskDesc : ITaskDesc
 	{
 	}
 
-	public sealed class InverterTask : DecoratorTask
+	class InverterTask : DecoratorTask
 	{
-		public InverterTask(BehaviorTree tree, Task parent, InverterTaskDesc description)
-			: base( tree, parent, description, new DecoratorTaskProps( description.Id ) )
+		public InverterTask(BehaviorTree tree, Task parentTask, uint id, uint childTaskId, InverterTaskDesc description)
+			: base( tree, parentTask, id, childTaskId, description )
 		{
 		}
 

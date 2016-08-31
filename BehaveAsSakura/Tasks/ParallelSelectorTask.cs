@@ -7,10 +7,10 @@ namespace BehaveAsSakura.Tasks
 	{
 	}
 
-	public class ParallelSelectorTask : ParallelTask
+	class ParallelSelectorTask : ParallelTask
 	{
-		public ParallelSelectorTask(BehaviorTree tree, Task parent, ParallelTaskDesc description)
-			: base( tree, parent, description, new CompositeTaskProps( description.Id ) )
+		public ParallelSelectorTask(BehaviorTree tree, Task parentTask, uint id, uint[] childTaskIds, ParallelTaskDesc description)
+			: base( tree, parentTask, id, childTaskIds, description )
 		{ }
 
 		protected override TaskResult OnUpdate()

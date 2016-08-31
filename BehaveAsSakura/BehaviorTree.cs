@@ -23,28 +23,17 @@ namespace BehaveAsSakura
 		EventBus EventBus { get; }
 	}
 
-	[ProtoContract]
-	public class BehaviorTreeDesc
+	class BehaviorTreeDesc
 	{
-		[ProtoMember( 1 )]
-		public TaskDesc[] Tasks;
+		public ITaskDesc[] Tasks;
 
-		[ProtoMember( 2 )]
 		public uint RootTaskId;
-	}
-
-	[ProtoContract]
-	class BehaviorTreeProps
-	{
-		[ProtoMember( 1 )]
-		public TimerManagerProps TimerManager { get; set; }
 	}
 
 	public sealed class BehaviorTree
 	{
 		private BehaviorTreeManager treeManager;
 		private IBehaviorTreeOwner owner;
-		private BehaviorTreeDesc description;
 		private Task parentTask;
 		private Task rootTask;
 		private TimerManager timerManager;
@@ -54,7 +43,6 @@ namespace BehaveAsSakura
 		{
 			this.treeManager = treeManager;
 			this.owner = owner;
-			this.description = description;
 			this.parentTask = parentTask;
 			timerManager = new TimerManager( this );
 			taskTickQueue = new TaskTickQueue( this );
@@ -91,11 +79,6 @@ namespace BehaveAsSakura
 		internal IBehaviorTreeOwner Owner
 		{
 			get { return owner; }
-		}
-
-		internal BehaviorTreeDesc Description
-		{
-			get { return description; }
 		}
 
 		internal Task ParentTask
