@@ -24,7 +24,9 @@ namespace BehaveAsSakura.Tasks
 
 		public SequenceTask(BehaviorTree tree, Task parent, SequenceTaskDesc description)
 			: this( tree, parent, description, new SequenceTaskProps( description.Id ) )
-		{ }
+		{
+			props = (SequenceTaskProps)Props;
+		}
 
 		protected SequenceTask(BehaviorTree tree, Task parent, SequenceTaskDesc description, SequenceTaskProps props)
 			: base( tree, parent, description, props )

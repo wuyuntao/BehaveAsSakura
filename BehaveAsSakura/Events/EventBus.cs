@@ -9,7 +9,6 @@ namespace BehaveAsSakura.Events
 
     public interface IPublisher
     {
-
     }
 
     public interface ISubscriber

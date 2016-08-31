@@ -20,31 +20,31 @@ namespace BehaveAsSakura.Tasks
 
 	public sealed class ConditionalEvaluatorTask : LeafTask
 	{
-		ConditionalEvaluatorTaskDesc m_template;
-		Variable m_leftVariable;
-		Variable m_rightVariable;
+		ConditionalEvaluatorTaskDesc description;
+		Variable leftVariable;
+		Variable rightVariable;
 
-		public ConditionalEvaluatorTask(BehaviorTree tree, Task parent, ConditionalEvaluatorTaskDesc template)
-			: base( tree, parent, template, new TaskProps( template.Id ) )
+		public ConditionalEvaluatorTask(BehaviorTree tree, Task parent, ConditionalEvaluatorTaskDesc description)
+			: base( tree, parent, description, new TaskProps( description.Id ) )
 		{
-			m_template = template;
-			m_leftVariable = new Variable( m_template.Left );
-			m_rightVariable = new Variable( m_template.Right );
+			this.description = description;
+			leftVariable = new Variable( description.Left );
+			rightVariable = new Variable( description.Right );
 		}
 
 		protected override TaskResult OnUpdate()
 		{
-			var leftValue = m_leftVariable.GetValue( this ) as IComparable;
-			var rightValue = m_rightVariable.GetValue( this ) as IComparable;
+			var leftValue = leftVariable.GetValue( this ) as IComparable;
+			var rightValue = rightVariable.GetValue( this ) as IComparable;
 
 			if( leftValue == null || rightValue == null )
 			{
 				LogError( "{0}: Failed to get value from variables. Left: {0} = {1}, Right: {2} = {3}",
-						m_leftVariable, leftValue, m_rightVariable, rightValue );
+						leftVariable, leftValue, rightVariable, rightValue );
 				return TaskResult.Failure;
 			}
 
-			return m_template.Operator.Match( leftValue.CompareTo( rightValue ) ) ? TaskResult.Success : TaskResult.Failure;
+			return description.Operator.Match( leftValue.CompareTo( rightValue ) ) ? TaskResult.Success : TaskResult.Failure;
 		}
 	}
 }
