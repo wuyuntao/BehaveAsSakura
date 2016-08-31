@@ -45,7 +45,7 @@ namespace BehaveAsSakura.Variables
 
 		public uint GetUInt(Task task)
 		{
-			throw new NotImplementedException();
+            return 3000;
 		}
 
 		public long GetLong(Task task)

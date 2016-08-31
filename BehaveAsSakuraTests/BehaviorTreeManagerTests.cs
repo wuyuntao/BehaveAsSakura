@@ -3,6 +3,7 @@ using BehaveAsSakura.Tasks;
 using BehaveAsSakura.Variables;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
@@ -17,14 +18,22 @@ namespace BehaveAsSakura.Tests
         [Test]
         public void TestLogTree()
         {
-            var treeManager = new BehaviorTreeManager(this);
-            var tree = treeManager.CreateTree(this, "Log", null);
+            RunBehaviorTree("Log");
+            RunBehaviorTree("WaitTimer");
+        }
 
+        void RunBehaviorTree(string path)
+        {
+            var treeManager = new BehaviorTreeManager(this);
+            var tree = treeManager.CreateTree(this, path, null);
+
+            timer.Restart();
+            int i = 0;
             while (tree.RootTask.LastResult == TaskResult.Running)
             {
                 tree.Update();
 
-                Console.WriteLine("Tree updated: {0}", tree.RootTask.LastResult);
+                Console.WriteLine("#{0} Tree updated: {1}", ++i, tree.RootTask.LastResult);
                 Thread.Sleep(100);
             }
         }
@@ -41,7 +50,7 @@ namespace BehaveAsSakura.Tests
                         break;
                     }
 
-                default:
+                case "WaitTimer":
                     {
                         builder.Composite<SequenceTaskDesc>()
                             .AppendChild(builder.Leaf<LogTaskDesc>(
@@ -52,6 +61,9 @@ namespace BehaveAsSakura.Tests
                                   d.Message = "End"));
                         break;
                     }
+
+                default:
+                    throw new KeyNotFoundException(path);
             }
 
             return builder.Build();

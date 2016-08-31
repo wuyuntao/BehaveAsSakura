@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BehaveAsSakura.Events
 {
@@ -25,7 +26,8 @@ namespace BehaveAsSakura.Events
             var subscription = GetSubscription(@event.GetType(), false);
             if (subscription != null)
             {
-                foreach (var subscriber in subscription.Subscribers)
+                var subscribers = subscription.Subscribers.ToArray();
+                foreach (var subscriber in subscribers)
                     subscriber.OnEventTriggered(publisher, @event);
             }
         }
