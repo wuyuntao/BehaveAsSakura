@@ -1,5 +1,14 @@
-﻿namespace BehaveAsSakura.Tasks
+﻿using ProtoBuf;
+
+namespace BehaveAsSakura.Tasks
 {
+	[ProtoContract]
+	class DecoratorTaskDescWrapper : TaskDescWrapper
+	{
+		[ProtoMember( 1 )]
+		public uint ChildTask { get; set; }
+	}
+
 	public abstract class DecoratorTask : Task
 	{
 		private Task childTask;

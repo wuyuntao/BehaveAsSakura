@@ -23,11 +23,26 @@ namespace BehaveAsSakura
 		EventBus EventBus { get; }
 	}
 
-	class BehaviorTreeDesc
+	[ProtoContract]
+	public class BehaviorTreeDesc
 	{
-		public ITaskDesc[] Tasks;
+		[ProtoMember( 1 )]
+		internal TaskDescWrapper[] Tasks { get; set; }
 
-		public uint RootTaskId;
+		[ProtoMember( 2 )]
+		internal uint RootTaskId { get; set; }
+
+		[ProtoAfterDeserialization]
+		internal void Initialize()
+		{
+		}
+	}
+
+	[ProtoContract]
+	class BehaviorTreeProps
+	{
+		[ProtoMember( 1 )]
+		public TaskPropsWrapper[] Tasks { get; set; }
 	}
 
 	public sealed class BehaviorTree

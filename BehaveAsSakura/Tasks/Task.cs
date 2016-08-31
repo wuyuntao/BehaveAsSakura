@@ -1,5 +1,6 @@
 ﻿using BehaveAsSakura.Events;
 using BehaveAsSakura.Timers;
+using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
@@ -25,6 +26,38 @@ namespace BehaveAsSakura.Tasks
 
 	public interface ITaskProps
 	{
+	}
+
+	[ProtoContract]
+	class TaskDescWrapper
+	{
+		[ProtoMember( 1 )]
+		public uint Id { get; set; }
+
+		[ProtoMember( 2, IsRequired = false )]
+		public string Name { get; set; }
+
+		[ProtoMember( 3, IsRequired = false )]
+		public string Comment { get; set; }
+
+		[ProtoMember( 4, DynamicType = true )]
+		public object CustomDesc { get; set; }
+	}
+
+	[ProtoContract]
+	class TaskPropsWrapper
+	{
+		[ProtoMember( 1 )]
+		public uint Id { get; set; }
+
+		[ProtoMember( 2 )]
+		public TaskState State { get; set; }
+
+		[ProtoMember( 3 )]
+		public TaskResult LastResult { get; set; }
+
+		[ProtoMember( 4, IsRequired = false, DynamicType = true )]
+		public object CustomProps { get; set; }
 	}
 
 	public abstract class Task : ILogger, ISubscriber

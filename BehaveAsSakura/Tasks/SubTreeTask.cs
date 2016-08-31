@@ -1,5 +1,4 @@
-﻿using BehaveAsSakura.Serialization;
-using BehaveAsSakura.Variables;
+﻿using BehaveAsSakura.Variables;
 using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
@@ -15,7 +14,7 @@ namespace BehaveAsSakura.Tasks
 	class SubTreeTaskProps : ITaskProps
 	{
 		[ProtoMember( 1 )]
-		public BehaviorTreePropsData SubTree { get; set; }
+		public BehaviorTreeProps SubTree { get; set; }
 	}
 
 	class SubTreeTask : LeafTask

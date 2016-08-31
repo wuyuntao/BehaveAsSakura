@@ -7,14 +7,14 @@ namespace BehaveAsSakura
 	public sealed class BehaviorTreeBuilder
 	{
 		private uint maxTaskId;
-		private List<ITaskDesc> tasks = new List<ITaskDesc>();
+		private List<TaskDescWrapper> tasks = new List<TaskDescWrapper>();
 
 		public CompositeTaskBuilder Composite<T>(string name, Action<T> initializer = null)
 			where T : ITaskDesc, new()
 		{
-			var description = CreateDescription<T>( name, initializer );
+			var task = CreateTask<CompositeTaskDescWrapper, T>( name, initializer );
 
-			return new CompositeTaskBuilder( description );
+			return new CompositeTaskBuilder( task );
 		}
 
 		public CompositeTaskBuilder Composite<T>(Action<T> initializer = null)
@@ -26,9 +26,9 @@ namespace BehaveAsSakura
 		public DecoratorTaskBuilder Decorator<T>(string name, Action<T> initializer = null)
 			where T : ITaskDesc, new()
 		{
-			var description = CreateDescription<T>( name, initializer );
+			var task = CreateTask<DecoratorTaskDescWrapper, T>( name, initializer );
 
-			return new DecoratorTaskBuilder( description );
+			return new DecoratorTaskBuilder( task );
 		}
 
 		public DecoratorTaskBuilder Decorator<T>(Action<T> initializer = null)
@@ -40,9 +40,9 @@ namespace BehaveAsSakura
 		public LeafTaskBuilder Leaf<T>(string name, Action<T> initializer = null)
 			where T : ITaskDesc, new()
 		{
-			var description = CreateDescription<T>( name, initializer );
+			var task = CreateTask<TaskDescWrapper, T>( name, initializer );
 
-			return new LeafTaskBuilder( description );
+			return new LeafTaskBuilder( task );
 		}
 
 		public LeafTaskBuilder Leaf<T>(Action<T> initializer = null)
@@ -60,58 +60,64 @@ namespace BehaveAsSakura
 			};
 		}
 
-		T CreateDescription<T>(string name, Action<T> initializer)
-			where T : ITaskDesc, new()
+		TTaskDescWrapper CreateTask<TTaskDescWrapper, TTaskDesc>(string name, Action<TTaskDesc> initializer)
+			where TTaskDescWrapper : TaskDescWrapper, new()
+			where TTaskDesc : ITaskDesc, new()
 		{
-			var description = new T();
-			description.Id = ++maxTaskId;
-			description.Name = name != null ? name : string.Format( "{0}-{1}", typeof( T ).Name, description.Id );
+			var id = ++maxTaskId;
+			var desc = new TTaskDesc();
+			var task = new TTaskDescWrapper()
+			{
+				Id = id,
+				Name = name != null ? name : string.Format( "{0}-{1}", typeof( TTaskDesc ).Name, id ),
+				CustomDesc = desc,
+			};
 
-			initializer?.Invoke( description );
+			initializer?.Invoke( desc );
 
-			tasks.Add( description );
+			tasks.Add( task );
 
-			return description;
+			return task;
 		}
 	}
 
 	public abstract class TaskBuilder
 	{
-		private ITaskDesc description;
+		private TaskDescWrapper task;
 
-		protected TaskBuilder(ITaskDesc description)
+		internal TaskBuilder(TaskDescWrapper task)
 		{
-			this.description = description;
+			this.task = task;
 		}
 
-		internal ITaskDesc Description
+		internal TaskDescWrapper Task
 		{
-			get { return description; }
+			get { return task; }
 		}
 	}
 
 	public sealed class CompositeTaskBuilder : TaskBuilder
 	{
-		private ITaskDesc description;
+		private CompositeTaskDescWrapper task;
 
-		public CompositeTaskBuilder(ITaskDesc description)
-			: base( description )
+		internal CompositeTaskBuilder(CompositeTaskDescWrapper task)
+			: base( task )
 		{
-			this.description = description;
+			this.task = task;
 		}
 
 		public CompositeTaskBuilder AppendChild(TaskBuilder builder)
 		{
-			if( description.Children == null )
+			if( task.ChildTasks == null )
 			{
-				description.Children = new uint[] { builder.Description.Id };
+				task.ChildTasks = new uint[] { builder.Task.Id };
 			}
 			else
 			{
-				var children = new uint[description.Children.Length + 1];
-				Array.Copy( description.Children, children, description.Children.Length );
-				children[description.Children.Length] = builder.Description.Id;
-				description.Children = children;
+				var children = new uint[task.ChildTasks.Length + 1];
+				Array.Copy( task.ChildTasks, children, task.ChildTasks.Length );
+				children[task.ChildTasks.Length] = builder.Task.Id;
+				task.ChildTasks = children;
 			}
 
 			return this;
@@ -120,17 +126,17 @@ namespace BehaveAsSakura
 
 	public sealed class DecoratorTaskBuilder : TaskBuilder
 	{
-		private ITaskDesc description;
+		private DecoratorTaskDescWrapper task;
 
-		public DecoratorTaskBuilder(ITaskDesc description)
-			: base( description )
+		internal DecoratorTaskBuilder(DecoratorTaskDescWrapper task)
+			: base( task )
 		{
-			this.description = description;
+			this.task = task;
 		}
 
 		public DecoratorTaskBuilder SetChild(TaskBuilder builder)
 		{
-			description.Child = builder.Description.Id;
+			task.ChildTask = builder.Task.Id;
 
 			return this;
 		}
@@ -138,8 +144,8 @@ namespace BehaveAsSakura
 
 	public sealed class LeafTaskBuilder : TaskBuilder
 	{
-		public LeafTaskBuilder(ITaskDesc description)
-			: base( description )
+		internal LeafTaskBuilder(TaskDescWrapper task)
+			: base( task )
 		{
 		}
 	}
