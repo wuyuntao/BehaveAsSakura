@@ -17,7 +17,10 @@ namespace BehaveAsSakura.Tests
     {
         [ProtoMember(2)]
         public int Field2;
-    }
+
+		[ProtoMember( 3, IsRequired = false )]
+		public SomeDerivedClass[] Children;
+	}
 
     [TestFixture]
     public class ProtobufTests
@@ -26,7 +29,16 @@ namespace BehaveAsSakura.Tests
         public void Serialize()
         {
             var cls1 = new SomeBaseClass() { Field1 = 100 };
-            var cls2 = new SomeDerivedClass() { Field1 = 100, Field2 = 200 };
+            var cls2 = new SomeDerivedClass()
+			{
+				Field1 = 100,
+				Field2 = 200,
+				Children = new[]
+				{
+					new SomeDerivedClass() { Field1 = 300, Field2 = 400 },
+					new SomeDerivedClass() { Field1 = 500, Field2 = 600 },
+				}
+			};
 
             using (var stream1 = new MemoryStream())
             {
@@ -50,6 +62,7 @@ namespace BehaveAsSakura.Tests
 
                     Assert.AreEqual(cls2.Field1, cls4.Field1);
                     Assert.AreEqual(cls2.Field2, cls4.Field2);
+					Assert.AreEqual(cls2.Children.Length, cls4.Children.Length);
                 }
             }
         }
