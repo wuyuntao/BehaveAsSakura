@@ -33,7 +33,7 @@ namespace BehaveAsSakura
 		internal uint RootTaskId { get; set; }
 
 		[ProtoAfterDeserialization]
-		internal void Initialize()
+		void Initialize()
 		{
 		}
 	}

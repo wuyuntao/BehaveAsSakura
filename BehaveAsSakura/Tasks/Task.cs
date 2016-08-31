@@ -29,6 +29,8 @@ namespace BehaveAsSakura.Tasks
 	}
 
 	[ProtoContract]
+	[ProtoInclude( 11, typeof( DecoratorTaskDescWrapper ) )]
+	[ProtoInclude( 12, typeof( CompositeTaskDescWrapper ) )]
 	class TaskDescWrapper
 	{
 		[ProtoMember( 1 )]

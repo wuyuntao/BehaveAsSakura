@@ -36,5 +36,14 @@ namespace BehaveAsSakura.Variables
 
 		[ProtoMember( 3 )]
 		public string Value { get; set; }
+
+		public VariableDesc(VariableType type, VariableSource source, string value)
+		{
+			Type = type;
+			Source = source;
+			Value = value;
+		}
+
+		public VariableDesc() { }
 	}
 }
