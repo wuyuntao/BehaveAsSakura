@@ -17,6 +17,8 @@ namespace BehaveAsSakura.Variables
 			this.description = description;
 		}
 
+		#region Getters
+
 		public object GetValue(Task task)
 		{
 			switch( description.Source )
@@ -93,7 +95,9 @@ namespace BehaveAsSakura.Variables
 			return (string)GetValue( task );
 		}
 
-		#region Helpers
+		#endregion
+
+		#region Private getters
 
 		object GetValue_Container(IVariableContainer container)
 		{
