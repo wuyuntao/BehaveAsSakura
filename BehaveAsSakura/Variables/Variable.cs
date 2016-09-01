@@ -156,5 +156,11 @@ namespace BehaveAsSakura.Variables
 		}
 
 		#endregion
+
+		public VariableDesc Description
+		{
+			get { return description; }
+		}
+
 	}
 }

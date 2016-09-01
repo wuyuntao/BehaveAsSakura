@@ -82,5 +82,12 @@ namespace BehaveAsSakura.Tasks
                 }
             }
         }
-    }
+
+		protected override void OnRestoreProps(ITaskProps props)
+		{
+			base.OnRestoreProps( props );
+
+			this.props = (ListenEventTaskProps)props;
+		}
+	}
 }

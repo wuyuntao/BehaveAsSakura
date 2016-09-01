@@ -61,7 +61,10 @@ namespace BehaveAsSakura.Tasks
 		[ProtoMember( 3 )]
 		public TaskResult LastResult { get; set; }
 
-		[ProtoMember( 4, IsRequired = false, DynamicType = true )]
+		[ProtoMember( 4, IsRequired = false )]
+		public VariableSetProps SharedVariables { get; set; }
+
+		[ProtoMember( 5, IsRequired = false, DynamicType = true )]
 		public object CustomProps { get; set; }
 	}
 
@@ -292,7 +295,7 @@ namespace BehaveAsSakura.Tasks
 
 		#endregion
 
-		#region Event PubSub
+		#region Event Manipulation
 
 		protected void PublishEvent(IEvent @event)
 		{
@@ -309,6 +312,17 @@ namespace BehaveAsSakura.Tasks
 			where TEvent : IEvent
 		{
 			tree.EventBus.Unsubscribe<TEvent>( this );
+		}
+
+		internal protected virtual void OnEventTriggered(IEvent @event)
+		{
+			var timerTriggered = @event as TimerTriggeredEvent;
+			if( timerTriggered != null && immediateTimer != null && immediateTimer.Id == timerTriggered.TimerId )
+			{
+				immediateTimer = null;
+				Tree.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
+				EnqueueForUpdate();
+			}
 		}
 
 		#endregion
@@ -337,21 +351,6 @@ namespace BehaveAsSakura.Tasks
 
 		#endregion
 
-		#region ISubscriber
-
-		internal protected virtual void OnEventTriggered(IEvent @event)
-		{
-			var timerTriggered = @event as TimerTriggeredEvent;
-			if( timerTriggered != null && immediateTimer != null && immediateTimer.Id == timerTriggered.TimerId )
-			{
-				immediateTimer = null;
-				Tree.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
-				EnqueueForUpdate();
-			}
-		}
-
-		#endregion
-
 		#region ISerializable
 
 		TaskPropsWrapper ISerializable<TaskPropsWrapper>.CreateSnapshot()
@@ -361,6 +360,7 @@ namespace BehaveAsSakura.Tasks
 				Id = id,
 				State = state,
 				LastResult = lastResult,
+				SharedVariables = sharedVariables != null ? ( (ISerializable<VariableSetProps>)sharedVariables ).CreateSnapshot() : null,
 				CustomProps = OnCloneProps(),
 			};
 		}
@@ -377,6 +377,14 @@ namespace BehaveAsSakura.Tasks
 
 			state = snapshot.State;
 			lastResult = snapshot.LastResult;
+
+			if( snapshot.SharedVariables != null )
+			{
+				sharedVariables = new VariableSet();
+				( (ISerializable<VariableSetProps>)sharedVariables ).RestoreSnapshot( snapshot.SharedVariables );
+			}
+			else
+				sharedVariables = null;
 
 			OnRestoreProps( (ITaskProps)snapshot.CustomProps );
 		}

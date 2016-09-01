@@ -55,5 +55,23 @@ namespace BehaveAsSakura.Tasks
 
             base.OnAbort();
         }
-    }
+
+		protected override ITaskProps OnCloneProps()
+		{
+			var props = (SubTreeTaskProps)base.OnCloneProps();
+
+			props.SubTree = subTree.CreateSnapshot();
+
+			return props;
+		}
+
+		protected override void OnRestoreProps(ITaskProps props)
+		{
+			base.OnRestoreProps( props );
+
+			var subTreeProps = ( (SubTreeTaskProps)props ).SubTree;
+
+			subTree.RestoreSnapshot( subTreeProps );
+		}
+	}
 }

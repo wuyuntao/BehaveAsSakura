@@ -88,5 +88,12 @@ namespace BehaveAsSakura.Tasks
 		{
 			return false;
 		}
+
+		protected override void OnRestoreProps(ITaskProps props)
+		{
+			base.OnRestoreProps( props );
+
+			this.props = (RepeaterTaskProps)props;
+		}
 	}
 }

@@ -10,7 +10,7 @@ namespace BehaveAsSakura.Variables
 		public SortedList<string, VariableDesc> Variables;
 	}
 
-	public sealed class VariableSet
+	public sealed class VariableSet : ISerializable<VariableSetProps>
 	{
 		private SortedList<string, Variable> variables = new SortedList<string, Variable>();
 
@@ -45,5 +45,33 @@ namespace BehaveAsSakura.Variables
 		{
 			variables.Clear();
 		}
+
+		#region ISerializable
+
+		VariableSetProps ISerializable<VariableSetProps>.CreateSnapshot()
+		{
+			if( variables.Count == 0 )
+				return null;
+
+			var descriptions = new SortedList<string, VariableDesc>();
+
+			foreach( var variable in variables )
+				descriptions.Add( variable.Key, variable.Value.Description );
+
+			return new VariableSetProps() { Variables = descriptions };
+		}
+
+		void ISerializable<VariableSetProps>.RestoreSnapshot(VariableSetProps snapshot)
+		{
+			variables.Clear();
+
+			if (snapshot.Variables != null )
+			{
+				foreach( var variable in snapshot.Variables )
+					variables.Add( variable.Key, new Variable( variable.Value ) );
+			}
+		}
+
+		#endregion
 	}
 }

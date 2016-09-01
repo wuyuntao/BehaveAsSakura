@@ -62,5 +62,12 @@ namespace BehaveAsSakura.Tasks
 
             return child.LastResult;
         }
-    }
+
+		protected override void OnRestoreProps(ITaskProps props)
+		{
+			base.OnRestoreProps( props );
+
+			this.props = (SequenceTaskProps)props;
+		}
+	}
 }
