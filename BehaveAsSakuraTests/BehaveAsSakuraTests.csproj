@@ -54,6 +54,7 @@
     <Compile Include="BehaviorTreeManagerTests.cs" />
     <Compile Include="BehaviorTreeOwner.cs" />
     <Compile Include="BehaviorTreeSerializationTests.cs" />
+    <Compile Include="DumpLogTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtobufTests.cs" />
   </ItemGroup>

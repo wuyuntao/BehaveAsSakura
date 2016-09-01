@@ -21,20 +21,20 @@ namespace BehaveAsSakura.Tests
 				case "WaitTimer":
 					{
 						builder.Composite<SequenceTaskDesc>()
-							.AppendChild( builder.Leaf<LogTaskDesc>(
-									d => d.Message = "Start" ) )
+							.AppendChild( builder.Leaf<DumpLogTaskDesc>(
+									d => d.Text = "Start" ) )
 							.AppendChild( builder.Leaf<WaitTimerTaskDesc>(
 									d => d.Time = new VariableDesc( VariableType.UInteger, VariableSource.LiteralConstant, "3000" ) ) )
-							.AppendChild( builder.Leaf<LogTaskDesc>( d =>
-									d.Message = "CheckPoint1" ) )
+							.AppendChild( builder.Leaf<DumpLogTaskDesc>( d =>
+									d.Text = "CheckPoint1" ) )
 							.AppendChild( builder.Leaf<WaitTimerTaskDesc>(
 									d => d.Time = new VariableDesc( VariableType.UInteger, VariableSource.TreeOwnerProperty, "uint.3000" ) ) )
-							.AppendChild( builder.Leaf<LogTaskDesc>( d =>
-									d.Message = "CheckPoint2" ) )
+							.AppendChild( builder.Leaf<DumpLogTaskDesc>( d =>
+									d.Text = "CheckPoint2" ) )
 							.AppendChild( builder.Leaf<WaitTimerTaskDesc>(
 									d => d.Time = new VariableDesc( VariableType.UInteger, VariableSource.GlobalConstant, "uint.5000" ) ) )
-							.AppendChild( builder.Leaf<LogTaskDesc>( d =>
-									d.Message = "End" ) );
+							.AppendChild( builder.Leaf<DumpLogTaskDesc>( d =>
+									d.Text = "End" ) );
 						break;
 					}
 
