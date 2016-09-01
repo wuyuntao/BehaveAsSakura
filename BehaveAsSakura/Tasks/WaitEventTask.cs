@@ -20,9 +20,6 @@ namespace BehaveAsSakura.Tasks
     {
         [ProtoMember(1)]
         public bool IsEventTriggered { get; set; }
-
-		[ProtoMember(2)]
-		public bool IsSubscribingToEvent { get; set; }
 	}
 
     class WaitEventTask : LeafTask
@@ -44,7 +41,6 @@ namespace BehaveAsSakura.Tasks
 			SubscribeEvent<SimpleEventTriggeredEvent>();
 
 			props.IsEventTriggered = false;
-			props.IsSubscribingToEvent = true;
 		}
 
 		protected override TaskResult OnUpdate()
@@ -54,14 +50,12 @@ namespace BehaveAsSakura.Tasks
 
         protected override void OnEnd()
         {
-			props.IsSubscribingToEvent = false;
-
 			UnsubscribeEvent<SimpleEventTriggeredEvent>();
 
             base.OnEnd();
         }
 
-        protected override void OnEventTriggered(IEvent @event)
+		internal protected override void OnEventTriggered(IEvent @event)
 		{
             base.OnEventTriggered( @event );
 
@@ -71,7 +65,6 @@ namespace BehaveAsSakura.Tasks
                 if (e != null && e.EventType == description.EventType)
                 {
                     props.IsEventTriggered = true;
-					props.IsSubscribingToEvent = false;
 
 					UnsubscribeEvent<SimpleEventTriggeredEvent>();
 
@@ -85,11 +78,6 @@ namespace BehaveAsSakura.Tasks
 			base.OnRestoreProps( props );
 
 			this.props = (WaitEventTaskProps)props;
-
-			if ( this.props.IsSubscribingToEvent )
-				SubscribeEvent<SimpleEventTriggeredEvent>();
-			else
-				UnsubscribeEvent<SimpleEventTriggeredEvent>();
 		}
 	}
 }

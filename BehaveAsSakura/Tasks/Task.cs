@@ -65,7 +65,7 @@ namespace BehaveAsSakura.Tasks
 		public object CustomProps { get; set; }
 	}
 
-	public abstract class Task : ILogger, ISubscriber, ISerializable<TaskPropsWrapper>
+	public abstract class Task : ILogger, ISerializable<TaskPropsWrapper>
 	{
 		private BehaviorTree tree;
 		private Task parentTask;
@@ -201,10 +201,6 @@ namespace BehaveAsSakura.Tasks
 		protected virtual void OnAbort()
 		{
 			LogDebug( "[{0}] aborted", this );
-		}
-
-		protected virtual void OnEventTriggered(IEvent @event)
-		{
 		}
 
 		#endregion
@@ -343,7 +339,7 @@ namespace BehaveAsSakura.Tasks
 
 		#region ISubscriber
 
-		void ISubscriber.OnEventTriggered(IEvent @event)
+		internal protected virtual void OnEventTriggered(IEvent @event)
 		{
 			var timerTriggered = @event as TimerTriggeredEvent;
 			if( timerTriggered != null && immediateTimer != null && immediateTimer.Id == timerTriggered.TimerId )
@@ -352,8 +348,6 @@ namespace BehaveAsSakura.Tasks
 				Tree.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
 				EnqueueForUpdate();
 			}
-
-			OnEventTriggered( @event );
 		}
 
 		#endregion

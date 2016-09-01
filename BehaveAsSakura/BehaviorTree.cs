@@ -77,7 +77,7 @@ namespace BehaveAsSakura
 			this.owner = owner;
 			this.parentTask = parentTask;
 
-			eventBus = new EventBus();
+			eventBus = new EventBus( this );
 			timerManager = new TimerManager( this );
 			taskTickQueue = new TaskTickQueue( this );
 

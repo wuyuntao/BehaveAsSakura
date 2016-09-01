@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Tasks;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,24 @@ namespace BehaveAsSakura.Events
 	{
 	}
 
-	public interface ISubscriber
+	[ProtoContract]
+	class SubscriptionProps
 	{
-		void OnEventTriggered(IEvent @event);
+		[ProtoMember( 1 )]
+		public Type Type { get; set; }
+
+		[ProtoMember( 2 )]
+		public uint[] TaskIds { get; set; }
+
+		public SubscriptionProps(Type type, IEnumerable<Task> subscribers)
+		{
+			Type = type;
+			TaskIds = ( from t in subscribers
+						select t.Id ).ToArray();
+		}
+
+		public SubscriptionProps()
+		{ }
 	}
 
 	[ProtoContract]
@@ -19,15 +35,21 @@ namespace BehaveAsSakura.Events
 	{
 		[ProtoMember( 1, IsRequired = false, DynamicType = true )]
 		public object[] Events { get; set; }
+
+		[ProtoMember( 2 )]
+		public SubscriptionProps[] Subscriptions { get; set; }
 	}
 
 	class EventBus : ISerializable<EventBusProps>
 	{
+		private BehaviorTree tree;
 		private List<IEvent> events = new List<IEvent>();
 		private Dictionary<Type, Subscription> subscriptions = new Dictionary<Type, Subscription>();
 
-		internal EventBus()
-		{ }
+		internal EventBus(BehaviorTree tree)
+		{
+			this.tree = tree;
+		}
 
 		internal void Update()
 		{
@@ -48,7 +70,7 @@ namespace BehaveAsSakura.Events
 			events.Add( @event );
 		}
 
-		public void Subscribe<TEvent>(ISubscriber subscriber)
+		public void Subscribe<TEvent>(Task subscriber)
 			where TEvent : IEvent
 		{
 			var subscription = GetSubscription( typeof( TEvent ), true );
@@ -56,7 +78,7 @@ namespace BehaveAsSakura.Events
 			subscription.AddSubscriber( subscriber );
 		}
 
-		public void Unsubscribe<TEvent>(ISubscriber subscriber)
+		public void Unsubscribe<TEvent>(Task subscriber)
 			where TEvent : IEvent
 		{
 			var subscription = GetSubscription( typeof( TEvent ), false );
@@ -79,21 +101,41 @@ namespace BehaveAsSakura.Events
 
 		EventBusProps ISerializable<EventBusProps>.CreateSnapshot()
 		{
-			return new EventBusProps() { Events = events.ToArray() };
+			return new EventBusProps()
+			{
+				Events = events.ToArray(),
+
+				Subscriptions = ( from s in subscriptions
+								  select new SubscriptionProps( s.Key, s.Value.Subscribers ) ).ToArray(),
+			};
 		}
 
 		void ISerializable<EventBusProps>.RestoreSnapshot(EventBusProps snapshot)
 		{
-			subscriptions.Clear();
+			events.Clear();
 
 			if( snapshot.Events != null )
 			{
-				events = new List<IEvent>( from e in snapshot.Events
-										   select (IEvent)e );
+				events.AddRange( from e in snapshot.Events
+								 select (IEvent)e );
 			}
-			else
+
+			subscriptions.Clear();
+
+			if( snapshot.Subscriptions != null )
 			{
-				events.Clear();
+				foreach( var s in snapshot.Subscriptions )
+				{
+					var subscription = GetSubscription( s.Type, true );
+					foreach( var t in s.TaskIds )
+					{
+						var task = tree.FindTask( t );
+						if( task == null )
+							throw new InvalidOperationException( "Failed to find task" );
+
+						subscription.AddSubscriber( task );
+					}
+				}
 			}
 		}
 
@@ -103,20 +145,20 @@ namespace BehaveAsSakura.Events
 
 		class Subscription
 		{
-			private List<ISubscriber> subscribers = new List<ISubscriber>();
+			private List<Task> subscribers = new List<Task>();
 
-			public void AddSubscriber(ISubscriber subscriber)
+			public void AddSubscriber(Task subscriber)
 			{
 				if( !subscribers.Contains( subscriber ) )
 					subscribers.Add( subscriber );
 			}
 
-			public void RemoveSubscriber(ISubscriber subscriber)
+			public void RemoveSubscriber(Task subscriber)
 			{
 				subscribers.Remove( subscriber );
 			}
 
-			public IEnumerable<ISubscriber> Subscribers
+			public IEnumerable<Task> Subscribers
 			{
 				get { return subscribers; }
 			}

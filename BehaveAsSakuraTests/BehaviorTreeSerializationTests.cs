@@ -1,6 +1,8 @@
 ﻿using BehaveAsSakura.Tasks;
 using NUnit.Framework;
+using ProtoBuf;
 using System;
+using System.IO;
 
 namespace BehaveAsSakura.Tests
 {
@@ -25,6 +27,17 @@ namespace BehaveAsSakura.Tests
 
 			var snapshot1 = tree1.CreateSnapshot();
 
+			BehaviorTreeProps snapshot2;
+			using( var stream1 = new MemoryStream() )
+			{
+				Serializer.Serialize( stream1, snapshot1 );
+
+				using( var stream2 = new MemoryStream( stream1.ToArray() ) )
+				{
+					snapshot2 = Serializer.Deserialize<BehaviorTreeProps>( stream2 );
+				}
+			}
+
 			Console.WriteLine( "============ Tree2 ============" );
 
 			var tree2 = treeManager.CreateTree( treeOwner, "WaitTimer", null );
@@ -37,7 +50,7 @@ namespace BehaveAsSakura.Tests
 
 			Console.WriteLine( "============ Tree2 Restore ============" );
 
-			tree2.RestoreSnapshot( snapshot1 );
+			tree2.RestoreSnapshot( snapshot2 );
 
 			for( int i = 0; i < 1000 && tree2.RootTask.LastResult == TaskResult.Running; i++ )
 			{

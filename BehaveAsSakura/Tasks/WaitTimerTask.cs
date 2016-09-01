@@ -25,9 +25,6 @@ namespace BehaveAsSakura.Tasks
 
         [ProtoMember(2)]
         public bool IsTimerTriggered { get; set; }
-
-		[ProtoMember(3)]
-		public bool IsSubscribingToEvent { get; set; }
 	}
 
     class WaitTimerTask : LeafTask
@@ -54,7 +51,6 @@ namespace BehaveAsSakura.Tasks
 
 			props.TimerId = timer.Id;
             props.IsTimerTriggered = false;
-			props.IsSubscribingToEvent = true;
         }
 
         protected override TaskResult OnUpdate()
@@ -70,12 +66,11 @@ namespace BehaveAsSakura.Tasks
             UnsubscribeEvent<TimerTriggeredEvent>();
 
 			props.TimerId = null;
-			props.IsSubscribingToEvent = false;
 
 			base.OnEnd();
         }
 
-        protected override void OnEventTriggered(IEvent @event)
+		internal protected override void OnEventTriggered(IEvent @event)
 		{
             base.OnEventTriggered( @event );
 
@@ -87,7 +82,6 @@ namespace BehaveAsSakura.Tasks
 					Tree.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
 
 					props.IsTimerTriggered = true;
-					props.IsSubscribingToEvent = false;
 
                     EnqueueForUpdate();
                 }
@@ -104,11 +98,6 @@ namespace BehaveAsSakura.Tasks
 				timer = FindTimer( this.props.TimerId.Value );
 			else
 				timer = null;
-
-			if( this.props.IsSubscribingToEvent )
-				SubscribeEvent<TimerTriggeredEvent>();
-			else
-				UnsubscribeEvent<TimerTriggeredEvent>();
 		}
 	}
 }

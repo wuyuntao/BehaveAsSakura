@@ -65,7 +65,7 @@ namespace BehaveAsSakura.Tasks
             base.OnEnd();
         }
 
-        protected override void OnEventTriggered(IEvent @event)
+        internal protected override void OnEventTriggered(IEvent @event)
 		{
             base.OnEventTriggered( @event );
 
