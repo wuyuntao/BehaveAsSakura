@@ -277,6 +277,46 @@ namespace BehaveAsSakura.Tasks
 
 		#endregion
 
+		#region Timer Manipulation
+
+		protected Timer StartTimer(uint totalTime)
+		{
+			return tree.TimerManager.StartTimer( totalTime );
+		}
+
+		protected bool CancelTimer(Timer timer)
+		{
+			return tree.TimerManager.CancelTimer( timer );
+		}
+
+		protected Timer FindTimer(uint id)
+		{
+			return tree.TimerManager.FindTimer( id );
+		}
+
+		#endregion
+
+		#region Event PubSub
+
+		protected void PublishEvent(IEvent @event)
+		{
+			tree.EventBus.Publish( @event );
+		}
+
+		protected void SubscribeEvent<TEvent>()
+			where TEvent : IEvent
+		{
+			tree.EventBus.Subscribe<TEvent>( this );
+		}
+
+		protected void UnsubscribeEvent<TEvent>()
+			where TEvent : IEvent
+		{
+			tree.EventBus.Unsubscribe<TEvent>( this );
+		}
+
+		#endregion
+
 		#region ILogger
 
 		public void LogDebug(string msg, params object[] args)

@@ -25,7 +25,10 @@ namespace BehaveAsSakura.Tasks
 
         [ProtoMember(2)]
         public bool IsTimerTriggered { get; set; }
-    }
+
+		[ProtoMember(3)]
+		public bool IsSubscribingToEvent { get; set; }
+	}
 
     class WaitTimerTask : LeafTask
     {
@@ -46,12 +49,12 @@ namespace BehaveAsSakura.Tasks
         {
             base.OnStart();
 
-            timer = Tree.TimerManager.StartTimer(timeVariable.GetUInt(this));
+            timer = StartTimer(timeVariable.GetUInt(this));
+            SubscribeEvent<TimerTriggeredEvent>();
 
 			props.TimerId = timer.Id;
             props.IsTimerTriggered = false;
-
-            Tree.EventBus.Subscribe<TimerTriggeredEvent>(this);
+			props.IsSubscribingToEvent = true;
         }
 
         protected override TaskResult OnUpdate()
@@ -62,11 +65,12 @@ namespace BehaveAsSakura.Tasks
         protected override void OnEnd()
         {
             if (!props.IsTimerTriggered && timer != null)
-                Tree.TimerManager.CancelTimer(timer);
+                CancelTimer(timer);
 
-            Tree.EventBus.Unsubscribe<TimerTriggeredEvent>(this);
+            UnsubscribeEvent<TimerTriggeredEvent>();
 
 			props.TimerId = null;
+			props.IsSubscribingToEvent = false;
 
 			base.OnEnd();
         }
@@ -80,9 +84,10 @@ namespace BehaveAsSakura.Tasks
                 var e = @event as TimerTriggeredEvent;
                 if (e != null && e.TimerId == timer.Id)
                 {
-                    props.IsTimerTriggered = true;
+					Tree.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
 
-                    Tree.EventBus.Unsubscribe<TimerTriggeredEvent>(this);
+					props.IsTimerTriggered = true;
+					props.IsSubscribingToEvent = false;
 
                     EnqueueForUpdate();
                 }
@@ -93,20 +98,17 @@ namespace BehaveAsSakura.Tasks
 		{
 			base.OnRestoreProps( props );
 
-			if(LastResult == TaskResult.Running )
-			{
-				this.props = (WaitTimerTaskProps)props;
+			this.props = (WaitTimerTaskProps)props;
 
-				if( this.props.TimerId != null )
-				{
-					if( !this.props.IsTimerTriggered )
-						Tree.EventBus.Subscribe<TimerTriggeredEvent>( this );
+			if( this.props.TimerId != null )
+				timer = FindTimer( this.props.TimerId.Value );
+			else
+				timer = null;
 
-					timer = Tree.TimerManager.FindTimer( this.props.TimerId.Value );
-				}
-				else
-					timer = null;		
-			}
+			if( this.props.IsSubscribingToEvent )
+				SubscribeEvent<TimerTriggeredEvent>();
+			else
+				UnsubscribeEvent<TimerTriggeredEvent>();
 		}
 	}
 }

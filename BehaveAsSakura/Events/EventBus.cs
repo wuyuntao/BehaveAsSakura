@@ -21,7 +21,7 @@ namespace BehaveAsSakura.Events
 		public object[] Events { get; set; }
 	}
 
-	public sealed class EventBus : ISerializable<EventBusProps>
+	class EventBus : ISerializable<EventBusProps>
 	{
 		private List<IEvent> events = new List<IEvent>();
 		private Dictionary<Type, Subscription> subscriptions = new Dictionary<Type, Subscription>();

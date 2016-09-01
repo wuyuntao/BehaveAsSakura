@@ -15,7 +15,7 @@ namespace BehaveAsSakura.Timers
 		public TimerProps[] Timers { get; set; }
 	}
 
-	public sealed class TimerManager : ISerializable<TimerManagerProps>
+	class TimerManager : ISerializable<TimerManagerProps>
 	{
 		private BehaviorTree tree;
 		private TimerManagerProps props;

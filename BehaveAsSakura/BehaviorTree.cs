@@ -178,12 +178,17 @@ namespace BehaveAsSakura
 
 		#region Properties
 
-		internal IBehaviorTreeOwner Owner
+		public BehaviorTreeManager TreeManager
+		{
+			get { return treeManager; }
+		}
+
+		public IBehaviorTreeOwner Owner
 		{
 			get { return owner; }
 		}
 
-		internal Task ParentTask
+		public Task ParentTask
 		{
 			get { return parentTask; }
 		}
@@ -193,17 +198,12 @@ namespace BehaveAsSakura
 			get { return rootTask; }
 		}
 
-		public BehaviorTreeManager TreeManager
-		{
-			get { return treeManager; }
-		}
-
-		public EventBus EventBus
+		internal EventBus EventBus
 		{
 			get { return eventBus; }
 		}
 
-		public TimerManager TimerManager
+		internal TimerManager TimerManager
 		{
 			get { return timerManager; }
 		}
