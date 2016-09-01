@@ -4,68 +4,85 @@ using BehaveAsSakura.Timers;
 using BehaveAsSakura.Variables;
 using ProtoBuf;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BehaveAsSakura
 {
 	public interface ILogger
-    {
-        void LogDebug(string msg, params object[] args);
-
-        void LogInfo(string msg, params object[] args);
-
-        void LogWarning(string msg, params object[] args);
-
-        void LogError(string msg, params object[] args);
-    }
-
-    public interface IBehaviorTreeOwner : ILogger, IVariableContainer
 	{
-        uint CurrentTime { get; }
+		void LogDebug(string msg, params object[] args);
 
-        EventBus EventBus { get; }
-    }
+		void LogInfo(string msg, params object[] args);
 
-    [ProtoContract]
-    public class BehaviorTreeDesc
-    {
-        [ProtoMember(1)]
-        internal TaskDescWrapper[] Tasks { get; set; }
+		void LogWarning(string msg, params object[] args);
 
-        [ProtoMember(2)]
-        internal uint RootTaskId { get; set; }
+		void LogError(string msg, params object[] args);
+	}
 
-        internal TaskDescWrapper FindTaskDesc(uint id)
-        {
-            return Array.Find(Tasks, t => t.Id == id);
-        }
-    }
+	interface ISerializable<T>
+	{
+		T CreateSnapshot();
 
-    [ProtoContract]
-    class BehaviorTreeProps
-    {
-        [ProtoMember(1)]
-        public TaskPropsWrapper[] Tasks { get; set; }
-    }
+		void RestoreSnapshot(T snapshot);
+	}
 
-    public sealed class BehaviorTree : IPublisher
-    {
-        private BehaviorTreeManager treeManager;
-        private IBehaviorTreeOwner owner;
-        private Task parentTask;
-        private Task rootTask;
-        private TimerManager timerManager;
-        private TaskTickQueue taskTickQueue;
+	public interface IBehaviorTreeOwner : ILogger, IVariableContainer
+	{
+		uint CurrentTime { get; }
+	}
 
-        internal BehaviorTree(BehaviorTreeManager treeManager, IBehaviorTreeOwner owner, BehaviorTreeDesc description, Task parentTask)
-        {
-            this.treeManager = treeManager;
-            this.owner = owner;
-            this.parentTask = parentTask;
-            timerManager = new TimerManager(this);
-            taskTickQueue = new TaskTickQueue(this);
+	[ProtoContract]
+	public class BehaviorTreeDesc
+	{
+		[ProtoMember( 1 )]
+		internal TaskDescWrapper[] Tasks { get; set; }
 
-            rootTask = treeManager.CreateTask(this, description, parentTask, description.RootTaskId);
-        }
+		[ProtoMember( 2 )]
+		internal uint RootTaskId { get; set; }
+
+		internal TaskDescWrapper FindTaskDesc(uint id)
+		{
+			return Array.Find( Tasks, t => t.Id == id );
+		}
+	}
+
+	[ProtoContract]
+	public class BehaviorTreeProps
+	{
+		[ProtoMember( 1 )]
+		internal EventBusProps EventBus { get; set; }
+
+		[ProtoMember( 2 )]
+		internal TimerManagerProps TimerManager { get; set; }
+
+		[ProtoMember( 3 )]
+		internal TaskPropsWrapper[] Tasks { get; set; }
+	}
+
+	public sealed class BehaviorTree : ISerializable<BehaviorTreeProps>
+	{
+		private BehaviorTreeManager treeManager;
+		private IBehaviorTreeOwner owner;
+		private Task parentTask;
+		private Task rootTask;
+		private Dictionary<uint, Task> tasks = new Dictionary<uint, Task>();
+		private EventBus eventBus;
+		private TimerManager timerManager;
+		private TaskTickQueue taskTickQueue;
+
+		internal BehaviorTree(BehaviorTreeManager treeManager, IBehaviorTreeOwner owner, BehaviorTreeDesc description, Task parentTask)
+		{
+			this.treeManager = treeManager;
+			this.owner = owner;
+			this.parentTask = parentTask;
+
+			eventBus = new EventBus();
+			timerManager = new TimerManager( this );
+			taskTickQueue = new TaskTickQueue( this );
+
+			rootTask = treeManager.CreateTask( this, description, parentTask, description.RootTaskId );
+		}
 
 		public override string ToString()
 		{
@@ -78,56 +95,118 @@ namespace BehaveAsSakura
 		#region Life-cycle
 
 		public void Update()
-        {
-            timerManager.Update();
+		{
+			eventBus.Update();
+			timerManager.Update();
+			taskTickQueue.Update();
+		}
 
-            taskTickQueue.Update();
-        }
+		public void Abort()
+		{
+			rootTask.EnqueueForAbort();
 
-        public void Abort()
-        {
-            rootTask.EnqueueForAbort();
+			taskTickQueue.Update();
+		}
 
-            taskTickQueue.Update();
-        }
+		#endregion
 
-        #endregion
+		#region Task Manipulation
 
-        #region Task Manipulation
+		internal void InitializeTask(Task task)
+		{
+			tasks.Add( task.Id, task );
+		}
 
-        internal void EnqueueTask(Task task)
-        {
-            taskTickQueue.Enqueue(task);
-        }
+		internal void EnqueueTask(Task task)
+		{
+			taskTickQueue.Enqueue( task );
+		}
+
+		internal Task FindTask(uint id)
+		{
+			Task task;
+			tasks.TryGetValue( id, out task );
+			return task;
+		}
+
+		#endregion
+
+		#region ISerializable
+
+		public BehaviorTreeProps CreateSnapshot()
+		{
+			return ( (ISerializable<BehaviorTreeProps>)this ).CreateSnapshot();
+		}
+
+		public void RestoreSnapshot(BehaviorTreeProps snapshot)
+		{
+			( (ISerializable<BehaviorTreeProps>)this ).RestoreSnapshot( snapshot );
+		}
+
+		BehaviorTreeProps ISerializable<BehaviorTreeProps>.CreateSnapshot()
+		{
+			var props = new BehaviorTreeProps()
+			{
+				EventBus = ( (ISerializable<EventBusProps>)eventBus ).CreateSnapshot(),
+				TimerManager = ( (ISerializable<TimerManagerProps>)timerManager ).CreateSnapshot(),
+
+				Tasks = ( from t in tasks.Values
+						  select ( (ISerializable<TaskPropsWrapper>)t ).CreateSnapshot() ).ToArray(),
+
+			};
+
+			return props;
+		}
+
+		void ISerializable<BehaviorTreeProps>.RestoreSnapshot(BehaviorTreeProps snapshot)
+		{
+			( (ISerializable<EventBusProps>)eventBus).RestoreSnapshot( snapshot.EventBus );
+
+			( (ISerializable<TimerManagerProps>)timerManager ).RestoreSnapshot( snapshot.TimerManager );
+
+			foreach( var ts in snapshot.Tasks )
+			{
+				var task = FindTask( ts.Id );
+				if( task == null )
+					throw new InvalidOperationException( string.Format( "Task #{0} does not exist" ) );
+
+				( (ISerializable<TaskPropsWrapper>)task ).RestoreSnapshot( ts );
+			}
+		}
 
 		#endregion
 
 		#region Properties
 
 		internal IBehaviorTreeOwner Owner
-        {
-            get { return owner; }
-        }
+		{
+			get { return owner; }
+		}
 
-        internal Task ParentTask
-        {
-            get { return parentTask; }
-        }
+		internal Task ParentTask
+		{
+			get { return parentTask; }
+		}
 
-        public Task RootTask
-        {
-            get { return rootTask; }
-        }
+		public Task RootTask
+		{
+			get { return rootTask; }
+		}
 
-        internal BehaviorTreeManager TreeManager
-        {
-            get { return treeManager; }
-        }
+		public BehaviorTreeManager TreeManager
+		{
+			get { return treeManager; }
+		}
 
-        internal TimerManager TimerManager
-        {
-            get { return timerManager; }
-        }
+		public EventBus EventBus
+		{
+			get { return eventBus; }
+		}
+
+		public TimerManager TimerManager
+		{
+			get { return timerManager; }
+		}
 
 		#endregion
 	}

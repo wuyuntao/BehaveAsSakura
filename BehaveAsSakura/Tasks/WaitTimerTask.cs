@@ -20,8 +20,8 @@ namespace BehaveAsSakura.Tasks
     [ProtoContract]
     class WaitTimerTaskProps : ITaskProps
     {
-        [ProtoMember(1)]
-        public TimerProps Timer { get; set; }
+        [ProtoMember(1, IsRequired = false)]
+        public uint? TimerId { get; set; }
 
         [ProtoMember(2)]
         public bool IsTimerTriggered { get; set; }
@@ -46,10 +46,12 @@ namespace BehaveAsSakura.Tasks
         {
             base.OnStart();
 
-            props.IsTimerTriggered = false;
             timer = Tree.TimerManager.StartTimer(timeVariable.GetUInt(this));
 
-            Owner.EventBus.Subscribe<TimerTriggeredEvent>(this);
+			props.TimerId = timer.Id;
+            props.IsTimerTriggered = false;
+
+            Tree.EventBus.Subscribe<TimerTriggeredEvent>(this);
         }
 
         protected override TaskResult OnUpdate()
@@ -59,17 +61,19 @@ namespace BehaveAsSakura.Tasks
 
         protected override void OnEnd()
         {
-            if (!props.IsTimerTriggered && props.Timer != null)
+            if (!props.IsTimerTriggered && timer != null)
                 Tree.TimerManager.CancelTimer(timer);
 
-            Owner.EventBus.Unsubscribe<TimerTriggeredEvent>(this);
+            Tree.EventBus.Unsubscribe<TimerTriggeredEvent>(this);
 
-            base.OnEnd();
+			props.TimerId = null;
+
+			base.OnEnd();
         }
 
-        protected override void OnEventTriggered(IPublisher publisher, IEvent @event)
-        {
-            base.OnEventTriggered(publisher, @event);
+        protected override void OnEventTriggered(IEvent @event)
+		{
+            base.OnEventTriggered( @event );
 
             if (!props.IsTimerTriggered)
             {
@@ -78,11 +82,31 @@ namespace BehaveAsSakura.Tasks
                 {
                     props.IsTimerTriggered = true;
 
-                    Owner.EventBus.Unsubscribe<TimerTriggeredEvent>(this);
+                    Tree.EventBus.Unsubscribe<TimerTriggeredEvent>(this);
 
                     EnqueueForUpdate();
                 }
             }
         }
-    }
+
+		protected override void OnRestoreProps(ITaskProps props)
+		{
+			base.OnRestoreProps( props );
+
+			if(LastResult == TaskResult.Running )
+			{
+				this.props = (WaitTimerTaskProps)props;
+
+				if( this.props.TimerId != null )
+				{
+					if( !this.props.IsTimerTriggered )
+						Tree.EventBus.Subscribe<TimerTriggeredEvent>( this );
+
+					timer = Tree.TimerManager.FindTimer( this.props.TimerId.Value );
+				}
+				else
+					timer = null;		
+			}
+		}
+	}
 }

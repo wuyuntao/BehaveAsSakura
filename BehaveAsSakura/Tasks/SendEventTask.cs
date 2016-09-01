@@ -27,7 +27,7 @@ namespace BehaveAsSakura.Tasks
 
         protected override TaskResult OnUpdate()
         {
-            Owner.EventBus.Publish(this, new SimpleEventTriggeredEvent(description.EventType));
+            Tree.EventBus.Publish( new SimpleEventTriggeredEvent( description.EventType ) );
 
             return TaskResult.Success;
         }

@@ -1,10 +1,9 @@
-﻿using System;
-using BehaveAsSakura.Events;
+﻿using BehaveAsSakura.Events;
 using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+	[ProtoContract]
     public class ListenEventTaskDesc : ITaskDesc
     {
         [ProtoMember(1)]
@@ -41,7 +40,7 @@ namespace BehaveAsSakura.Tasks
 
             props.IsEventTriggered = false;
 
-            Owner.EventBus.Subscribe<SimpleEventTriggeredEvent>(this);
+            Tree.EventBus.Subscribe<SimpleEventTriggeredEvent>(this);
 
             ChildTask.EnqueueForUpdate();
         }
@@ -61,14 +60,14 @@ namespace BehaveAsSakura.Tasks
         protected override void OnEnd()
         {
             if (!props.IsEventTriggered)
-                Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
+                Tree.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
 
             base.OnEnd();
         }
 
-        protected override void OnEventTriggered(IPublisher publisher, IEvent @event)
-        {
-            base.OnEventTriggered(publisher, @event);
+        protected override void OnEventTriggered(IEvent @event)
+		{
+            base.OnEventTriggered( @event );
 
             if (!props.IsEventTriggered)
             {
@@ -77,7 +76,7 @@ namespace BehaveAsSakura.Tasks
                 {
                     props.IsEventTriggered = true;
 
-                    Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
+                    Tree.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
 
                     EnqueueForUpdate();
                 }

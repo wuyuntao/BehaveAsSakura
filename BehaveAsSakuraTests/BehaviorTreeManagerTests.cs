@@ -1,15 +1,9 @@
-﻿using BehaveAsSakura.Events;
-using BehaveAsSakura.Tasks;
-using BehaveAsSakura.Variables;
+﻿using BehaveAsSakura.Tasks;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
 
 namespace BehaveAsSakura.Tests
 {
-    [TestFixture]
+	[TestFixture]
     class BehaviorTreeManagerTests
 	{
         [Test]
@@ -24,7 +18,7 @@ namespace BehaveAsSakura.Tests
 			RunBehaviorTree( "WaitTimer" );
 		}
 
-		void RunBehaviorTree(string path)
+		public static void RunBehaviorTree(string path)
         {
 			var treeManagerOwner = new BehaviorTreeManagerOwner();
 			var treeManager = new BehaviorTreeManager( treeManagerOwner );

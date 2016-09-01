@@ -24,7 +24,7 @@ namespace BehaveAsSakura.Tasks
 
 	public interface ITaskDesc
 	{
-        Task CreateTask(BehaviorTree tree, Task parentTask, uint id);
+		Task CreateTask(BehaviorTree tree, Task parentTask, uint id);
 	}
 
 	public interface ITaskProps
@@ -65,7 +65,7 @@ namespace BehaveAsSakura.Tasks
 		public object CustomProps { get; set; }
 	}
 
-	public abstract class Task : ILogger, ISubscriber, IPublisher
+	public abstract class Task : ILogger, ISubscriber, ISerializable<TaskPropsWrapper>
 	{
 		private BehaviorTree tree;
 		private Task parentTask;
@@ -178,7 +178,7 @@ namespace BehaveAsSakura.Tasks
 				tree.TimerManager.CancelTimer( immediateTimer );
 
 			immediateTimer = tree.TimerManager.StartTimer( 0 );
-			Owner.EventBus.Subscribe<TimerTriggeredEvent>( this );
+			Tree.EventBus.Subscribe<TimerTriggeredEvent>( this );
 		}
 
 		protected virtual void OnStart()
@@ -192,10 +192,10 @@ namespace BehaveAsSakura.Tasks
 		{
 			LogDebug( "[{0}] ended", this );
 
-			if(sharedVariables != null)
+			if( sharedVariables != null )
 				sharedVariables = null;
 
-			Owner.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
+			Tree.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
 		}
 
 		protected virtual void OnAbort()
@@ -203,7 +203,7 @@ namespace BehaveAsSakura.Tasks
 			LogDebug( "[{0}] aborted", this );
 		}
 
-		protected virtual void OnEventTriggered(IPublisher publisher, IEvent @event)
+		protected virtual void OnEventTriggered(IEvent @event)
 		{
 		}
 
@@ -303,17 +303,53 @@ namespace BehaveAsSakura.Tasks
 
 		#region ISubscriber
 
-		void ISubscriber.OnEventTriggered(IPublisher publisher, IEvent @event)
+		void ISubscriber.OnEventTriggered(IEvent @event)
 		{
 			var timerTriggered = @event as TimerTriggeredEvent;
 			if( timerTriggered != null && immediateTimer != null && immediateTimer.Id == timerTriggered.TimerId )
 			{
 				immediateTimer = null;
-				Owner.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
+				Tree.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
 				EnqueueForUpdate();
 			}
 
-			OnEventTriggered( publisher, @event );
+			OnEventTriggered( @event );
+		}
+
+		#endregion
+
+		#region ISerializable
+
+		TaskPropsWrapper ISerializable<TaskPropsWrapper>.CreateSnapshot()
+		{
+			return new TaskPropsWrapper()
+			{
+				Id = id,
+				State = state,
+				LastResult = lastResult,
+				CustomProps = OnCloneProps(),
+			};
+		}
+
+		protected virtual ITaskProps OnCloneProps()
+		{
+			return props;
+		}
+
+		void ISerializable<TaskPropsWrapper>.RestoreSnapshot(TaskPropsWrapper snapshot)
+		{
+			if( snapshot.Id != id )
+				throw new InvalidOperationException( "id of snapshot does not match" );
+
+			state = snapshot.State;
+			lastResult = snapshot.LastResult;
+
+			OnRestoreProps( (ITaskProps)snapshot.CustomProps );
+		}
+
+		protected virtual void OnRestoreProps(ITaskProps props)
+		{
+			this.props = props;
 		}
 
 		#endregion

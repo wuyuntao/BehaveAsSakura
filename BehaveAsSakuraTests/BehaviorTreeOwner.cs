@@ -1,6 +1,5 @@
-﻿using BehaveAsSakura.Events;
+﻿using BehaveAsSakura.Variables;
 using System;
-using BehaveAsSakura.Variables;
 using System.Collections.Generic;
 
 namespace BehaveAsSakura.Tests
@@ -8,7 +7,6 @@ namespace BehaveAsSakura.Tests
 	class BehaviorTreeOwner : IBehaviorTreeOwner
 	{
 		private uint time;
-		private EventBus eventBus = new EventBus();
 
 		public void Tick(uint deltaTime)
 		{
@@ -60,11 +58,6 @@ namespace BehaveAsSakura.Tests
 		uint IBehaviorTreeOwner.CurrentTime
 		{
 			get { return time; }
-		}
-
-		EventBus IBehaviorTreeOwner.EventBus
-		{
-			get { return eventBus; }
 		}
 	}
 }

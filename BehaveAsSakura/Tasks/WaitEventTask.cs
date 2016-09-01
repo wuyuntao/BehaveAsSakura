@@ -40,7 +40,7 @@ namespace BehaveAsSakura.Tasks
 
             props.IsEventTriggered = false;
 
-            Owner.EventBus.Subscribe<SimpleEventTriggeredEvent>(this);
+            Tree.EventBus.Subscribe<SimpleEventTriggeredEvent>(this);
         }
 
         protected override TaskResult OnUpdate()
@@ -50,14 +50,14 @@ namespace BehaveAsSakura.Tasks
 
         protected override void OnEnd()
         {
-            Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
+			Tree.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
 
             base.OnEnd();
         }
 
-        protected override void OnEventTriggered(IPublisher publisher, IEvent @event)
-        {
-            base.OnEventTriggered(publisher, @event);
+        protected override void OnEventTriggered(IEvent @event)
+		{
+            base.OnEventTriggered( @event );
 
             if (!props.IsEventTriggered)
             {
@@ -66,11 +66,24 @@ namespace BehaveAsSakura.Tasks
                 {
                     props.IsEventTriggered = true;
 
-                    Owner.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
+					Tree.EventBus.Unsubscribe<SimpleEventTriggeredEvent>(this);
 
                     EnqueueForUpdate();
                 }
             }
         }
-    }
+
+		protected override void OnRestoreProps(ITaskProps props)
+		{
+			base.OnRestoreProps( props );
+
+			if(LastResult == TaskResult.Running )
+			{
+				this.props = (WaitEventTaskProps)props;
+
+				if(!this.props.IsEventTriggered)
+					Tree.EventBus.Subscribe<SimpleEventTriggeredEvent>( this );
+			}
+		}
+	}
 }
