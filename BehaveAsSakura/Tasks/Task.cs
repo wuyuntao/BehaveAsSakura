@@ -82,6 +82,13 @@ namespace BehaveAsSakura.Tasks
 			this.id = id;
 			this.description = description;
 			this.props = props;
+
+			LogDebug( "[{0}] is created", this );
+		}
+
+		public override string ToString()
+		{
+			return string.Format( "{0} - {1}(#{2})", tree, GetType().Name, id );
 		}
 
 		#region Life-cycle
@@ -173,17 +180,21 @@ namespace BehaveAsSakura.Tasks
 
 		protected virtual void OnStart()
 		{
+			LogDebug( "[{0}] started", this );
 		}
 
 		protected abstract TaskResult OnUpdate();
 
 		protected virtual void OnEnd()
 		{
+			LogDebug( "[{0}] ended", this );
+
 			Owner.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
 		}
 
 		protected virtual void OnAbort()
 		{
+			LogDebug( "[{0}] aborted", this );
 		}
 
 		protected virtual void OnEventTriggered(IPublisher publisher, IEvent @event)

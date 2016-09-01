@@ -10,11 +10,8 @@ using System.Threading;
 namespace BehaveAsSakura.Tests
 {
     [TestFixture]
-    class BehaviorTreeManagerTests : IBehaviorTreeLoader, IBehaviorTreeOwner
+    class BehaviorTreeManagerTests : IBehaviorTreeLoader
     {
-        private Stopwatch timer = Stopwatch.StartNew();
-        private EventBus eventBus = new EventBus();
-
         [Test]
         public void TestLogTree()
         {
@@ -24,17 +21,19 @@ namespace BehaveAsSakura.Tests
 
         void RunBehaviorTree(string path)
         {
-            var treeManager = new BehaviorTreeManager(this);
-            var tree = treeManager.CreateTree(this, path, null);
+			var owner = new BehaviorTreeOwner();
+			var treeManager = new BehaviorTreeManager(this);
+            var tree = treeManager.CreateTree( owner, path, null);
 
-            timer.Restart();
-            int i = 0;
+			var i = 0;
             while (tree.RootTask.LastResult == TaskResult.Running)
             {
                 tree.Update();
 
-                Console.WriteLine("#{0} Tree updated: {1}", ++i, tree.RootTask.LastResult);
-                Thread.Sleep(100);
+				owner.Tick( 100 );
+
+				if( i++ > 50 )
+					break;
             }
         }
 
@@ -67,36 +66,6 @@ namespace BehaveAsSakura.Tests
             }
 
             return builder.Build();
-        }
-
-        void ILogger.LogDebug(string msg, params object[] args)
-        {
-            Console.WriteLine(msg, args);
-        }
-
-        void ILogger.LogError(string msg, params object[] args)
-        {
-            Console.WriteLine(msg, args);
-        }
-
-        void ILogger.LogInfo(string msg, params object[] args)
-        {
-            Console.WriteLine(msg, args);
-        }
-
-        void ILogger.LogWarning(string msg, params object[] args)
-        {
-            Console.WriteLine(msg, args);
-        }
-
-        uint IBehaviorTreeOwner.CurrentTime
-        {
-            get { return (uint)timer.ElapsedMilliseconds; }
-        }
-
-        EventBus IBehaviorTreeOwner.EventBus
-        {
-            get { return eventBus; }
         }
     }
 }

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BehaviorTreeBuilderTests.cs" />
     <Compile Include="BehaviorTreeManagerTests.cs" />
+    <Compile Include="BehaviorTreeOwner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtobufTests.cs" />
   </ItemGroup>

@@ -46,11 +46,15 @@ namespace BehaveAsSakura.Timers
                if (t.RemainingTime == 0)
                {
                    tree.Owner.EventBus.Publish(tree, new TimerTriggeredEvent(t.Id));
+				   tree.Owner.LogDebug( "[{0}] triggered", t );
 
-                   return true;
+				   return true;
                }
-               else
+			   else
+			   {
+				   tree.Owner.LogDebug( "[{0}] remains {1}", t, t.RemainingTime );
                    return false;
+			   }
            });
         }
     }

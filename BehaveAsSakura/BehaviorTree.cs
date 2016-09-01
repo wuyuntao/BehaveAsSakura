@@ -66,9 +66,17 @@ namespace BehaveAsSakura
             rootTask = treeManager.CreateTask(this, description, parentTask, description.RootTaskId);
         }
 
-        #region Life-cycle
+		public override string ToString()
+		{
+			if( parentTask != null )
+				return string.Format( "{0} - {1}", parentTask, GetType().Name );
+			else
+				return string.Format( "{0} - {1}", owner, GetType().Name );
+		}
 
-        public void Update()
+		#region Life-cycle
+
+		public void Update()
         {
             timerManager.Update();
 
@@ -91,9 +99,11 @@ namespace BehaveAsSakura
             taskTickQueue.Enqueue(task);
         }
 
-        #endregion
+		#endregion
 
-        internal IBehaviorTreeOwner Owner
+		#region Properties
+
+		internal IBehaviorTreeOwner Owner
         {
             get { return owner; }
         }
@@ -117,5 +127,7 @@ namespace BehaveAsSakura
         {
             get { return timerManager; }
         }
-    }
+
+		#endregion
+	}
 }
