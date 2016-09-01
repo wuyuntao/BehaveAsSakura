@@ -10,8 +10,8 @@ using System.Threading;
 namespace BehaveAsSakura.Tests
 {
     [TestFixture]
-    class BehaviorTreeManagerTests : IBehaviorTreeLoader
-    {
+    class BehaviorTreeManagerTests : IBehaviorTreeManagerOwner
+	{
         [Test]
         public void TestLogTree()
         {
@@ -25,15 +25,11 @@ namespace BehaveAsSakura.Tests
 			var treeManager = new BehaviorTreeManager(this);
             var tree = treeManager.CreateTree( owner, path, null);
 
-			var i = 0;
             while (tree.RootTask.LastResult == TaskResult.Running)
             {
                 tree.Update();
 
 				owner.Tick( 100 );
-
-				if( i++ > 50 )
-					break;
             }
         }
 
@@ -51,14 +47,22 @@ namespace BehaveAsSakura.Tests
 
                 case "WaitTimer":
                     {
-                        builder.Composite<SequenceTaskDesc>()
-                            .AppendChild(builder.Leaf<LogTaskDesc>(
-                                    d => d.Message = "Start"))
-                            .AppendChild(builder.Leaf<WaitTimerTaskDesc>(
-                                    d => d.Time = new VariableDesc(VariableType.UInteger, VariableSource.LiteralConstant, "3000")))
-                            .AppendChild(builder.Leaf<LogTaskDesc>(d =>
-                                  d.Message = "End"));
-                        break;
+						builder.Composite<SequenceTaskDesc>()
+							.AppendChild( builder.Leaf<LogTaskDesc>(
+									d => d.Message = "Start" ) )
+							.AppendChild( builder.Leaf<WaitTimerTaskDesc>(
+									d => d.Time = new VariableDesc( VariableType.UInteger, VariableSource.LiteralConstant, "3000" ) ) )
+							.AppendChild( builder.Leaf<LogTaskDesc>( d =>
+									d.Message = "CheckPoint1" ) )
+							.AppendChild( builder.Leaf<WaitTimerTaskDesc>(
+									d => d.Time = new VariableDesc( VariableType.UInteger, VariableSource.TreeOwnerProperty, "uint.3000" ) ) )
+							.AppendChild( builder.Leaf<LogTaskDesc>( d =>
+									d.Message = "CheckPoint2" ) )
+							.AppendChild( builder.Leaf<WaitTimerTaskDesc>(
+									d => d.Time = new VariableDesc( VariableType.UInteger, VariableSource.GlobalConstant, "uint.5000" ) ) )
+							.AppendChild( builder.Leaf<LogTaskDesc>( d =>
+									d.Message = "End" ) );
+						break;
                     }
 
                 default:
@@ -67,5 +71,17 @@ namespace BehaveAsSakura.Tests
 
             return builder.Build();
         }
-    }
+
+		object IVariableContainer.GetValue(string key)
+		{
+			switch( key )
+			{
+				case "uint.5000":
+					return 5000u;
+
+				default:
+					throw new KeyNotFoundException( key );
+			}
+		}
+	}
 }

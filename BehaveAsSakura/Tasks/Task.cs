@@ -1,6 +1,8 @@
 ﻿using BehaveAsSakura.Events;
 using BehaveAsSakura.Timers;
+using BehaveAsSakura.Variables;
 using ProtoBuf;
+using System;
 
 namespace BehaveAsSakura.Tasks
 {
@@ -74,6 +76,7 @@ namespace BehaveAsSakura.Tasks
 		private TaskResult lastResult = TaskResult.Running;
 		private ITaskProps props;
 		private Timer immediateTimer;
+		private VariableSet sharedVariables;
 
 		protected Task(BehaviorTree tree, Task parentTask, uint id, ITaskDesc description, ITaskProps props)
 		{
@@ -189,6 +192,9 @@ namespace BehaveAsSakura.Tasks
 		{
 			LogDebug( "[{0}] ended", this );
 
+			if(sharedVariables != null)
+				sharedVariables = null;
+
 			Owner.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
 		}
 
@@ -199,6 +205,74 @@ namespace BehaveAsSakura.Tasks
 
 		protected virtual void OnEventTriggered(IPublisher publisher, IEvent @event)
 		{
+		}
+
+		#endregion
+
+		#region Shapred Variable Methods
+
+		internal protected Variable GetSharedVariable(string key)
+		{
+			Task task;
+			return GetSharedVariable( key, out task );
+		}
+
+		internal protected Variable GetSharedVariable(string key, out Task task)
+		{
+			Variable variable;
+			if( sharedVariables != null )
+				variable = sharedVariables.Get( key );
+			else
+				variable = null;
+
+			if( variable != null )  // Found in current task
+				task = this;
+			else if( ParentTask != null )   // Try find in ancestor nodes
+				variable = ParentTask.GetSharedVariable( key, out task );
+			else
+				task = null;
+
+			return variable;
+		}
+
+		internal protected Variable GetSharedVariableFromParent(string key)
+		{
+			Task task;
+			return GetSharedVariableFromParent( key, out task );
+		}
+
+		internal protected Variable GetSharedVariableFromParent(string key, out Task task)
+		{
+			if( ParentTask == null )
+				throw new InvalidOperationException( "No parent" );
+
+			return ParentTask.GetSharedVariable( key, out task );
+		}
+
+		internal protected void SetSharedVariable(string key, VariableDesc variable)
+		{
+			if( sharedVariables == null )
+				sharedVariables = new VariableSet();
+
+			sharedVariables.Set( key, variable );
+		}
+
+		internal protected void SetSharedVariable(string key, VariableType type, VariableSource source, string value)
+		{
+			SetSharedVariable( key, new VariableDesc( type, source, value ) );
+		}
+
+		internal protected void SetSharedVariableToParent(string key, VariableDesc variable)
+		{
+			if( ParentTask == null )
+				throw new InvalidOperationException( "No parent" );
+
+			ParentTask.SetSharedVariable( key, variable );
+		}
+
+		internal protected void SetSharedVariableToParent(string key, VariableType type, VariableSource source, string value)
+		{
+			SetSharedVariableToParent( key, new VariableDesc( type, source, value ) );
 		}
 
 		#endregion

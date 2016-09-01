@@ -1,26 +1,30 @@
 ﻿using BehaveAsSakura.Tasks;
+using BehaveAsSakura.Variables;
 using System;
-using System.Collections.Generic;
 
 namespace BehaveAsSakura
 {
-    public interface IBehaviorTreeLoader
+	public interface IBehaviorTreeLoader
     {
         BehaviorTreeDesc LoadTree(string path);
     }
 
-    public sealed class BehaviorTreeManager
-    {
-        private IBehaviorTreeLoader loader;
+	public interface IBehaviorTreeManagerOwner : IBehaviorTreeLoader, IVariableContainer
+	{
+	}
 
-        public BehaviorTreeManager(IBehaviorTreeLoader loader)
+	public sealed class BehaviorTreeManager
+    {
+        private IBehaviorTreeManagerOwner owner;
+
+        public BehaviorTreeManager(IBehaviorTreeManagerOwner owner)
         {
-            this.loader = loader;
+            this.owner = owner;
         }
 
         public BehaviorTree CreateTree(IBehaviorTreeOwner owner, string path, Task parentTask = null)
         {
-            var treeDesc = loader.LoadTree(path);
+            var treeDesc = this.owner.LoadTree( path );
             var tree = new BehaviorTree(this, owner, treeDesc, parentTask);
 
             return tree;
@@ -55,5 +59,10 @@ namespace BehaveAsSakura
 
             return task;
         }
+
+		internal IBehaviorTreeManagerOwner Owner
+		{
+			get { return owner; }
+		}
     }
 }

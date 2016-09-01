@@ -1,5 +1,7 @@
 ﻿using BehaveAsSakura.Events;
 using System;
+using BehaveAsSakura.Variables;
+using System.Collections.Generic;
 
 namespace BehaveAsSakura.Tests
 {
@@ -41,6 +43,18 @@ namespace BehaveAsSakura.Tests
 		void Log(string level, string msg, params object[] args)
 		{
 			Console.WriteLine( "{0}|{1}", level, string.Format( msg, args ) );
+		}
+
+		object IVariableContainer.GetValue(string key)
+		{
+			switch( key )
+			{
+				case "uint.3000":
+					return 3000u;
+
+				default:
+					throw new KeyNotFoundException( key );
+			}
 		}
 
 		uint IBehaviorTreeOwner.CurrentTime

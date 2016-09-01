@@ -80,6 +80,7 @@
     <Compile Include="Utils\NumericExtension.cs" />
     <Compile Include="Variables\Variable.cs" />
     <Compile Include="Variables\VariableDesc.cs" />
+    <Compile Include="Variables\VariableSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -20,8 +20,8 @@ namespace BehaveAsSakura.Variables
     public enum VariableSource : byte
     {
         GlobalConstant,
-        OwnerPropertySet,
-        AncestorTaskPropertySet,
+        TreeOwnerProperty,
+        TaskSharedVariable,
         LiteralConstant,
     }
 

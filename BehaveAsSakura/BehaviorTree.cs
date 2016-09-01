@@ -1,12 +1,13 @@
-﻿using System;
-using BehaveAsSakura.Events;
+﻿using BehaveAsSakura.Events;
 using BehaveAsSakura.Tasks;
 using BehaveAsSakura.Timers;
+using BehaveAsSakura.Variables;
 using ProtoBuf;
+using System;
 
 namespace BehaveAsSakura
 {
-    public interface ILogger
+	public interface ILogger
     {
         void LogDebug(string msg, params object[] args);
 
@@ -17,8 +18,8 @@ namespace BehaveAsSakura
         void LogError(string msg, params object[] args);
     }
 
-    public interface IBehaviorTreeOwner : ILogger
-    {
+    public interface IBehaviorTreeOwner : ILogger, IVariableContainer
+	{
         uint CurrentTime { get; }
 
         EventBus EventBus { get; }
