@@ -2,13 +2,13 @@
 
 namespace BehaveAsSakura.Tasks
 {
-	class TaskTickQueue
+	class TaskScheduler
 	{
 		private BehaviorTree tree;
 		private Stack<Queue<Task>> stack;
 		private Queue<Task> queue = new Queue<Task>();
 
-		public TaskTickQueue(BehaviorTree tree)
+		public TaskScheduler(BehaviorTree tree)
 		{
 			this.tree = tree;
 		}

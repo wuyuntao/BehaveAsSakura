@@ -69,7 +69,7 @@ namespace BehaveAsSakura
 		private Dictionary<uint, Task> tasks = new Dictionary<uint, Task>();
 		private EventBus eventBus;
 		private TimerManager timerManager;
-		private TaskTickQueue taskTickQueue;
+		private TaskScheduler taskScheduler;
 
 		internal BehaviorTree(BehaviorTreeManager treeManager, IBehaviorTreeOwner owner, BehaviorTreeDesc description, Task parentTask)
 		{
@@ -79,7 +79,7 @@ namespace BehaveAsSakura
 
 			eventBus = new EventBus( this );
 			timerManager = new TimerManager( this );
-			taskTickQueue = new TaskTickQueue( this );
+			taskScheduler = new TaskScheduler( this );
 
 			rootTask = treeManager.CreateTask( this, description, parentTask, description.RootTaskId );
 		}
@@ -98,14 +98,14 @@ namespace BehaveAsSakura
 		{
 			eventBus.Update();
 			timerManager.Update();
-			taskTickQueue.Update();
+			taskScheduler.Update();
 		}
 
 		public void Abort()
 		{
 			rootTask.EnqueueForAbort();
 
-			taskTickQueue.Update();
+			taskScheduler.Update();
 		}
 
 		#endregion
@@ -119,7 +119,7 @@ namespace BehaveAsSakura
 
 		internal void EnqueueTask(Task task)
 		{
-			taskTickQueue.Enqueue( task );
+			taskScheduler.Enqueue( task );
 		}
 
 		internal Task FindTask(uint id)

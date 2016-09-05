@@ -69,7 +69,7 @@
     <Compile Include="Tasks\SequenceTask.cs" />
     <Compile Include="Tasks\SubTreeTask.cs" />
     <Compile Include="Tasks\Task.cs" />
-    <Compile Include="Tasks\TaskTickQueue.cs" />
+    <Compile Include="Tasks\TaskScheduler.cs" />
     <Compile Include="Tasks\UntilFailureTask.cs" />
     <Compile Include="Tasks\UntilSuccessTask.cs" />
     <Compile Include="Tasks\WaitEventTask.cs" />
