@@ -25,7 +25,7 @@ namespace BehaveAsSakura.Tasks
 
         [ProtoMember(2)]
         public bool IsTimerTriggered { get; set; }
-	}
+    }
 
     class WaitTimerTask : LeafTask
     {
@@ -49,7 +49,7 @@ namespace BehaveAsSakura.Tasks
             timer = StartTimer(timeVariable.GetUInt(this));
             SubscribeEvent<TimerTriggeredEvent>();
 
-			props.TimerId = timer.Id;
+            props.TimerId = timer.Id;
             props.IsTimerTriggered = false;
         }
 
@@ -65,39 +65,39 @@ namespace BehaveAsSakura.Tasks
 
             UnsubscribeEvent<TimerTriggeredEvent>();
 
-			props.TimerId = null;
+            props.TimerId = null;
 
-			base.OnEnd();
+            base.OnEnd();
         }
 
-		internal protected override void OnEventTriggered(IEvent @event)
-		{
-            base.OnEventTriggered( @event );
+        internal protected override void OnEventTriggered(IEvent @event)
+        {
+            base.OnEventTriggered(@event);
 
             if (!props.IsTimerTriggered)
             {
                 var e = @event as TimerTriggeredEvent;
                 if (e != null && e.TimerId == timer.Id)
                 {
-					Tree.EventBus.Unsubscribe<TimerTriggeredEvent>( this );
+                    UnsubscribeEvent<TimerTriggeredEvent>();
 
-					props.IsTimerTriggered = true;
+                    props.IsTimerTriggered = true;
 
                     EnqueueForUpdate();
                 }
             }
         }
 
-		protected override void OnRestoreProps(ITaskProps props)
-		{
-			base.OnRestoreProps( props );
+        protected override void OnRestoreProps(ITaskProps props)
+        {
+            base.OnRestoreProps(props);
 
-			this.props = (WaitTimerTaskProps)props;
+            this.props = (WaitTimerTaskProps)props;
 
-			if( this.props.TimerId != null )
-				timer = FindTimer( this.props.TimerId.Value );
-			else
-				timer = null;
-		}
-	}
+            if (this.props.TimerId != null)
+                timer = FindTimer(this.props.TimerId.Value);
+            else
+                timer = null;
+        }
+    }
 }

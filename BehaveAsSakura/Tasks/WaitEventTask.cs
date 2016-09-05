@@ -20,7 +20,7 @@ namespace BehaveAsSakura.Tasks
     {
         [ProtoMember(1)]
         public bool IsEventTriggered { get; set; }
-	}
+    }
 
     class WaitEventTask : LeafTask
     {
@@ -38,26 +38,26 @@ namespace BehaveAsSakura.Tasks
         {
             base.OnStart();
 
-			SubscribeEvent<SimpleEventTriggeredEvent>();
+            SubscribeEvent<SimpleEventTriggeredEvent>();
 
-			props.IsEventTriggered = false;
-		}
+            props.IsEventTriggered = false;
+        }
 
-		protected override TaskResult OnUpdate()
+        protected override TaskResult OnUpdate()
         {
             return props.IsEventTriggered ? TaskResult.Success : TaskResult.Running;
         }
 
         protected override void OnEnd()
         {
-			UnsubscribeEvent<SimpleEventTriggeredEvent>();
+            UnsubscribeEvent<SimpleEventTriggeredEvent>();
 
             base.OnEnd();
         }
 
-		internal protected override void OnEventTriggered(IEvent @event)
-		{
-            base.OnEventTriggered( @event );
+        internal protected override void OnEventTriggered(IEvent @event)
+        {
+            base.OnEventTriggered(@event);
 
             if (!props.IsEventTriggered)
             {
@@ -66,18 +66,18 @@ namespace BehaveAsSakura.Tasks
                 {
                     props.IsEventTriggered = true;
 
-					UnsubscribeEvent<SimpleEventTriggeredEvent>();
+                    UnsubscribeEvent<SimpleEventTriggeredEvent>();
 
-					EnqueueForUpdate();
+                    EnqueueForUpdate();
                 }
             }
         }
 
-		protected override void OnRestoreProps(ITaskProps props)
-		{
-			base.OnRestoreProps( props );
+        protected override void OnRestoreProps(ITaskProps props)
+        {
+            base.OnRestoreProps(props);
 
-			this.props = (WaitEventTaskProps)props;
-		}
-	}
+            this.props = (WaitEventTaskProps)props;
+        }
+    }
 }
