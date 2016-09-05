@@ -50,13 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BehaviorTreeBuilderTests.cs" />
-    <Compile Include="BehaviorTreeManagerOwner.cs" />
+    <Compile Include="Fixtures\BehaviorTreeManagerOwner.cs" />
     <Compile Include="BehaviorTreeManagerTests.cs" />
-    <Compile Include="BehaviorTreeOwner.cs" />
+    <Compile Include="Fixtures\BehaviorTreeOwner.cs" />
     <Compile Include="BehaviorTreeSerializationTests.cs" />
-    <Compile Include="DumpLogTask.cs" />
+    <Compile Include="Fixtures\DumpLogTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtobufTests.cs" />
+    <Compile Include="Tasks\ConditionEvaluatorTaskTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BehaveAsSakura\BehaveAsSakura.csproj">
@@ -67,6 +68,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
