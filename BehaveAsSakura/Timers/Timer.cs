@@ -3,7 +3,7 @@ using ProtoBuf;
 
 namespace BehaveAsSakura.Timers
 {
-	[ProtoContract]
+    [ProtoContract]
     class TimerProps
     {
         [ProtoMember(1)]
@@ -22,47 +22,47 @@ namespace BehaveAsSakura.Timers
         private TimerProps props;
 
         internal Timer(BehaviorTree tree, uint id, uint totalTime)
-			: this(tree, new TimerProps()
-			{
-				Id = id,
-				TotalTime = totalTime,
-				EndTime = tree.Owner.CurrentTime.SafeAdd( totalTime ),
-			} )
+            : this(tree, new TimerProps()
+            {
+                Id = id,
+                TotalTime = totalTime,
+                EndTime = tree.Owner.CurrentTime.SafeAdd(totalTime),
+            })
         { }
 
-		internal Timer(BehaviorTree tree, TimerProps props)
-		{
-			this.tree = tree;
-			this.props = props;
-		}
+        internal Timer(BehaviorTree tree, TimerProps props)
+        {
+            this.tree = tree;
+            this.props = props;
+        }
 
-		public override string ToString()
-		{
-			return string.Format( "{0} - {1}(#{2})", tree, GetType().Name, props.Id );
-		}
+        public override string ToString()
+        {
+            return string.Format("{0} - {1}(#{2})", tree, GetType().Name, props.Id);
+        }
 
-		#region ISerializable
+        #region ISerializable
 
-		TimerProps ISerializable<TimerProps>.CreateSnapshot()
-		{
-			return props;
-		}
+        TimerProps ISerializable<TimerProps>.CreateSnapshot()
+        {
+            return props;
+        }
 
-		void ISerializable<TimerProps>.RestoreSnapshot(TimerProps snapshot)
-		{
-			props = snapshot;
-		}
+        void ISerializable<TimerProps>.RestoreSnapshot(TimerProps snapshot)
+        {
+            props = snapshot;
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		public uint Id
-		{
-			get { return props.Id; }
-		}
+        public uint Id
+        {
+            get { return props.Id; }
+        }
 
-		public uint TotalTime
+        public uint TotalTime
         {
             get { return props.TotalTime; }
         }
@@ -77,6 +77,6 @@ namespace BehaveAsSakura.Timers
             get { return props.EndTime.SafeSub(tree.Owner.CurrentTime); }
         }
 
-		#endregion
-	}
+        #endregion
+    }
 }

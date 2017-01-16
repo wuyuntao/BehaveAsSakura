@@ -56,22 +56,22 @@ namespace BehaveAsSakura.Tasks
             base.OnAbort();
         }
 
-		protected override ITaskProps OnCloneProps()
-		{
-			var props = (SubTreeTaskProps)base.OnCloneProps();
+        protected override ITaskProps OnCloneProps()
+        {
+            var props = (SubTreeTaskProps)base.OnCloneProps();
 
-			props.SubTree = subTree.CreateSnapshot();
+            props.SubTree = subTree.CreateSnapshot();
 
-			return props;
-		}
+            return props;
+        }
 
-		protected override void OnRestoreProps(ITaskProps props)
-		{
-			base.OnRestoreProps( props );
+        protected override void OnRestoreProps(ITaskProps props)
+        {
+            base.OnRestoreProps(props);
 
-			var subTreeProps = ( (SubTreeTaskProps)props ).SubTree;
+            var subTreeProps = ((SubTreeTaskProps)props).SubTree;
 
-			subTree.RestoreSnapshot( subTreeProps );
-		}
-	}
+            subTree.RestoreSnapshot(subTreeProps);
+        }
+    }
 }
