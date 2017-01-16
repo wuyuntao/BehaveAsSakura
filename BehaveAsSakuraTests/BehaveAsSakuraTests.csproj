@@ -37,16 +37,8 @@
       <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="protobuf-net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\protobuf-net\$(Configuration)\protobuf-net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BehaviorTreeBuilderTests.cs" />
@@ -56,7 +48,6 @@
     <Compile Include="BehaviorTreeSerializationTests.cs" />
     <Compile Include="Fixtures\DumpLogTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtobufTests.cs" />
     <Compile Include="Tasks\ConditionEvaluatorTaskTests.cs" />
   </ItemGroup>
   <ItemGroup>

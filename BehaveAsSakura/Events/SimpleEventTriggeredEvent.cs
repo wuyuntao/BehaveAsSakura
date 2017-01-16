@@ -1,11 +1,11 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Events
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class SimpleEventTriggeredEvent : IEvent
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public string EventType { get; set; }
 
         public SimpleEventTriggeredEvent(string eventType)

@@ -1,9 +1,8 @@
-﻿using System;
-using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class InverterTaskDesc : ITaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

@@ -33,18 +33,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="protobuf-net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\protobuf-net\$(Configuration)\protobuf-net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\BehaveAsContractAttribute.cs" />
+    <Compile Include="Attributes\BehaveAsMemberAttribute.cs" />
     <Compile Include="BehaviorTree.cs" />
     <Compile Include="BehaviorTreeBuilder.cs" />
     <Compile Include="BehaviorTreeManager.cs" />

@@ -1,13 +1,12 @@
-﻿using System;
+﻿using BehaveAsSakura.Attributes;
 using BehaveAsSakura.Variables;
-using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class SubTreeTaskDesc : ITaskDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public VariableDesc SubTreePath { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -16,10 +15,10 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     class SubTreeTaskProps : ITaskProps
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public BehaviorTreeProps SubTree { get; set; }
     }
 

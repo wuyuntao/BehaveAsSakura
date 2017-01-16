@@ -1,17 +1,17 @@
-﻿using BehaveAsSakura.Events;
-using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Events;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BehaveAsSakura.Timers
 {
-    [ProtoContract]
+    [BehaveAsContract]
     class TimerManagerProps
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public uint MaxTimerId { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2, IsRequired = false)]
         public TimerProps[] Timers { get; set; }
     }
 

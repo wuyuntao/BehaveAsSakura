@@ -1,12 +1,12 @@
-﻿using BehaveAsSakura.Events;
-using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Events;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class SendEventTaskDesc : ITaskDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public string EventType { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

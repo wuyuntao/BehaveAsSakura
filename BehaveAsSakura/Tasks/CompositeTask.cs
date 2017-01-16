@@ -1,13 +1,13 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 using System;
 using System.Collections.Generic;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     class CompositeTaskDescWrapper : TaskDescWrapper
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public uint[] ChildTasks { get; set; }
     }
 

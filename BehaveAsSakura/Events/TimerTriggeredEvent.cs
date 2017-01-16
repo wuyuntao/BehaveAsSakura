@@ -1,11 +1,11 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Events
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class TimerTriggeredEvent : IEvent
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public uint TimerId { get; set; }
 
         public TimerTriggeredEvent(uint timerId)

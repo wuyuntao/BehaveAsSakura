@@ -1,8 +1,8 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class ReturnSuccessTaskDesc : ITaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

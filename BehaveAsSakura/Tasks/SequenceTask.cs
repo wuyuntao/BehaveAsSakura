@@ -1,8 +1,8 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class SequenceTaskDesc : ITaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -11,10 +11,10 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     class SequenceTaskProps : ITaskProps
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public int CurrentChildIndex { get; set; }
     }
 

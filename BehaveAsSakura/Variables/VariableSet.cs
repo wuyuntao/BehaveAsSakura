@@ -1,13 +1,13 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 using System.Collections.Generic;
 
 namespace BehaveAsSakura.Variables
 {
-    [ProtoContract]
+    [BehaveAsContract]
     class VariableSetProps
     {
-        [ProtoMember(1)]
-        public SortedList<string, VariableDesc> Variables;
+        [BehaveAsMember(1, IsRequired = false)]
+        public SortedList<string, VariableDesc> Variables { get; set; }
     }
 
     public sealed class VariableSet : ISerializable<VariableSetProps>

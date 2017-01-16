@@ -1,5 +1,5 @@
-﻿using BehaveAsSakura.Tasks;
-using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +10,16 @@ namespace BehaveAsSakura.Events
     {
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     class SubscriptionProps
     {
-        [ProtoMember(1)]
-        public Type Type { get; set; }
+        [BehaveAsMember(1)]
+        public string Type { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2, IsRequired = false)]
         public uint[] TaskIds { get; set; }
 
-        public SubscriptionProps(Type type, IEnumerable<Task> subscribers)
+        public SubscriptionProps(string type, IEnumerable<Task> subscribers)
         {
             Type = type;
             TaskIds = (from t in subscribers
@@ -30,13 +30,13 @@ namespace BehaveAsSakura.Events
         { }
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     class EventBusProps
     {
-        [ProtoMember(1, IsRequired = false, DynamicType = true)]
-        public object[] Events { get; set; }
+        [BehaveAsMember(1, IsRequired = false)]
+        public IEvent[] Events { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         public SubscriptionProps[] Subscriptions { get; set; }
     }
 
@@ -44,7 +44,7 @@ namespace BehaveAsSakura.Events
     {
         private BehaviorTree tree;
         private List<IEvent> events = new List<IEvent>();
-        private Dictionary<Type, Subscription> subscriptions = new Dictionary<Type, Subscription>();
+        private Dictionary<string, Subscription> subscriptions = new Dictionary<string, Subscription>();
 
         internal EventBus(BehaviorTree tree)
         {
@@ -55,7 +55,7 @@ namespace BehaveAsSakura.Events
         {
             foreach (var @event in events)
             {
-                var subscription = GetSubscription(@event.GetType(), false);
+                var subscription = GetSubscription(@event.GetType().FullName, false);
                 if (subscription != null)
                 {
                     var subscribers = subscription.Subscribers.ToArray();
@@ -73,7 +73,7 @@ namespace BehaveAsSakura.Events
         public void Subscribe<TEvent>(Task subscriber)
             where TEvent : IEvent
         {
-            var subscription = GetSubscription(typeof(TEvent), true);
+            var subscription = GetSubscription(typeof(TEvent).FullName, true);
 
             subscription.AddSubscriber(subscriber);
         }
@@ -81,12 +81,12 @@ namespace BehaveAsSakura.Events
         public void Unsubscribe<TEvent>(Task subscriber)
             where TEvent : IEvent
         {
-            var subscription = GetSubscription(typeof(TEvent), false);
+            var subscription = GetSubscription(typeof(TEvent).FullName, false);
             if (subscription != null)
                 subscription.RemoveSubscriber(subscriber);
         }
 
-        Subscription GetSubscription(Type type, bool createIfNotExist)
+        Subscription GetSubscription(string type, bool createIfNotExist)
         {
             Subscription subscription;
             if (!subscriptions.TryGetValue(type, out subscription))

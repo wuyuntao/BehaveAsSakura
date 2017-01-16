@@ -1,11 +1,11 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class RepeaterTaskDesc : ITaskDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public uint Count { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -14,16 +14,16 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     class RepeaterTaskProps : ITaskProps
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public bool WaitForChildCompleted { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         public uint LastUpdateTime { get; set; }
 
-        [ProtoMember(3)]
+        [BehaveAsMember(3)]
         public uint Count { get; set; }
     }
 

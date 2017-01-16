@@ -1,16 +1,16 @@
-﻿using BehaveAsSakura.Variables;
-using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Variables;
 using System;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public sealed class LogTaskDesc : ITaskDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public string Message { get; set; }
 
-        [ProtoMember(2, IsRequired = false)]
+        [BehaveAsMember(2, IsRequired = false)]
         public VariableDesc[] MessageParameters { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

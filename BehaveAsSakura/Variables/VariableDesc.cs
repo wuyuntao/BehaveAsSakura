@@ -1,4 +1,4 @@
-﻿using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Variables
 {
@@ -25,16 +25,16 @@ namespace BehaveAsSakura.Variables
         LiteralConstant,
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     public class VariableDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public VariableType Type { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         public VariableSource Source { get; set; }
 
-        [ProtoMember(3)]
+        [BehaveAsMember(3)]
         public string Value { get; set; }
 
         public VariableDesc(VariableType type, VariableSource source, string value)

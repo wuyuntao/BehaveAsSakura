@@ -1,7 +1,7 @@
-﻿using BehaveAsSakura.Events;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Events;
 using BehaveAsSakura.Timers;
 using BehaveAsSakura.Variables;
-using ProtoBuf;
 using System;
 
 namespace BehaveAsSakura.Tasks
@@ -31,41 +31,39 @@ namespace BehaveAsSakura.Tasks
     {
     }
 
-    [ProtoContract]
-    [ProtoInclude(11, typeof(DecoratorTaskDescWrapper))]
-    [ProtoInclude(12, typeof(CompositeTaskDescWrapper))]
+    [BehaveAsContract]
     class TaskDescWrapper
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public uint Id { get; set; }
 
-        [ProtoMember(2, IsRequired = false)]
+        [BehaveAsMember(2, IsRequired = false)]
         public string Name { get; set; }
 
-        [ProtoMember(3, IsRequired = false)]
+        [BehaveAsMember(3, IsRequired = false)]
         public string Comment { get; set; }
 
-        [ProtoMember(4, DynamicType = true)]
-        public object CustomDesc { get; set; }
+        [BehaveAsMember(4, IsRequired = false)]
+        public ITaskDesc CustomDesc { get; set; }
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     class TaskPropsWrapper
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public uint Id { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         public TaskState State { get; set; }
 
-        [ProtoMember(3)]
+        [BehaveAsMember(3)]
         public TaskResult LastResult { get; set; }
 
-        [ProtoMember(4, IsRequired = false)]
+        [BehaveAsMember(4, IsRequired = false)]
         public VariableSetProps SharedVariables { get; set; }
 
-        [ProtoMember(5, IsRequired = false, DynamicType = true)]
-        public object CustomProps { get; set; }
+        [BehaveAsMember(5, IsRequired = false)]
+        public ITaskProps CustomProps { get; set; }
     }
 
     public abstract class Task : ILogger, ISerializable<TaskPropsWrapper>

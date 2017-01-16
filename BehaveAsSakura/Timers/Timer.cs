@@ -1,18 +1,18 @@
-﻿using BehaveAsSakura.Utils;
-using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Utils;
 
 namespace BehaveAsSakura.Timers
 {
-    [ProtoContract]
+    [BehaveAsContract]
     class TimerProps
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public uint Id { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         public uint TotalTime { get; set; }
 
-        [ProtoMember(3)]
+        [BehaveAsMember(3)]
         public uint EndTime { get; set; }
     }
 

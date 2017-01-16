@@ -1,12 +1,12 @@
-﻿using BehaveAsSakura.Tasks;
-using ProtoBuf;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Tasks;
 
 namespace BehaveAsSakura.Tests
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public sealed class DumpLogTaskDesc : ITaskDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public string Text { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

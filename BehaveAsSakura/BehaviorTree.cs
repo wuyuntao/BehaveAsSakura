@@ -1,8 +1,8 @@
-﻿using BehaveAsSakura.Events;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Events;
 using BehaveAsSakura.Tasks;
 using BehaveAsSakura.Timers;
 using BehaveAsSakura.Variables;
-using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,13 +32,13 @@ namespace BehaveAsSakura
         uint CurrentTime { get; }
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     public class BehaviorTreeDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         internal TaskDescWrapper[] Tasks { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         internal uint RootTaskId { get; set; }
 
         internal TaskDescWrapper FindTaskDesc(uint id)
@@ -47,16 +47,16 @@ namespace BehaveAsSakura
         }
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     public class BehaviorTreeProps
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         internal EventBusProps EventBus { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         internal TimerManagerProps TimerManager { get; set; }
 
-        [ProtoMember(3)]
+        [BehaveAsMember(3)]
         internal TaskPropsWrapper[] Tasks { get; set; }
     }
 

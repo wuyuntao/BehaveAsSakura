@@ -1,14 +1,14 @@
-﻿using BehaveAsSakura.Events;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Events;
 using BehaveAsSakura.Timers;
 using BehaveAsSakura.Variables;
-using ProtoBuf;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class WaitTimerTaskDesc : ITaskDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public VariableDesc Time { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -17,13 +17,13 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [ProtoContract]
+    [BehaveAsContract]
     class WaitTimerTaskProps : ITaskProps
     {
-        [ProtoMember(1, IsRequired = false)]
+        [BehaveAsMember(1, IsRequired = false)]
         public uint? TimerId { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         public bool IsTimerTriggered { get; set; }
     }
 

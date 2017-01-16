@@ -1,20 +1,20 @@
-﻿using BehaveAsSakura.Utils;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Utils;
 using BehaveAsSakura.Variables;
-using ProtoBuf;
 using System;
 
 namespace BehaveAsSakura.Tasks
 {
-    [ProtoContract]
+    [BehaveAsContract]
     public class ConditionalEvaluatorTaskDesc : ITaskDesc
     {
-        [ProtoMember(1)]
+        [BehaveAsMember(1)]
         public VariableDesc Left { get; set; }
 
-        [ProtoMember(2)]
+        [BehaveAsMember(2)]
         public ComparisonOperator Operator { get; set; }
 
-        [ProtoMember(3)]
+        [BehaveAsMember(3)]
         public VariableDesc Right { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
