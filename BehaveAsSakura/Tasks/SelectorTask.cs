@@ -2,7 +2,8 @@
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 10)]
     public class SelectorTaskDesc : SequenceTaskDesc, ITaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

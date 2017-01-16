@@ -3,10 +3,10 @@ using BehaveAsSakura.Tasks;
 
 namespace BehaveAsSakura.Tests
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
     public sealed class DumpLogTaskDesc : ITaskDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public string Text { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

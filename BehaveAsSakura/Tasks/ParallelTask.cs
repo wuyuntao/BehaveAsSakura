@@ -1,9 +1,9 @@
-﻿using System;
-using BehaveAsSakura.Attributes;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 6)]
     public class ParallelTaskDesc : ITaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

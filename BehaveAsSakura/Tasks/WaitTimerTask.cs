@@ -5,10 +5,11 @@ using BehaveAsSakura.Variables;
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 17)]
     public class WaitTimerTaskDesc : ITaskDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public VariableDesc Time { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -17,13 +18,13 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     class WaitTimerTaskProps : ITaskProps
     {
-        [BehaveAsMember(1, IsRequired = false)]
+        [BehaveAsField(1, IsRequired = false)]
         public uint? TimerId { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         public bool IsTimerTriggered { get; set; }
     }
 

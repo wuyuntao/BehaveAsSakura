@@ -2,7 +2,8 @@
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 12)]
     public class SequenceTaskDesc : ITaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -11,10 +12,10 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     class SequenceTaskProps : ITaskProps
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public int CurrentChildIndex { get; set; }
     }
 

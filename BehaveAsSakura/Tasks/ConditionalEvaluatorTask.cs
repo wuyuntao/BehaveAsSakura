@@ -5,16 +5,17 @@ using System;
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 1)]
     public class ConditionalEvaluatorTaskDesc : ITaskDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public VariableDesc Left { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         public ComparisonOperator Operator { get; set; }
 
-        [BehaveAsMember(3)]
+        [BehaveAsField(3)]
         public VariableDesc Right { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

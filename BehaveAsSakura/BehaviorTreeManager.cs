@@ -33,7 +33,7 @@ namespace BehaveAsSakura
         internal Task CreateTask(BehaviorTree tree, BehaviorTreeDesc treeDesc, Task parentTask, uint taskId)
         {
             var descWrapper = treeDesc.FindTaskDesc(taskId);
-            var desc = (ITaskDesc)descWrapper.CustomDesc;
+            var desc = descWrapper.CustomDesc;
             var task = desc.CreateTask(tree, parentTask, descWrapper.Id);
 
             if (!(task is LeafTask))
@@ -41,14 +41,14 @@ namespace BehaveAsSakura
                 if (task is DecoratorTask)
                 {
                     var decoratorTask = (DecoratorTask)task;
-                    var childTaskId = ((DecoratorTaskDescWrapper)descWrapper).ChildTask;
+                    var childTaskId = ((DecoratorTaskDescWrapper)descWrapper).ChildTaskId;
                     var childTask = CreateTask(tree, treeDesc, task, childTaskId);
                     decoratorTask.InitializeChild(childTask);
                 }
                 else
                 {
                     var compositeTask = (CompositeTask)task;
-                    var childTaskIds = ((CompositeTaskDescWrapper)descWrapper).ChildTasks;
+                    var childTaskIds = ((CompositeTaskDescWrapper)descWrapper).ChildTaskIds;
                     var childTasks = Array.ConvertAll(childTaskIds, i => CreateTask(tree, treeDesc, task, i));
                     compositeTask.InitializeChildren(childTasks);
                 }

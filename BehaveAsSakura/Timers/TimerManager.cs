@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace BehaveAsSakura.Timers
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
     class TimerManagerProps
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public uint MaxTimerId { get; set; }
 
-        [BehaveAsMember(2, IsRequired = false)]
+        [BehaveAsField(2, IsRequired = false)]
         public TimerProps[] Timers { get; set; }
     }
 

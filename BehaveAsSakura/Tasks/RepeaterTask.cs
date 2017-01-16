@@ -2,10 +2,11 @@
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 7)]
     public class RepeaterTaskDesc : ITaskDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public uint Count { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -14,16 +15,16 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     class RepeaterTaskProps : ITaskProps
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public bool WaitForChildCompleted { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         public uint LastUpdateTime { get; set; }
 
-        [BehaveAsMember(3)]
+        [BehaveAsField(3)]
         public uint Count { get; set; }
     }
 

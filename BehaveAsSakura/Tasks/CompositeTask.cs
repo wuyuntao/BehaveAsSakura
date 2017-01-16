@@ -4,11 +4,12 @@ using System.Collections.Generic;
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(TaskDescWrapper), 3)]
     class CompositeTaskDescWrapper : TaskDescWrapper
     {
-        [BehaveAsMember(1)]
-        public uint[] ChildTasks { get; set; }
+        [BehaveAsField(1)]
+        public uint[] ChildTaskIds { get; set; }
     }
 
     public abstract class CompositeTask : Task

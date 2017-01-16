@@ -3,9 +3,9 @@
 namespace BehaveAsSakura.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class BehaveAsContractAttribute : Attribute
+    public class BehaveAsTableAttribute : Attribute
     {
-        public BehaveAsContractAttribute()
+        public BehaveAsTableAttribute()
         {
         }
     }

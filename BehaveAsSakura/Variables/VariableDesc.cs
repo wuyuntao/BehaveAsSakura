@@ -25,16 +25,16 @@ namespace BehaveAsSakura.Variables
         LiteralConstant,
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     public class VariableDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public VariableType Type { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         public VariableSource Source { get; set; }
 
-        [BehaveAsMember(3)]
+        [BehaveAsField(3)]
         public string Value { get; set; }
 
         public VariableDesc(VariableType type, VariableSource source, string value)

@@ -37,8 +37,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\BehaveAsContractAttribute.cs" />
-    <Compile Include="Attributes\BehaveAsMemberAttribute.cs" />
+    <Compile Include="Attributes\BehaveAsEnumAttribute.cs" />
+    <Compile Include="Attributes\BehaveAsTableAttribute.cs" />
+    <Compile Include="Attributes\BehaveAsFieldAttribute.cs" />
+    <Compile Include="Attributes\BehaveAsUnionIncludeAttribute.cs" />
     <Compile Include="BehaviorTree.cs" />
     <Compile Include="BehaviorTreeBuilder.cs" />
     <Compile Include="BehaviorTreeManager.cs" />

@@ -10,13 +10,13 @@ namespace BehaveAsSakura.Events
     {
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     class SubscriptionProps
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public string Type { get; set; }
 
-        [BehaveAsMember(2, IsRequired = false)]
+        [BehaveAsField(2, IsRequired = false)]
         public uint[] TaskIds { get; set; }
 
         public SubscriptionProps(string type, IEnumerable<Task> subscribers)
@@ -30,13 +30,13 @@ namespace BehaveAsSakura.Events
         { }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     class EventBusProps
     {
-        [BehaveAsMember(1, IsRequired = false)]
+        [BehaveAsField(1, IsRequired = false)]
         public IEvent[] Events { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         public SubscriptionProps[] Subscriptions { get; set; }
     }
 
@@ -116,8 +116,7 @@ namespace BehaveAsSakura.Events
 
             if (snapshot.Events != null)
             {
-                events.AddRange(from e in snapshot.Events
-                                select (IEvent)e);
+                events.AddRange(snapshot.Events);
             }
 
             subscriptions.Clear();

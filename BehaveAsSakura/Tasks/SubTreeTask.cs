@@ -3,10 +3,11 @@ using BehaveAsSakura.Variables;
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 13)]
     public class SubTreeTaskDesc : ITaskDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public VariableDesc SubTreePath { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -15,10 +16,10 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     class SubTreeTaskProps : ITaskProps
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public BehaviorTreeProps SubTree { get; set; }
     }
 

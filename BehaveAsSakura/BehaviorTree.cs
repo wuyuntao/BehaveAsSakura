@@ -32,13 +32,13 @@ namespace BehaveAsSakura
         uint CurrentTime { get; }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     public class BehaviorTreeDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         internal TaskDescWrapper[] Tasks { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         internal uint RootTaskId { get; set; }
 
         internal TaskDescWrapper FindTaskDesc(uint id)
@@ -47,16 +47,16 @@ namespace BehaveAsSakura
         }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     public class BehaviorTreeProps
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         internal EventBusProps EventBus { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         internal TimerManagerProps TimerManager { get; set; }
 
-        [BehaveAsMember(3)]
+        [BehaveAsField(3)]
         internal TaskPropsWrapper[] Tasks { get; set; }
     }
 

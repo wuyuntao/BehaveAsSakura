@@ -3,11 +3,12 @@ using System;
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(TaskDescWrapper), 2)]
     class DecoratorTaskDescWrapper : TaskDescWrapper
     {
-        [BehaveAsMember(1)]
-        public uint ChildTask { get; set; }
+        [BehaveAsField(1)]
+        public uint ChildTaskId { get; set; }
     }
 
     public abstract class DecoratorTask : Task

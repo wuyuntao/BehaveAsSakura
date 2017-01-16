@@ -3,9 +3,9 @@
 namespace BehaveAsSakura.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class BehaveAsMemberAttribute : Attribute, IComparable, IComparable<BehaveAsMemberAttribute>
+    public class BehaveAsFieldAttribute : Attribute, IComparable, IComparable<BehaveAsFieldAttribute>
     {
-        public BehaveAsMemberAttribute(int tag)
+        public BehaveAsFieldAttribute(int tag)
         {
             Tag = tag;
             IsRequired = true;
@@ -19,14 +19,14 @@ namespace BehaveAsSakura.Attributes
 
         public int CompareTo(object obj)
         {
-            var attr = obj as BehaveAsMemberAttribute;
+            var attr = obj as BehaveAsFieldAttribute;
             if (attr == null)
                 return 1;
 
             return CompareTo(attr);
         }
 
-        public int CompareTo(BehaveAsMemberAttribute other)
+        public int CompareTo(BehaveAsFieldAttribute other)
         {
             if (other == null)
                 return 1;

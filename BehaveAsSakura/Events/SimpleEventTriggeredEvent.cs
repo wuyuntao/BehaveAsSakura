@@ -2,10 +2,10 @@
 
 namespace BehaveAsSakura.Events
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
     public class SimpleEventTriggeredEvent : IEvent
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public string EventType { get; set; }
 
         public SimpleEventTriggeredEvent(string eventType)

@@ -3,16 +3,16 @@ using BehaveAsSakura.Utils;
 
 namespace BehaveAsSakura.Timers
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
     class TimerProps
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public uint Id { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         public uint TotalTime { get; set; }
 
-        [BehaveAsMember(3)]
+        [BehaveAsField(3)]
         public uint EndTime { get; set; }
     }
 

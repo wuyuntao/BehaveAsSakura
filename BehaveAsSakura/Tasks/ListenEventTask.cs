@@ -3,10 +3,11 @@ using BehaveAsSakura.Events;
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 3)]
     public class ListenEventTaskDesc : ITaskDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public string EventType { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
@@ -15,10 +16,10 @@ namespace BehaveAsSakura.Tasks
         }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     class ListenEventTaskProps : ITaskProps
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public bool IsEventTriggered { get; set; }
     }
 

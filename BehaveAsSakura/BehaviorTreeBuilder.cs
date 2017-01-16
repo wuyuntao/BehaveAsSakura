@@ -40,7 +40,7 @@ namespace BehaveAsSakura
         public LeafTaskBuilder Leaf<T>(string name, Action<T> initializer = null)
             where T : ITaskDesc, new()
         {
-            var task = CreateTask<TaskDescWrapper, T>(name, initializer);
+            var task = CreateTask<LeafTaskDescWrapper, T>(name, initializer);
 
             return new LeafTaskBuilder(task);
         }
@@ -108,16 +108,16 @@ namespace BehaveAsSakura
 
         public CompositeTaskBuilder AppendChild(TaskBuilder builder)
         {
-            if (task.ChildTasks == null)
+            if (task.ChildTaskIds == null)
             {
-                task.ChildTasks = new uint[] { builder.Task.Id };
+                task.ChildTaskIds = new uint[] { builder.Task.Id };
             }
             else
             {
-                var children = new uint[task.ChildTasks.Length + 1];
-                Array.Copy(task.ChildTasks, children, task.ChildTasks.Length);
-                children[task.ChildTasks.Length] = builder.Task.Id;
-                task.ChildTasks = children;
+                var children = new uint[task.ChildTaskIds.Length + 1];
+                Array.Copy(task.ChildTaskIds, children, task.ChildTaskIds.Length);
+                children[task.ChildTaskIds.Length] = builder.Task.Id;
+                task.ChildTaskIds = children;
             }
 
             return this;
@@ -136,7 +136,7 @@ namespace BehaveAsSakura
 
         public DecoratorTaskBuilder SetChild(TaskBuilder builder)
         {
-            task.ChildTask = builder.Task.Id;
+            task.ChildTaskId = builder.Task.Id;
 
             return this;
         }
@@ -144,7 +144,7 @@ namespace BehaveAsSakura
 
     public sealed class LeafTaskBuilder : TaskBuilder
     {
-        internal LeafTaskBuilder(TaskDescWrapper task)
+        internal LeafTaskBuilder(LeafTaskDescWrapper task)
             : base(task)
         {
         }

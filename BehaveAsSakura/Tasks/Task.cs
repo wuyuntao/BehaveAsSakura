@@ -6,6 +6,7 @@ using System;
 
 namespace BehaveAsSakura.Tasks
 {
+    [BehaveAsEnum]
     public enum TaskResult : byte
     {
         Running,
@@ -13,6 +14,7 @@ namespace BehaveAsSakura.Tasks
         Failure,
     }
 
+    [BehaveAsEnum]
     public enum TaskState : byte
     {
         Suspend,            // (WaitForUpdate, WaitForAbort) -> Suspend -> WaitForStart
@@ -31,38 +33,38 @@ namespace BehaveAsSakura.Tasks
     {
     }
 
-    [BehaveAsContract]
-    class TaskDescWrapper
+    [BehaveAsTable]
+    abstract class TaskDescWrapper
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public uint Id { get; set; }
 
-        [BehaveAsMember(2, IsRequired = false)]
+        [BehaveAsField(2, IsRequired = false)]
         public string Name { get; set; }
 
-        [BehaveAsMember(3, IsRequired = false)]
+        [BehaveAsField(3, IsRequired = false)]
         public string Comment { get; set; }
 
-        [BehaveAsMember(4, IsRequired = false)]
+        [BehaveAsField(4, IsRequired = false)]
         public ITaskDesc CustomDesc { get; set; }
     }
 
-    [BehaveAsContract]
+    [BehaveAsTable]
     class TaskPropsWrapper
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public uint Id { get; set; }
 
-        [BehaveAsMember(2)]
+        [BehaveAsField(2)]
         public TaskState State { get; set; }
 
-        [BehaveAsMember(3)]
+        [BehaveAsField(3)]
         public TaskResult LastResult { get; set; }
 
-        [BehaveAsMember(4, IsRequired = false)]
+        [BehaveAsField(4, IsRequired = false)]
         public VariableSetProps SharedVariables { get; set; }
 
-        [BehaveAsMember(5, IsRequired = false)]
+        [BehaveAsField(5, IsRequired = false)]
         public ITaskProps CustomProps { get; set; }
     }
 

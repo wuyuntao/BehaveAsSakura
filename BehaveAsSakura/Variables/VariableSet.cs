@@ -3,11 +3,21 @@ using System.Collections.Generic;
 
 namespace BehaveAsSakura.Variables
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
     class VariableSetProps
     {
-        [BehaveAsMember(1, IsRequired = false)]
-        public SortedList<string, VariableDesc> Variables { get; set; }
+        [BehaveAsField(1, IsRequired = false)]
+        public NamedVariableDesc[] Variables { get; set; }
+    }
+
+    [BehaveAsTable]
+    class NamedVariableDesc
+    {
+        [BehaveAsField(1)]
+        public string Name { get; set; }
+
+        [BehaveAsField(2)]
+        public VariableDesc Desc { get; set; }
     }
 
     public sealed class VariableSet : ISerializable<VariableSetProps>
@@ -53,12 +63,12 @@ namespace BehaveAsSakura.Variables
             if (variables.Count == 0)
                 return null;
 
-            var descriptions = new SortedList<string, VariableDesc>();
+            var descriptions = new List<NamedVariableDesc>();
 
             foreach (var variable in variables)
-                descriptions.Add(variable.Key, variable.Value.Description);
+                descriptions.Add(new NamedVariableDesc() { Name = variable.Key, Desc = variable.Value.Description });
 
-            return new VariableSetProps() { Variables = descriptions };
+            return new VariableSetProps() { Variables = descriptions.ToArray() };
         }
 
         void ISerializable<VariableSetProps>.RestoreSnapshot(VariableSetProps snapshot)
@@ -68,7 +78,7 @@ namespace BehaveAsSakura.Variables
             if (snapshot.Variables != null)
             {
                 foreach (var variable in snapshot.Variables)
-                    variables.Add(variable.Key, new Variable(variable.Value));
+                    variables.Add(variable.Name, new Variable(variable.Desc));
             }
         }
 

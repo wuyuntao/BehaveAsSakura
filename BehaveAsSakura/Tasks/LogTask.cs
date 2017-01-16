@@ -4,13 +4,14 @@ using System;
 
 namespace BehaveAsSakura.Tasks
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 4)]
     public sealed class LogTaskDesc : ITaskDesc
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public string Message { get; set; }
 
-        [BehaveAsMember(2, IsRequired = false)]
+        [BehaveAsField(2, IsRequired = false)]
         public VariableDesc[] MessageParameters { get; set; }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)

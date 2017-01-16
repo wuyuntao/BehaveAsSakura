@@ -2,10 +2,10 @@
 
 namespace BehaveAsSakura.Events
 {
-    [BehaveAsContract]
+    [BehaveAsTable]
     public class TimerTriggeredEvent : IEvent
     {
-        [BehaveAsMember(1)]
+        [BehaveAsField(1)]
         public uint TimerId { get; set; }
 
         public TimerTriggeredEvent(uint timerId)
