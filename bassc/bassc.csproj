@@ -50,7 +50,6 @@
     <Compile Include="Schema\SchemaWriter.cs" />
     <Compile Include="Schema\TableDef.cs" />
     <Compile Include="Schema\UnionDef.cs" />
-    <Compile Include="TaskDef.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -62,7 +61,12 @@
       <Name>BehaveAsSakura</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\Lib\flatbuffers\flatc.exe">
+      <Link>flatc.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

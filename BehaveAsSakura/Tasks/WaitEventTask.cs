@@ -17,6 +17,7 @@ namespace BehaveAsSakura.Tasks
     }
 
     [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskProps), 5)]
     class WaitEventTaskProps : ITaskProps
     {
         [BehaveAsField(1)]

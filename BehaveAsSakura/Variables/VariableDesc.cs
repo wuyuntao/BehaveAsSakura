@@ -2,6 +2,7 @@
 
 namespace BehaveAsSakura.Variables
 {
+    [BehaveAsEnum]
     public enum VariableType : byte
     {
         Byte,
@@ -17,6 +18,7 @@ namespace BehaveAsSakura.Variables
         String,
     }
 
+    [BehaveAsEnum]
     public enum VariableSource : byte
     {
         GlobalConstant,

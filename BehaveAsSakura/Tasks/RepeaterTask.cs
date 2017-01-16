@@ -16,6 +16,7 @@ namespace BehaveAsSakura.Tasks
     }
 
     [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskProps), 2)]
     class RepeaterTaskProps : ITaskProps
     {
         [BehaveAsField(1)]

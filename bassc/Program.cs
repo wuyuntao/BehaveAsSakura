@@ -2,6 +2,7 @@
 using CommandLine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -19,10 +20,15 @@ namespace BehaveAsSakura.SerializationCompiler
             if (isValid)
             {
                 var assemblies = LoadAssemblies();
-                var schema = new SchemaDef("BehaveAsSakura.Serialization", assemblies);
-                var code = SchemaWriter.ToString(schema);
+                var workPath = Environment.CurrentDirectory;
 
-                Console.WriteLine(code);
+                var schema = new SchemaDef("BehaveAsSakura.Serialization", assemblies);
+                var schemaPath = Path.Combine(Environment.CurrentDirectory, "schema.fbs");
+                SchemaWriter.ToFile(schema, schemaPath);
+
+                var flatcPath = Path.Combine(Environment.CurrentDirectory, Options.FlatcPath);
+
+                RunCommand(flatcPath, $@"-n --gen-onefile -o ""{workPath}"" ""{schemaPath}""");
             }
 
             Console.ReadKey();
@@ -39,6 +45,20 @@ namespace BehaveAsSakura.SerializationCompiler
 
                 yield return assembly;
             }
+        }
+
+        private static void RunCommand(string cmd, string args)
+        {
+            Console.WriteLine("{0} {1}", cmd, args);
+
+            var process = new Process();
+            var processStartInfo = new ProcessStartInfo();
+            processStartInfo.FileName = cmd;
+            processStartInfo.Arguments = args;
+            process.StartInfo = processStartInfo;
+
+            process.Start();
+            process.WaitForExit();
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace BehaveAsSakura.Events
 {
     [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(IEvent), 2)]
     public class TimerTriggeredEvent : IEvent
     {
         [BehaveAsField(1)]

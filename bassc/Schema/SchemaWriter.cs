@@ -15,8 +15,8 @@ namespace BehaveAsSakura.SerializationCompiler.Schema
             builder.AppendLine();
 
             GenerateEnums(builder, schema);
-            GenerateTables(builder, schema);
             GenerateUnions(builder, schema);
+            GenerateTables(builder, schema);
 
             return builder.ToString();
         }
@@ -49,26 +49,6 @@ namespace BehaveAsSakura.SerializationCompiler.Schema
             }
         }
 
-        private static void GenerateTables(StringBuilder builder, SchemaDef schema)
-        {
-            foreach (var t in schema.Tables)
-            {
-                var typeName = ConvertTypeName(t.Type);
-                builder.AppendLine($"table {typeName} {{");
-
-                foreach (var field in t.Fields)
-                {
-                    var fieldName = ConvertFieldName(field.Name);
-                    var fieldTypeName = ConvertTypeName(field.Type);
-
-                    builder.AppendLine($"  {fieldName}: {fieldTypeName} (id: {field.Tag});");
-                }
-
-                builder.AppendLine("}");
-                builder.AppendLine();
-            }
-        }
-
         private static void GenerateUnions(StringBuilder builder, SchemaDef schema)
         {
             foreach (var e in schema.Unions)
@@ -82,6 +62,31 @@ namespace BehaveAsSakura.SerializationCompiler.Schema
                     var includedTypeName = ConvertTypeName(e.IncludedTypes[i].Item1);
                     var includedTypeTag = e.IncludedTypes[i].Item2;
                     builder.AppendLine($"  {includedTypeName} = {includedTypeTag},");
+                }
+
+                builder.AppendLine("}");
+                builder.AppendLine();
+
+                builder.AppendLine($"table {ConvertUnionWrapper(typeName)} {{ ");
+                builder.AppendLine($"  body: {typeName};");
+                builder.AppendLine("}");
+                builder.AppendLine();
+            }
+        }
+
+        private static void GenerateTables(StringBuilder builder, SchemaDef schema)
+        {
+            foreach (var t in schema.Tables)
+            {
+                var typeName = ConvertTypeName(t.Type);
+                builder.AppendLine($"table {typeName} {{");
+
+                foreach (var field in t.Fields)
+                {
+                    var fieldName = ConvertFieldName(field.Name);
+                    var fieldTypeName = ConvertTypeName(field.Type, schema);
+
+                    builder.AppendLine($"  {fieldName}: {fieldTypeName};");
                 }
 
                 builder.AppendLine("}");
@@ -152,7 +157,7 @@ namespace BehaveAsSakura.SerializationCompiler.Schema
             }
         }
 
-        private static string ConvertTypeName(Type type)
+        private static string ConvertTypeName(Type type, SchemaDef schema = null)
         {
             var typeName = ConvertBuiltInTypeName(type);
             if (typeName != null)
@@ -160,9 +165,14 @@ namespace BehaveAsSakura.SerializationCompiler.Schema
 
             if (type.IsArray)
             {
-                var elementTypeName = ConvertTypeName(type.GetElementType());
-                if (elementTypeName != null)
-                    return $"[{elementTypeName}]";
+                typeName = ConvertTypeName(type.GetElementType(), schema);
+                if (typeName != null)
+                {
+                    if (schema != null && schema.Unions.Exists(u => u.UnionType == type.GetElementType()))
+                        return $"[{ConvertUnionWrapper(typeName)}]";
+                    else
+                        return $"[{typeName}]";
+                }
                 else
                     return null;
             }
@@ -173,10 +183,22 @@ namespace BehaveAsSakura.SerializationCompiler.Schema
                     return ConvertBuiltInTypeName(type.GetGenericArguments()[0]);
 
                 if (type.GetGenericTypeDefinition() == typeof(List<>))
-                    return $"[{ConvertTypeName(type.GetGenericArguments()[0])}]";
+                {
+                    typeName = ConvertTypeName(type.GetGenericArguments()[0], schema);
+
+                    if (schema != null && schema.Unions.Exists(u => u.UnionType == type.GetElementType()))
+                        return $"[{ConvertUnionWrapper(typeName)}]";
+                    else
+                        return $"[{typeName}]";
+                }
             }
 
             return type.FullName.Replace(".", "__");
+        }
+
+        private static string ConvertUnionWrapper(string typeName)
+        {
+            return $"__UnionWrapper__{typeName}";
         }
     }
 }

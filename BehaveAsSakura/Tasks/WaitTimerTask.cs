@@ -19,6 +19,7 @@ namespace BehaveAsSakura.Tasks
     }
 
     [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskProps), 6)]
     class WaitTimerTaskProps : ITaskProps
     {
         [BehaveAsField(1, IsRequired = false)]

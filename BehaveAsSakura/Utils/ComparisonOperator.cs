@@ -1,7 +1,9 @@
-﻿using System;
+﻿using BehaveAsSakura.Attributes;
+using System;
 
 namespace BehaveAsSakura.Utils
 {
+    [BehaveAsEnum]
     public enum ComparisonOperator : byte
     {
         Equal,

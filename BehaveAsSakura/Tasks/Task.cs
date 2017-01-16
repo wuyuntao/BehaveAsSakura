@@ -33,7 +33,6 @@ namespace BehaveAsSakura.Tasks
     {
     }
 
-    [BehaveAsTable]
     abstract class TaskDescWrapper
     {
         [BehaveAsField(1)]

@@ -3,6 +3,7 @@
 namespace BehaveAsSakura.Events
 {
     [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(IEvent), 1)]
     public class SimpleEventTriggeredEvent : IEvent
     {
         [BehaveAsField(1)]

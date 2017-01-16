@@ -3,22 +3,13 @@ using CommandLine.Text;
 
 namespace BehaveAsSakura.SerializationCompiler
 {
-    enum SerializerType
-    {
-        FlatBuffers,
-        Json,
-    }
-
     class Options
     {
         [OptionArray('i', "input-assemblies", Required = true)]
         public string[] InputAssemblies { get; set; }
 
-        [Option('V', "verbose", DefaultValue = true)]
-        public bool Verbose { get; set; }
-
-        [Option('t', "serializer-type", DefaultValue = SerializerType.FlatBuffers)]
-        public SerializerType SerializerType { get; set; }
+        [OptionArray('c', "flatc-path", DefaultValue = "flatc.exe")]
+        public string FlatcPath { get; set; }
 
         [HelpOption]
         public string GetUsage()
