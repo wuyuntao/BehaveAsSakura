@@ -20,10 +20,10 @@ namespace BehaveAsSakura.Tasks
 
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskProps), 6)]
-    class WaitTimerTaskProps : ITaskProps
+    public class WaitTimerTaskProps : ITaskProps
     {
-        [BehaveAsField(1, IsRequired = false)]
-        public uint? TimerId { get; set; }
+        [BehaveAsField(1)]
+        public uint TimerId { get; set; }
 
         [BehaveAsField(2)]
         public bool IsTimerTriggered { get; set; }
@@ -67,7 +67,7 @@ namespace BehaveAsSakura.Tasks
 
             UnsubscribeEvent<TimerTriggeredEvent>();
 
-            props.TimerId = null;
+            props.TimerId = 0;
 
             base.OnEnd();
         }
@@ -96,8 +96,8 @@ namespace BehaveAsSakura.Tasks
 
             this.props = (WaitTimerTaskProps)props;
 
-            if (this.props.TimerId != null)
-                timer = FindTimer(this.props.TimerId.Value);
+            if (this.props.TimerId > 0)
+                timer = FindTimer(this.props.TimerId);
             else
                 timer = null;
         }

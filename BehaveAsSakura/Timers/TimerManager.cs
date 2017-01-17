@@ -6,7 +6,7 @@ using System.Linq;
 namespace BehaveAsSakura.Timers
 {
     [BehaveAsTable]
-    class TimerManagerProps
+    public class TimerManagerProps
     {
         [BehaveAsField(1)]
         public uint MaxTimerId { get; set; }

@@ -14,7 +14,7 @@ namespace BehaveAsSakura.Tasks
 
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskProps), 3)]
-    class SequenceTaskProps : ITaskProps
+    public class SequenceTaskProps : ITaskProps
     {
         [BehaveAsField(1)]
         public int CurrentChildIndex { get; set; }

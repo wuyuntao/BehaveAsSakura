@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace BehaveAsSakura.Variables
 {
     [BehaveAsTable]
-    class VariableSetProps
+    public class VariableSetProps
     {
         [BehaveAsField(1, IsRequired = false)]
         public NamedVariableDesc[] Variables { get; set; }
     }
 
     [BehaveAsTable]
-    class NamedVariableDesc
+    public class NamedVariableDesc
     {
         [BehaveAsField(1)]
         public string Name { get; set; }

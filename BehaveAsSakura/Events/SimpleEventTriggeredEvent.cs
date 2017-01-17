@@ -13,5 +13,8 @@ namespace BehaveAsSakura.Events
         {
             EventType = eventType;
         }
+
+        public SimpleEventTriggeredEvent()
+        { }
     }
 }

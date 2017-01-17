@@ -8,8 +8,11 @@ namespace BehaveAsSakura.SerializationCompiler
         [OptionArray('i', "input-assemblies", Required = true)]
         public string[] InputAssemblies { get; set; }
 
-        [OptionArray('c', "flatc-path", DefaultValue = "flatc.exe")]
+        [Option('c', "flatc-path", DefaultValue = "flatc.exe")]
         public string FlatcPath { get; set; }
+
+        [Option('o', "output-path", DefaultValue = "BahveAsSakuraSerializer.cs")]
+        public string OutputPath { get; set; }
 
         [HelpOption]
         public string GetUsage()

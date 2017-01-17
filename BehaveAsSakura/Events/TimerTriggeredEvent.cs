@@ -13,5 +13,8 @@ namespace BehaveAsSakura.Events
         {
             TimerId = timerId;
         }
+
+        public TimerTriggeredEvent()
+        { }
     }
 }

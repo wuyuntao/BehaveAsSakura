@@ -36,10 +36,10 @@ namespace BehaveAsSakura
     public class BehaviorTreeDesc
     {
         [BehaveAsField(1)]
-        internal TaskDescWrapper[] Tasks { get; set; }
+        public TaskDescWrapper[] Tasks { get; set; }
 
         [BehaveAsField(2)]
-        internal uint RootTaskId { get; set; }
+        public uint RootTaskId { get; set; }
 
         internal TaskDescWrapper FindTaskDesc(uint id)
         {
@@ -51,13 +51,13 @@ namespace BehaveAsSakura
     public class BehaviorTreeProps
     {
         [BehaveAsField(1)]
-        internal EventBusProps EventBus { get; set; }
+        public EventBusProps EventBus { get; set; }
 
         [BehaveAsField(2)]
-        internal TimerManagerProps TimerManager { get; set; }
+        public TimerManagerProps TimerManager { get; set; }
 
         [BehaveAsField(3)]
-        internal TaskPropsWrapper[] Tasks { get; set; }
+        public TaskPropsWrapper[] Tasks { get; set; }
     }
 
     public sealed class BehaviorTree : ISerializable<BehaviorTreeProps>

@@ -4,7 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(TaskDescWrapper), 1)]
-    class LeafTaskDescWrapper : TaskDescWrapper
+    public class LeafTaskDescWrapper : TaskDescWrapper
     {
     }
 

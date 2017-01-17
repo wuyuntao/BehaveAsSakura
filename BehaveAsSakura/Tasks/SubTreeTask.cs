@@ -18,7 +18,7 @@ namespace BehaveAsSakura.Tasks
 
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskProps), 4)]
-    class SubTreeTaskProps : ITaskProps
+    public class SubTreeTaskProps : ITaskProps
     {
         [BehaveAsField(1)]
         public BehaviorTreeProps SubTree { get; set; }

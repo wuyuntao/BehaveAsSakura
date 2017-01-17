@@ -13,7 +13,7 @@ namespace BehaveAsSakura.Tasks
         public VariableDesc Left { get; set; }
 
         [BehaveAsField(2)]
-        public ComparisonOperator Operator { get; set; }
+        public ComparisonOperator Op { get; set; }
 
         [BehaveAsField(3)]
         public VariableDesc Right { get; set; }
@@ -50,7 +50,7 @@ namespace BehaveAsSakura.Tasks
                 return TaskResult.Failure;
             }
 
-            return description.Operator.Match(leftValue.CompareTo(rightValue)) ? TaskResult.Success : TaskResult.Failure;
+            return description.Op.Match(leftValue.CompareTo(rightValue)) ? TaskResult.Success : TaskResult.Failure;
         }
     }
 }

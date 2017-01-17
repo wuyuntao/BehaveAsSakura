@@ -1,11 +1,12 @@
-﻿using System;
+﻿using BehaveAsSakura.SerializationCompiler.Schema;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace BehaveAsSakura.SerializationCompiler.Schema
+namespace BehaveAsSakura.SerializationCompiler
 {
-    static class SchemaWriter
+    static class FlatBuffersSchemaWriter
     {
         public static string ToString(SchemaDef schema)
         {

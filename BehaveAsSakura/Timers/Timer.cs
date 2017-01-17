@@ -4,7 +4,7 @@ using BehaveAsSakura.Utils;
 namespace BehaveAsSakura.Timers
 {
     [BehaveAsTable]
-    class TimerProps
+    public class TimerProps
     {
         [BehaveAsField(1)]
         public uint Id { get; set; }

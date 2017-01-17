@@ -22,16 +22,24 @@ namespace BehaveAsSakura.SerializationCompiler
                 var assemblies = LoadAssemblies();
                 var workPath = Environment.CurrentDirectory;
 
+                var filename = $"Schema-{Guid.NewGuid()}";
                 var schema = new SchemaDef("BehaveAsSakura.Serialization", assemblies);
-                var schemaPath = Path.Combine(Environment.CurrentDirectory, "schema.fbs");
-                SchemaWriter.ToFile(schema, schemaPath);
+                var schemaPath = Path.Combine(Environment.CurrentDirectory, $"{filename}.fbs");
+                FlatBuffersSchemaWriter.ToFile(schema, schemaPath);
 
                 var flatcPath = Path.Combine(Environment.CurrentDirectory, Options.FlatcPath);
-
                 RunCommand(flatcPath, $@"-n --gen-onefile -o ""{workPath}"" ""{schemaPath}""");
+
+                var csharpPath = Path.Combine(Environment.CurrentDirectory, $"{filename}.cs");
+
+                var outputPath = Path.Combine(Environment.CurrentDirectory, Options.OutputPath);
+                CSharpSerializerWriter.ToFile(schema, csharpPath, outputPath);
             }
 
+#if DEBUG
+            Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
+#endif
         }
 
         private static IEnumerable<Assembly> LoadAssemblies()
@@ -49,7 +57,7 @@ namespace BehaveAsSakura.SerializationCompiler
 
         private static void RunCommand(string cmd, string args)
         {
-            Console.WriteLine("{0} {1}", cmd, args);
+            //Console.WriteLine("{0} {1}", cmd, args);
 
             var process = new Process();
             var processStartInfo = new ProcessStartInfo();

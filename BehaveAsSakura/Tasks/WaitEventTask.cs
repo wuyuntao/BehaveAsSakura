@@ -18,7 +18,7 @@ namespace BehaveAsSakura.Tasks
 
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskProps), 5)]
-    class WaitEventTaskProps : ITaskProps
+    public class WaitEventTaskProps : ITaskProps
     {
         [BehaveAsField(1)]
         public bool IsEventTriggered { get; set; }

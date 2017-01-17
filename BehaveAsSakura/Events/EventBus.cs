@@ -11,7 +11,7 @@ namespace BehaveAsSakura.Events
     }
 
     [BehaveAsTable]
-    class SubscriptionProps
+    public class SubscriptionProps
     {
         [BehaveAsField(1)]
         public string Type { get; set; }
@@ -31,7 +31,7 @@ namespace BehaveAsSakura.Events
     }
 
     [BehaveAsTable]
-    class EventBusProps
+    public class EventBusProps
     {
         [BehaveAsField(1, IsRequired = false)]
         public IEvent[] Events { get; set; }

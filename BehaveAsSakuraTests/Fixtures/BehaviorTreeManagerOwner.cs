@@ -46,19 +46,19 @@ namespace BehaveAsSakura.Tests
                             .AppendChild(builder.Leaf<ConditionalEvaluatorTaskDesc>(d =>
                                 {
                                     d.Left = new VariableDesc(VariableType.UInteger, VariableSource.GlobalConstant, "uint.5000");
-                                    d.Operator = ComparisonOperator.LessThan;
+                                    d.Op = ComparisonOperator.LessThan;
                                     d.Right = new VariableDesc(VariableType.UInteger, VariableSource.LiteralConstant, "100");
                                 }))
                             .AppendChild(builder.Leaf<ConditionalEvaluatorTaskDesc>(d =>
                                 {
                                     d.Left = new VariableDesc(VariableType.Float, VariableSource.GlobalConstant, "float.pi");
-                                    d.Operator = ComparisonOperator.GreaterThan;
+                                    d.Op = ComparisonOperator.GreaterThan;
                                     d.Right = new VariableDesc(VariableType.Float, VariableSource.LiteralConstant, "4");
                                 }))
                             .AppendChild(builder.Leaf<ConditionalEvaluatorTaskDesc>(d =>
                                 {
                                     d.Left = new VariableDesc(VariableType.Float, VariableSource.GlobalConstant, "float.pi");
-                                    d.Operator = ComparisonOperator.Equal;
+                                    d.Op = ComparisonOperator.Equal;
                                     d.Right = new VariableDesc(VariableType.Float, VariableSource.GlobalConstant, "float.pi");
                                 }));
                     }

@@ -5,7 +5,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(TaskDescWrapper), 2)]
-    class DecoratorTaskDescWrapper : TaskDescWrapper
+    public class DecoratorTaskDescWrapper : TaskDescWrapper
     {
         [BehaveAsField(1)]
         public uint ChildTaskId { get; set; }

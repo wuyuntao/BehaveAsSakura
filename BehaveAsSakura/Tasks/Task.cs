@@ -33,7 +33,7 @@ namespace BehaveAsSakura.Tasks
     {
     }
 
-    abstract class TaskDescWrapper
+    public abstract class TaskDescWrapper
     {
         [BehaveAsField(1)]
         public uint Id { get; set; }
@@ -49,7 +49,7 @@ namespace BehaveAsSakura.Tasks
     }
 
     [BehaveAsTable]
-    class TaskPropsWrapper
+    public class TaskPropsWrapper
     {
         [BehaveAsField(1)]
         public uint Id { get; set; }

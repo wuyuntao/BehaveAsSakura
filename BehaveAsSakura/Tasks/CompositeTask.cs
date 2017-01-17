@@ -6,7 +6,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(TaskDescWrapper), 3)]
-    class CompositeTaskDescWrapper : TaskDescWrapper
+    public class CompositeTaskDescWrapper : TaskDescWrapper
     {
         [BehaveAsField(1)]
         public uint[] ChildTaskIds { get; set; }
