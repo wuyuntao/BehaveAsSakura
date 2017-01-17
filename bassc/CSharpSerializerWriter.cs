@@ -1,9 +1,9 @@
-﻿using BehaveAsSakura.SerializationCompiler.Schema;
-using System.IO;
-using System.Text;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.SerializationCompiler.Schema;
 using System;
 using System.Collections.Generic;
-using BehaveAsSakura.Attributes;
+using System.IO;
+using System.Text;
 
 namespace BehaveAsSakura.SerializationCompiler
 {
@@ -16,8 +16,9 @@ namespace BehaveAsSakura.SerializationCompiler
             builder.AppendLine(File.ReadAllText(flatBuffersCodePath, Encoding.UTF8));
             builder.AppendLine();
 
-            GenerateBaseSerializer(builder, schema);
             GenerateUnionSerializers(builder, schema);
+
+            GenerateBaseSerializer(builder, schema);
             GenerateSerializers(builder, schema);
 
             return builder.ToString();
@@ -29,6 +30,7 @@ namespace BehaveAsSakura.SerializationCompiler
 {{
     using FlatBuffers;
     using System;
+    using System.Collections.Generic;
 ");
 
             foreach (var u in schema.Unions)
@@ -39,6 +41,8 @@ namespace BehaveAsSakura.SerializationCompiler
     {{");
 
                 AddUnionSerializeMethod(builder, u);
+                AddUnionWrapperSerializeMethod(builder, u);
+                AddUnionWrapperDeserializeMethod(builder, u);
 
                 builder.AppendLine("    }");
                 builder.AppendLine();
@@ -80,6 +84,99 @@ namespace BehaveAsSakura.SerializationCompiler
 
             builder.AppendLine(@"            throw new NotSupportedException(obj.GetType().FullName);
         }");
+        }
+
+        private static void AddUnionWrapperSerializeMethod(StringBuilder builder, UnionDef union)
+        {
+            var unionFbName = ConvertTypeName(union.UnionType);
+            var unionName = union.UnionType.FullName;
+            var unionWrapperName = ConvertUnionWrapper(union.UnionType);
+
+            builder.AppendLine($@"
+        public static Offset<{unionWrapperName}>[] Serialize(FlatBufferBuilder fbb, IList<{unionName}> objects)
+        {{
+            if (objects == null)
+                return null;
+            
+            var offsets = new Offset<{unionWrapperName}>[objects.Count];
+            for (int i = 0; i < objects.Count; i++)
+            {{
+                var obj = objects[i];
+                if (obj == null)
+                {{
+                    offsets[i] = {unionWrapperName}.Create{unionWrapperName}(fbb);
+                    continue;
+                }}
+");
+
+            foreach (var t in union.IncludedTypes)
+            {
+                var includedTypeName = t.Item1.FullName;
+                var includedTypeSerializerName = ConvertSerializerName(t.Item1);
+                var includedFbName = ConvertTypeName(t.Item1);
+
+                builder.AppendLine($@"                if (obj is {includedTypeName})
+                {{
+                    offsets[i] = {unionWrapperName}.Create{unionWrapperName}(fbb, 
+                            {unionFbName}.{includedFbName}, 
+                            {includedTypeSerializerName}.Instance.Serialize(fbb, ({includedTypeName})obj).Value);
+                    continue;
+                }}
+");
+            }
+
+            builder.AppendLine(@"                throw new NotSupportedException(obj.GetType().FullName);
+            }
+
+            return offsets;
+        }");
+        }
+
+        private static void AddUnionWrapperDeserializeMethod(StringBuilder builder, UnionDef union)
+        {
+            var unionName = union.UnionType.FullName;
+            var unionFbName = ConvertTypeName(union.UnionType);
+            var unionWrapperName = ConvertUnionWrapper(union.UnionType);
+
+            builder.AppendLine($@"
+        public static {unionName}[] Deserialize(int objectsLength, Func<int, {unionWrapperName}?> getObject)
+        {{
+            if (objectsLength == 0)
+                return null;
+            
+            var objects = new {unionName}[objectsLength];
+            for (int i = 0; i < objectsLength; i++)
+            {{
+                var wrapper = getObject(i);
+                if (!wrapper.HasValue)
+                    continue;
+
+                switch (wrapper.Value.BodyType)
+                {{");
+
+            foreach (var t in union.IncludedTypes)
+            {
+                var includedTypeName = t.Item1.FullName;
+                var includedTypeSerializerName = ConvertSerializerName(t.Item1);
+                var includedFbName = ConvertTypeName(t.Item1);
+
+                builder.AppendLine($@"                    case {unionFbName}.{includedFbName}:
+                        objects[i] = {includedTypeSerializerName}.Instance.Deserialize(wrapper.Value.Body<{includedFbName}>());
+                        break;
+");
+            }
+
+            builder.AppendLine($@"                    case {unionFbName}.NONE:
+                        break;
+
+                    default:
+                        throw new NotSupportedException(wrapper.Value.BodyType.ToString());
+                }}
+            }}
+
+            return objects;
+        }}");
+
         }
 
         private static void GenerateBaseSerializer(StringBuilder builder, SchemaDef schema)
@@ -228,7 +325,6 @@ namespace BehaveAsSakura.SerializationCompiler
             builder.AppendLine("}");
         }
 
-
         public static void ToFile(SchemaDef schema, string flatBuffersCodePath, string path)
         {
             File.WriteAllText(path, ToString(schema, flatBuffersCodePath), Encoding.UTF8);
@@ -266,7 +362,8 @@ namespace BehaveAsSakura.SerializationCompiler
                     }
                     else if (IsUnionType(elementType, schema))
                     {
-                        builder.AppendLine($"            // Not implemented yet");
+                        var unionSerializerName = $"{ConvertTypeName(elementType)}__UnionSerializer";
+                        builder.AppendLine($"            {fbObjectName}.Add{f.Name}(fbb, {fbObjectName}.Create{f.Name}Vector(fbb, {unionSerializerName}.Serialize(fbb, obj.{f.Name})));");
                     }
                     else
                     {
@@ -330,7 +427,7 @@ namespace BehaveAsSakura.SerializationCompiler
         {
             var tableName = table.Type.FullName;
             var fbObjectName = ConvertTypeName(table.Type);
-            var unionFields = new List<Tuple<FieldDef, UnionDef, bool>>();
+            var unionFields = new List<Tuple<FieldDef, UnionDef>>();
 
             builder.AppendLine($@"        public override {tableName} Deserialize({fbObjectName} obj)
         {{
@@ -354,10 +451,9 @@ namespace BehaveAsSakura.SerializationCompiler
                     }
                     else if (IsUnionType(elementType, schema))
                     {
-                        var union = schema.Unions.Find(u => u.UnionType == f.Type);
-                        unionFields.Add(Tuple.Create(f, union, true));
+                        var unionSerializerName = $"{ConvertTypeName(elementType)}__UnionSerializer";
 
-                        builder.AppendLine($"                {f.Name} = Deserialize{f.Name}(obj),");
+                        builder.Append($"                {f.Name} = {unionSerializerName}.Deserialize(obj.{f.Name}Length, obj.{f.Name})");
                     }
                     else
                     {
@@ -384,7 +480,7 @@ namespace BehaveAsSakura.SerializationCompiler
                     else if (IsUnionType(f.Type, schema))
                     {
                         var union = schema.Unions.Find(u => u.UnionType == f.Type);
-                        unionFields.Add(Tuple.Create(f, union, false));
+                        unionFields.Add(Tuple.Create(f, union));
 
                         builder.AppendLine($"                {f.Name} = Deserialize{f.Name}(obj),");
                     }
@@ -400,12 +496,7 @@ namespace BehaveAsSakura.SerializationCompiler
             builder.AppendLine("        }");
 
             foreach (var f in unionFields)
-            {
-                if (f.Item3)
-                    AddDeserializeUnionListMethod(builder, table, f.Item1, f.Item2);
-                else
-                    AddDeserializeUnionMethod(builder, table, f.Item1, f.Item2);
-            }
+                AddDeserializeUnionMethod(builder, table, f.Item1, f.Item2);
         }
 
         private static void AddDeserializeUnionMethod(StringBuilder builder, TableDef table, FieldDef field, UnionDef union)
@@ -437,10 +528,6 @@ namespace BehaveAsSakura.SerializationCompiler
                     throw new NotSupportedException(obj.{field.Name}Type.ToString());
             }}
         }}");
-        }
-
-        private static void AddDeserializeUnionListMethod(StringBuilder builder, TableDef table, FieldDef field, UnionDef union)
-        {
         }
 
         private static string ConvertTypeName(Type type)
