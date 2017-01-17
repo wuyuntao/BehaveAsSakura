@@ -22,4 +22,7 @@
 sysinfo.txt
 
 # Plugins
-Assets/Plugins
+Assets/Plugins/Node_Editor
+Assets/Plugins/Node_Editor.meta
+Assets/Plugins/Editor/Node_Editor
+Assets/Plugins/Editor/Node_Editor.meta
