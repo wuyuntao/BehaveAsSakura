@@ -199,7 +199,7 @@ namespace BehaveAsSakura.SerializationCompiler
 
         private static string ConvertUnionWrapper(string typeName)
         {
-            return $"__UnionWrapper__{typeName}";
+            return $"{typeName}__UnionWrapper";
         }
     }
 }

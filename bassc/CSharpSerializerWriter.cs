@@ -17,9 +17,69 @@ namespace BehaveAsSakura.SerializationCompiler
             builder.AppendLine();
 
             GenerateBaseSerializer(builder, schema);
+            GenerateUnionSerializers(builder, schema);
             GenerateSerializers(builder, schema);
 
             return builder.ToString();
+        }
+
+        private static void GenerateUnionSerializers(StringBuilder builder, SchemaDef schema)
+        {
+            builder.AppendLine($@"namespace {schema.Namespace}
+{{
+    using FlatBuffers;
+    using System;
+");
+
+            foreach (var u in schema.Unions)
+            {
+                var unionFbName = ConvertTypeName(u.UnionType);
+
+                builder.AppendLine($@"    public static class {unionFbName}__UnionSerializer
+    {{");
+
+                AddUnionSerializeMethod(builder, u);
+
+                builder.AppendLine("    }");
+                builder.AppendLine();
+            }
+
+            builder.AppendLine("}");
+            builder.AppendLine();
+        }
+
+        private static void AddUnionSerializeMethod(StringBuilder builder, UnionDef union)
+        {
+            var unionFbName = ConvertTypeName(union.UnionType);
+            var unionName = union.UnionType.FullName;
+
+            builder.AppendLine($@"        public static bool Serialize(FlatBufferBuilder fbb, {unionName} obj, out int offset, out {unionFbName} type)
+        {{
+            if (obj == null)
+            {{
+                offset = 0;
+                type = {unionFbName}.NONE;
+                return false;
+            }}
+");
+
+            foreach (var t in union.IncludedTypes)
+            {
+                var includedTypeName = t.Item1.FullName;
+                var includedTypeSerializerName = ConvertSerializerName(t.Item1);
+                var includedFbName = ConvertTypeName(t.Item1);
+
+                builder.AppendLine($@"            if (obj is {includedTypeName})
+            {{
+                offset = {includedTypeSerializerName}.Instance.Serialize(fbb, ({includedTypeName})obj).Value;
+                type = {unionFbName}.{includedFbName};
+                return true;
+            }}
+");
+            }
+
+            builder.AppendLine(@"            throw new NotSupportedException(obj.GetType().FullName);
+        }");
         }
 
         private static void GenerateBaseSerializer(StringBuilder builder, SchemaDef schema)
@@ -232,7 +292,16 @@ namespace BehaveAsSakura.SerializationCompiler
                     }
                     else if (IsUnionType(f.Type, schema))
                     {
-                        builder.AppendLine($"            // Not implemented yet");
+                        var union = schema.Unions.Find(u => u.UnionType == f.Type);
+                        var unionFbName = ConvertTypeName(union.UnionType);
+
+                        builder.AppendLine($@"            int offset{f.Name};
+            {unionFbName} type{f.Name};
+            if ({unionFbName}__UnionSerializer.Serialize(fbb, obj.{f.Name}, out offset{f.Name}, out type{f.Name}))
+            {{
+                {fbObjectName}.Add{f.Name}(fbb, offset{f.Name});
+                {fbObjectName}.Add{f.Name}Type(fbb, type{f.Name});
+            }}");
                     }
                     else
                     {
@@ -261,6 +330,7 @@ namespace BehaveAsSakura.SerializationCompiler
         {
             var tableName = table.Type.FullName;
             var fbObjectName = ConvertTypeName(table.Type);
+            var unionFields = new List<Tuple<FieldDef, UnionDef, bool>>();
 
             builder.AppendLine($@"        public override {tableName} Deserialize({fbObjectName} obj)
         {{
@@ -284,7 +354,10 @@ namespace BehaveAsSakura.SerializationCompiler
                     }
                     else if (IsUnionType(elementType, schema))
                     {
-                        builder.Append($"                // Not implemented yet");
+                        var union = schema.Unions.Find(u => u.UnionType == f.Type);
+                        unionFields.Add(Tuple.Create(f, union, true));
+
+                        builder.AppendLine($"                {f.Name} = Deserialize{f.Name}(obj),");
                     }
                     else
                     {
@@ -310,7 +383,10 @@ namespace BehaveAsSakura.SerializationCompiler
                     }
                     else if (IsUnionType(f.Type, schema))
                     {
-                        builder.AppendLine($"                // Not implemented yet");
+                        var union = schema.Unions.Find(u => u.UnionType == f.Type);
+                        unionFields.Add(Tuple.Create(f, union, false));
+
+                        builder.AppendLine($"                {f.Name} = Deserialize{f.Name}(obj),");
                     }
                     else
                     {
@@ -322,6 +398,49 @@ namespace BehaveAsSakura.SerializationCompiler
 
             builder.AppendLine("            };");
             builder.AppendLine("        }");
+
+            foreach (var f in unionFields)
+            {
+                if (f.Item3)
+                    AddDeserializeUnionListMethod(builder, table, f.Item1, f.Item2);
+                else
+                    AddDeserializeUnionMethod(builder, table, f.Item1, f.Item2);
+            }
+        }
+
+        private static void AddDeserializeUnionMethod(StringBuilder builder, TableDef table, FieldDef field, UnionDef union)
+        {
+            var tableFbName = ConvertTypeName(table.Type);
+            var unionName = union.UnionType.FullName;
+            var unionFbName = ConvertTypeName(union.UnionType);
+
+            builder.AppendLine($@"        private {unionName} Deserialize{field.Name}({tableFbName} obj)
+        {{
+            switch (obj.{field.Name}Type)
+            {{");
+
+            foreach (var t in union.IncludedTypes)
+            {
+                var includedFbName = ConvertTypeName(t.Item1);
+                var includedSerializerName = ConvertSerializerName(t.Item1);
+
+                builder.AppendLine($@"
+                case {unionFbName}.{includedFbName}:
+                    return {includedSerializerName}.Instance.Deserialize(obj.{field.Name}<{includedFbName}>());");
+            }
+
+            builder.AppendLine($@"
+                case {unionFbName}.NONE:
+                    return null;
+
+                default:
+                    throw new NotSupportedException(obj.{field.Name}Type.ToString());
+            }}
+        }}");
+        }
+
+        private static void AddDeserializeUnionListMethod(StringBuilder builder, TableDef table, FieldDef field, UnionDef union)
+        {
         }
 
         private static string ConvertTypeName(Type type)
@@ -336,7 +455,7 @@ namespace BehaveAsSakura.SerializationCompiler
 
         private static string ConvertUnionWrapper(Type type)
         {
-            return $"__UnionWrapper__{ConvertTypeName(type)}";
+            return $"{ConvertTypeName(type)}__UnionWrapper";
         }
 
         private static bool IsCollectionType(Type type)
