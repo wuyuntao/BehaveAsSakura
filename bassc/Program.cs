@@ -23,7 +23,7 @@ namespace BehaveAsSakura.SerializationCompiler
                 var workPath = Environment.CurrentDirectory;
 
                 var filename = $"Schema-{Guid.NewGuid()}";
-                var schema = new SchemaDef("BehaveAsSakura.Serialization", assemblies);
+                var schema = new SchemaDef(Options.Namespace, assemblies);
                 var schemaPath = Path.Combine(Environment.CurrentDirectory, $"{filename}.fbs");
                 FlatBuffersSchemaWriter.ToFile(schema, schemaPath);
 

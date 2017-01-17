@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BehaveAsSakura.SerializationCompiler
 {
@@ -13,15 +14,28 @@ namespace BehaveAsSakura.SerializationCompiler
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine(File.ReadAllText(flatBuffersCodePath, Encoding.UTF8));
-            builder.AppendLine();
-
+            GenerateFlatbufferObjects(flatBuffersCodePath, builder);
             GenerateUnionSerializers(builder, schema);
-
             GenerateBaseSerializer(builder, schema);
             GenerateSerializers(builder, schema);
+            GenerateBehaviorTreeSerializers(builder, schema);
 
             return builder.ToString();
+        }
+
+        public static void ToFile(SchemaDef schema, string flatBuffersCodePath, string path)
+        {
+            File.WriteAllText(path, ToString(schema, flatBuffersCodePath), Encoding.UTF8);
+        }
+
+        private static void GenerateFlatbufferObjects(string path, StringBuilder builder)
+        {
+            var code = File.ReadAllText(path, Encoding.UTF8);
+            code = Regex.Replace(code, "^public enum", "enum", RegexOptions.Multiline);
+            code = Regex.Replace(code, "^public struct", "struct", RegexOptions.Multiline);
+
+            builder.AppendLine(code);
+            builder.AppendLine();
         }
 
         private static void GenerateUnionSerializers(StringBuilder builder, SchemaDef schema)
@@ -37,7 +51,7 @@ namespace BehaveAsSakura.SerializationCompiler
             {
                 var unionFbName = ConvertTypeName(u.UnionType);
 
-                builder.AppendLine($@"    public static class {unionFbName}__UnionSerializer
+                builder.AppendLine($@"    static class {unionFbName}__UnionSerializer
     {{");
 
                 AddUnionSerializeMethod(builder, u);
@@ -187,14 +201,14 @@ namespace BehaveAsSakura.SerializationCompiler
     using System;
     using System.Collections.Generic;
 
-    public interface ISerializer
+    interface ISerializer
     {{
         byte[] Serialize(object obj);
 
         object Deserialize(byte[] data);
     }}
 
-    public interface ISerializer<TObject, TFlatBufferObject>
+    interface ISerializer<TObject, TFlatBufferObject>
         where TFlatBufferObject : struct, IFlatbufferObject
     {{
         Offset<TFlatBufferObject> Serialize(FlatBufferBuilder fbb, TObject obj);
@@ -208,7 +222,7 @@ namespace BehaveAsSakura.SerializationCompiler
         TObject[] Deserialize(int objectsLength, Func<int, TFlatBufferObject?> getObjects);
     }}
 
-    public abstract class Serializer<TObject, TFlatBufferObject> : ISerializer<TObject, TFlatBufferObject>, ISerializer
+    abstract class Serializer<TObject, TFlatBufferObject> : ISerializer<TObject, TFlatBufferObject>, ISerializer
         where TFlatBufferObject : struct, IFlatbufferObject
     {{
         public byte[] Serialize(object obj)
@@ -310,7 +324,7 @@ namespace BehaveAsSakura.SerializationCompiler
                 var fbObjectName = ConvertTypeName(t.Type);
 
                 builder.AppendLine($@"
-    public class {serializerName} : Serializer<{tableName}, {fbObjectName}>
+    class {serializerName} : Serializer<{tableName}, {fbObjectName}>
     {{
         public static readonly {serializerName} Instance = new {serializerName}();
 ");
@@ -323,11 +337,6 @@ namespace BehaveAsSakura.SerializationCompiler
             }
 
             builder.AppendLine("}");
-        }
-
-        public static void ToFile(SchemaDef schema, string flatBuffersCodePath, string path)
-        {
-            File.WriteAllText(path, ToString(schema, flatBuffersCodePath), Encoding.UTF8);
         }
 
         private static void AddSerializeMethod(StringBuilder builder, TableDef table, SchemaDef schema)
@@ -528,6 +537,38 @@ namespace BehaveAsSakura.SerializationCompiler
                     throw new NotSupportedException(obj.{field.Name}Type.ToString());
             }}
         }}");
+        }
+
+        private static void GenerateBehaviorTreeSerializers(StringBuilder builder, SchemaDef schema)
+        {
+            var descSerializer = ConvertSerializerName(typeof(BehaviorTreeDesc));
+            var propsSerializer = ConvertSerializerName(typeof(BehaviorTreeProps));
+
+            builder.AppendLine($@"namespace {schema.Namespace}
+{{
+    public static class BehaviorTreeSerializer
+    {{
+        public static byte[] SerializeDesc(BehaviorTreeDesc desc)
+        {{
+            return {descSerializer}.Instance.Serialize(desc);
+        }}
+
+        public static BehaviorTreeDesc DeserializeDesc(byte[] data)
+        {{
+            return {descSerializer}.Instance.Deserialize(data) as BehaviorTreeDesc;
+        }}
+
+        public static byte[] SerializeProps(BehaviorTreeProps props)
+        {{
+            return {propsSerializer}.Instance.Serialize(props);
+        }}
+
+        public static BehaviorTreeProps DeserializeProps(byte[] data)
+        {{
+            return {propsSerializer}.Instance.Deserialize(data) as BehaviorTreeProps;
+        }}
+    }}
+}}");
         }
 
         private static string ConvertTypeName(Type type)

@@ -14,6 +14,9 @@ namespace BehaveAsSakura.SerializationCompiler
         [Option('o', "output-path", DefaultValue = "BahveAsSakuraSerializer.cs")]
         public string OutputPath { get; set; }
 
+        [Option('n', "namespace", DefaultValue = "BehaveAsSakura.Serialization")]
+        public string Namespace { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {
