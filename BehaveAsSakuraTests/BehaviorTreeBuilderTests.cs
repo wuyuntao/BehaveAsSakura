@@ -1,7 +1,7 @@
-﻿using BehaveAsSakura.Tasks;
+﻿using BehaveAsSakura.Serialization;
+using BehaveAsSakura.Tasks;
 using BehaveAsSakura.Variables;
 using NUnit.Framework;
-using System.IO;
 
 namespace BehaveAsSakura.Tests
 {
@@ -11,19 +11,21 @@ namespace BehaveAsSakura.Tests
         [Test]
         public void TestSerialization()
         {
-            using (var ms1 = new MemoryStream())
-            {
-                var tree1 = BuildTreeDesc();
-                //Serializer.Serialize(ms1, tree1);
+            var tree1 = BuildTreeDesc();
 
-                var data = ms1.ToArray();
-                Assert.IsTrue(data.Length > 0);
+            var data1 = BehaviorTreeSerializer.SerializeDesc(tree1);
+            Assert.IsTrue(data1.Length > 0);
 
-                //using (var ms2 = new MemoryStream(data))
-                //{
-                //    var tree2 = Serializer.Deserialize<BehaviorTreeDesc>(ms2);
-                //}
-            }
+            var tree2 = BehaviorTreeSerializer.DeserializeDesc(data1);
+
+            var task1 = tree2.Tasks[0];
+            Assert.IsTrue(task1.CustomDesc is SequenceTaskDesc);
+
+            var task2 = tree2.Tasks[1];
+            Assert.IsTrue(task2.CustomDesc is LogTaskDesc);
+
+            var task3 = tree2.Tasks[2];
+            Assert.IsTrue(task3.CustomDesc is WaitTimerTaskDesc);
         }
 
         static BehaviorTreeDesc BuildTreeDesc()

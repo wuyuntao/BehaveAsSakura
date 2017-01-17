@@ -40,7 +40,8 @@ namespace BehaveAsSakura.SerializationCompiler
 
         private static void GenerateUnionSerializers(StringBuilder builder, SchemaDef schema)
         {
-            builder.AppendLine($@"namespace {schema.Namespace}
+            builder.AppendLine($@"
+namespace {schema.Namespace}
 {{
     using FlatBuffers;
     using System;
@@ -89,7 +90,8 @@ namespace BehaveAsSakura.SerializationCompiler
 
                 builder.AppendLine($@"            if (obj is {includedTypeName})
             {{
-                offset = {includedTypeSerializerName}.Instance.Serialize(fbb, ({includedTypeName})obj).Value;
+                var o = {includedTypeSerializerName}.Instance.Serialize(fbb, ({includedTypeName})obj);
+                offset = o.HasValue ? o.Value.Value : 0;
                 type = {unionFbName}.{includedFbName};
                 return true;
             }}
@@ -131,9 +133,11 @@ namespace BehaveAsSakura.SerializationCompiler
 
                 builder.AppendLine($@"                if (obj is {includedTypeName})
                 {{
+                    var o = {includedTypeSerializerName}.Instance.Serialize(fbb, ({includedTypeName})obj);
+                    var offset = o.HasValue ? o.Value.Value : 0;
                     offsets[i] = {unionWrapperName}.Create{unionWrapperName}(fbb, 
-                            {unionFbName}.{includedFbName}, 
-                            {includedTypeSerializerName}.Instance.Serialize(fbb, ({includedTypeName})obj).Value);
+                                {unionFbName}.{includedFbName}, 
+                                offset);
                     continue;
                 }}
 ");
@@ -211,7 +215,7 @@ namespace BehaveAsSakura.SerializationCompiler
     interface ISerializer<TObject, TFlatBufferObject>
         where TFlatBufferObject : struct, IFlatbufferObject
     {{
-        Offset<TFlatBufferObject> Serialize(FlatBufferBuilder fbb, TObject obj);
+        Offset<TFlatBufferObject>? Serialize(FlatBufferBuilder fbb, TObject obj);
 
         Offset<TFlatBufferObject>[] Serialize(FlatBufferBuilder fbb, IList<TObject> objects);
 
@@ -229,12 +233,17 @@ namespace BehaveAsSakura.SerializationCompiler
         {{
             var fbb = new FlatBufferBuilder(1024);
             var offset = Serialize(fbb, (TObject)obj);
-            fbb.Finish(offset.Value);
+            if (offset.HasValue)
+            {{
+                fbb.Finish(offset.Value.Value);
 
-            return fbb.SizedByteArray();
+                return fbb.SizedByteArray();
+            }}
+            else
+                return null;
         }}
 
-        public abstract Offset<TFlatBufferObject> Serialize(FlatBufferBuilder fbb, TObject obj);
+        public abstract Offset<TFlatBufferObject>? Serialize(FlatBufferBuilder fbb, TObject obj);
 
         public Offset<TFlatBufferObject>[] Serialize(FlatBufferBuilder fbb, IList<TObject> objects)
         {{
@@ -243,7 +252,11 @@ namespace BehaveAsSakura.SerializationCompiler
 
             var offsets = new Offset<TFlatBufferObject>[objects.Count];
             for (int i = 0; i < objects.Count; i++)
-                offsets[i] = Serialize(fbb, objects[i]);
+            {{
+                var offset = Serialize(fbb, objects[i]);
+                if (offset.HasValue)
+                    offsets[i] = offset.Value;
+            }}
 
             return offsets;
         }}
@@ -309,7 +322,8 @@ namespace BehaveAsSakura.SerializationCompiler
 
         private static void GenerateSerializers(StringBuilder builder, SchemaDef schema)
         {
-            builder.AppendLine($@"namespace {schema.Namespace}
+            builder.AppendLine($@"
+namespace {schema.Namespace}
 {{
     using FlatBuffers;
     using System;
@@ -344,10 +358,10 @@ namespace BehaveAsSakura.SerializationCompiler
             var tableName = table.Type.FullName;
             var fbObjectName = ConvertTypeName(table.Type);
 
-            builder.AppendLine($@"        public override Offset<{fbObjectName}> Serialize(FlatBufferBuilder fbb, {tableName} obj)
-        {{");
-
-            builder.AppendLine($@"            {fbObjectName}.Start{fbObjectName}(fbb);");
+            builder.AppendLine($@"        public override Offset<{fbObjectName}>? Serialize(FlatBufferBuilder fbb, {tableName} obj)
+        {{
+            if (obj == null)
+                return null;");
 
             foreach (var f in table.Fields)
             {
@@ -357,34 +371,99 @@ namespace BehaveAsSakura.SerializationCompiler
 
                     if (elementType == typeof(string))
                     {
-                        builder.AppendLine($"            {fbObjectName}.Add{f.Name}(fbb, {fbObjectName}.Create{f.Name}Vector(fbb, SerializeString(fbb, obj.{f.Name})));");
+                        builder.AppendLine($@"            var vector{f.Name} = default(VectorOffset?);
+            if (obj.{f.Name} != null)
+            {{
+                var offsets{f.Name} = SerializeString(fbb, obj.{f.Name});
+                vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, offsets{f.Name});
+            }}");
                     }
                     else if (IsScalarType(elementType))
                     {
-                        builder.AppendLine($"            {fbObjectName}.Add{f.Name}(fbb, {fbObjectName}.Create{f.Name}Vector(fbb, obj.{f.Name}));");
+                        builder.AppendLine($@"            var vector{f.Name} = default(VectorOffset?);
+            if (obj.{f.Name} != null)
+                vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, obj.{f.Name});");
                     }
                     else if (IsEnumType(elementType))
                     {
                         var underlyingTypeName = Enum.GetUnderlyingType(elementType).FullName;
                         var fbEnumTypeName = ConvertTypeName(elementType);
-                        builder.AppendLine($"            {fbObjectName}.Add{f.Name}(fbb, {fbObjectName}.Create{f.Name}Vector(fbb, ({fbEnumTypeName})({underlyingTypeName})obj.{f.Name}));");
+
+                        builder.AppendLine($@"            var vector{f.Name} = default(VectorOffset?);
+            if (obj.{f.Name} != null)
+            {{
+                var casted{f.Name} = Array.ConvertAll(obj.{f.Name}, e => ({fbEnumTypeName})({underlyingTypeName})e);
+                vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, casted{f.Name});
+            }}");
                     }
                     else if (IsUnionType(elementType, schema))
                     {
                         var unionSerializerName = $"{ConvertTypeName(elementType)}__UnionSerializer";
-                        builder.AppendLine($"            {fbObjectName}.Add{f.Name}(fbb, {fbObjectName}.Create{f.Name}Vector(fbb, {unionSerializerName}.Serialize(fbb, obj.{f.Name})));");
+
+                        builder.AppendLine($@"            var vector{f.Name} = default(VectorOffset?);
+            if (obj.{f.Name} != null)
+            {{
+                var offsets{f.Name} = {unionSerializerName}.Serialize(fbb, obj.{f.Name});
+                vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, offsets{f.Name});
+            }}");
                     }
                     else
                     {
                         var elementSerializerName = ConvertSerializerName(elementType);
-                        builder.AppendLine($"            {fbObjectName}.Add{f.Name}(fbb, {fbObjectName}.Create{f.Name}Vector(fbb, {elementSerializerName}.Instance.Serialize(fbb, obj.{f.Name})));");
+
+                        builder.AppendLine($@"            var vector{f.Name} = default(VectorOffset?);
+            if (obj.{f.Name} != null)
+            {{
+                var offsets{f.Name} = {elementSerializerName}.Instance.Serialize(fbb, obj.{f.Name});
+                vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, offsets{f.Name});
+            }}");
                     }
                 }
                 else
                 {
                     if (f.Type == typeof(string))
                     {
-                        builder.AppendLine($"            if (!string.IsNullOrEmpty(obj.{f.Name})) {fbObjectName}.Add{f.Name}(fbb, fbb.CreateString(obj.{f.Name}));");
+                        builder.AppendLine($@"            var offset{f.Name} = default(StringOffset?);
+            if (!string.IsNullOrEmpty(obj.{f.Name}))
+                offset{f.Name} =  fbb.CreateString(obj.{f.Name});");
+                    }
+                    else if (IsScalarType(f.Type) || IsEnumType(f.Type))
+                    {
+                        // Do nothing
+                    }
+                    else if (IsUnionType(f.Type, schema))
+                    {
+                        var union = schema.Unions.Find(u => u.UnionType == f.Type);
+                        var unionFbName = ConvertTypeName(union.UnionType);
+
+                        builder.AppendLine($@"            int offset{f.Name};
+            {unionFbName} type{f.Name};
+            {unionFbName}__UnionSerializer.Serialize(fbb, obj.{f.Name}, out offset{f.Name}, out type{f.Name});");
+                    }
+                    else
+                    {
+                        var fieldSerializerName = ConvertSerializerName(f.Type);
+
+                        builder.AppendLine($@"            var offset{f.Name} = {fieldSerializerName}.Instance.Serialize(fbb, obj.{ f.Name});");
+                    }
+                }
+            }
+
+            builder.AppendLine($@"            {fbObjectName}.Start{fbObjectName}(fbb);");
+
+            foreach (var f in table.Fields)
+            {
+                if (IsCollectionType(f.Type))
+                {
+                    builder.AppendLine($@"            if (vector{f.Name}.HasValue)
+                {fbObjectName}.Add{f.Name}(fbb, vector{f.Name}.Value);");
+                }
+                else
+                {
+                    if (f.Type == typeof(string))
+                    {
+                        builder.AppendLine($@"            if (offset{f.Name}.HasValue)
+                {fbObjectName}.Add{f.Name}(fbb, offset{f.Name}.Value);");
                     }
                     else if (IsScalarType(f.Type))
                     {
@@ -401,9 +480,7 @@ namespace BehaveAsSakura.SerializationCompiler
                         var union = schema.Unions.Find(u => u.UnionType == f.Type);
                         var unionFbName = ConvertTypeName(union.UnionType);
 
-                        builder.AppendLine($@"            int offset{f.Name};
-            {unionFbName} type{f.Name};
-            if ({unionFbName}__UnionSerializer.Serialize(fbb, obj.{f.Name}, out offset{f.Name}, out type{f.Name}))
+                        builder.AppendLine($@"            if (type{f.Name} != {unionFbName}.NONE)
             {{
                 {fbObjectName}.Add{f.Name}(fbb, offset{f.Name});
                 {fbObjectName}.Add{f.Name}Type(fbb, type{f.Name});
@@ -411,8 +488,8 @@ namespace BehaveAsSakura.SerializationCompiler
                     }
                     else
                     {
-                        var fieldSerializerName = ConvertSerializerName(f.Type);
-                        builder.AppendLine($"            {fbObjectName}.Add{f.Name}(fbb, {fieldSerializerName}.Instance.Serialize(fbb, obj.{f.Name}));");
+                        builder.AppendLine($@"            if (offset{f.Name}.HasValue)
+                {fbObjectName}.Add{f.Name}(fbb, offset{f.Name}.Value);");
                     }
                 }
             }
@@ -544,7 +621,8 @@ namespace BehaveAsSakura.SerializationCompiler
             var descSerializer = ConvertSerializerName(typeof(BehaviorTreeDesc));
             var propsSerializer = ConvertSerializerName(typeof(BehaviorTreeProps));
 
-            builder.AppendLine($@"namespace {schema.Namespace}
+            builder.AppendLine($@"
+namespace {schema.Namespace}
 {{
     public static class BehaviorTreeSerializer
     {{
