@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 
 namespace BehaveAsSakura.SerializationCompiler
 {
@@ -46,12 +47,15 @@ namespace BehaveAsSakura.SerializationCompiler
         {
             yield return typeof(BehaviorTreeDesc).Assembly;
 
-            foreach (var p in Options.InputAssemblies)
+            if (Options.InputAssemblies != null)
             {
-                var path = Path.Combine(Environment.CurrentDirectory, p);
-                var assembly = Assembly.LoadFrom(path);
+                foreach (var p in Options.InputAssemblies)
+                {
+                    var path = Path.Combine(Environment.CurrentDirectory, p);
+                    var assembly = Assembly.LoadFrom(path);
 
-                yield return assembly;
+                    yield return assembly;
+                }
             }
         }
 
@@ -67,6 +71,9 @@ namespace BehaveAsSakura.SerializationCompiler
 
             process.Start();
             process.WaitForExit();
+
+            // TODO: Wait for file is created
+            Thread.Sleep(1000);
         }
     }
 }

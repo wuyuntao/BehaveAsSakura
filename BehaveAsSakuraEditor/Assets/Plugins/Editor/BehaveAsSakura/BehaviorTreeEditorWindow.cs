@@ -15,7 +15,7 @@ namespace BehaveAsSakura.Editor
             window.titleContent = new GUIContent(I18n._("Untitled Behavior Tree"));
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             // The actual window code goes here
         }

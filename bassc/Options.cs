@@ -5,7 +5,7 @@ namespace BehaveAsSakura.SerializationCompiler
 {
     class Options
     {
-        [OptionArray('i', "input-assemblies", Required = true)]
+        [OptionArray('i', "input-assemblies")]
         public string[] InputAssemblies { get; set; }
 
         [Option('c', "flatc-path", DefaultValue = "flatc.exe")]

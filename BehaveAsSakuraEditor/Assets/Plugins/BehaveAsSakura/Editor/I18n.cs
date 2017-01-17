@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
-    public class I18n
+    class I18n
     {
         private static string translationDirectory = "BehaveAsSakura/Translations";
         private static I18n instance = new I18n("en");
