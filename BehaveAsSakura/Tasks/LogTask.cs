@@ -6,7 +6,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 4)]
-    public sealed class LogTaskDesc : ITaskDesc
+    public sealed class LogTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]
         public string Message { get; set; }

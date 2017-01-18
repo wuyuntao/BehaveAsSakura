@@ -3,6 +3,10 @@ using System;
 
 namespace BehaveAsSakura.Tasks
 {
+    public interface IDecoratorTaskDesc : ITaskDesc
+    {
+    }
+
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(TaskDescWrapper), 2)]
     public class DecoratorTaskDescWrapper : TaskDescWrapper
@@ -15,7 +19,7 @@ namespace BehaveAsSakura.Tasks
     {
         private Task childTask;
 
-        protected DecoratorTask(BehaviorTree tree, Task parentTask, uint id, ITaskDesc description, ITaskProps props = null)
+        protected DecoratorTask(BehaviorTree tree, Task parentTask, uint id, IDecoratorTaskDesc description, ITaskProps props = null)
             : base(tree, parentTask, id, description, props)
         { }
 

@@ -2,6 +2,11 @@
 <Translation>
   <Item Key="Untitled Behavior Tree" />
   <Item Key="New task" />
+  <Item Key="Root Node" />
+  <Item Key="Ok" />
+  <Item Key="Behavior tree already has root task" />
+  <Item Key="Leaf task cannot have child task" />
+  <Item Key="Decorator task can only has one child task" />
   <Item Key="Category of task 'BehaveAsSakura.Tasks.ConditionalEvaluatorTaskDesc'" Value="Condition" />
   <Item Key="Title of task 'BehaveAsSakura.Tasks.ConditionalEvaluatorTaskDesc'" Value="Conditional Evaluator" />
   <Item Key="Category of task 'BehaveAsSakura.Tasks.InverterTaskDesc'" Value="Decorator" />

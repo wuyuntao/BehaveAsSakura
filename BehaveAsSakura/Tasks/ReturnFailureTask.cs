@@ -4,7 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 8)]
-    public class ReturnFailureTaskDesc : ITaskDesc
+    public class ReturnFailureTaskDesc : IDecoratorTaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {

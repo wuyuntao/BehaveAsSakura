@@ -78,8 +78,8 @@ enum BehaveAsSakura__Tasks__ITaskDesc : byte
  BehaveAsSakura__Tasks__SendEventTaskDesc = 11,
  BehaveAsSakura__Tasks__SequenceTaskDesc = 12,
  BehaveAsSakura__Tasks__SubTreeTaskDesc = 13,
- BehaveAsSakura__Tasks__UntilFailureDesc = 14,
- BehaveAsSakura__Tasks__UntilSuccessDesc = 15,
+ BehaveAsSakura__Tasks__UntilFailureTaskDesc = 14,
+ BehaveAsSakura__Tasks__UntilSuccessTaskDesc = 15,
  BehaveAsSakura__Tasks__WaitEventTaskDesc = 16,
  BehaveAsSakura__Tasks__WaitTimerTaskDesc = 17,
 };
@@ -1050,55 +1050,55 @@ struct BehaveAsSakura__Tasks__TaskPropsWrapper : IFlatbufferObject
   }
 };
 
-struct BehaveAsSakura__Tasks__UntilFailureDesc : IFlatbufferObject
+struct BehaveAsSakura__Tasks__UntilFailureTaskDesc : IFlatbufferObject
 {
   private Table __p;
   public ByteBuffer ByteBuffer { get { return __p.bb; } }
-  public static BehaveAsSakura__Tasks__UntilFailureDesc GetRootAsBehaveAsSakura__Tasks__UntilFailureDesc(ByteBuffer _bb) { return GetRootAsBehaveAsSakura__Tasks__UntilFailureDesc(_bb, new BehaveAsSakura__Tasks__UntilFailureDesc()); }
-  public static BehaveAsSakura__Tasks__UntilFailureDesc GetRootAsBehaveAsSakura__Tasks__UntilFailureDesc(ByteBuffer _bb, BehaveAsSakura__Tasks__UntilFailureDesc obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public static BehaveAsSakura__Tasks__UntilFailureTaskDesc GetRootAsBehaveAsSakura__Tasks__UntilFailureTaskDesc(ByteBuffer _bb) { return GetRootAsBehaveAsSakura__Tasks__UntilFailureTaskDesc(_bb, new BehaveAsSakura__Tasks__UntilFailureTaskDesc()); }
+  public static BehaveAsSakura__Tasks__UntilFailureTaskDesc GetRootAsBehaveAsSakura__Tasks__UntilFailureTaskDesc(ByteBuffer _bb, BehaveAsSakura__Tasks__UntilFailureTaskDesc obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __p.bb_pos = _i; __p.bb = _bb; }
-  public BehaveAsSakura__Tasks__UntilFailureDesc __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public BehaveAsSakura__Tasks__UntilFailureTaskDesc __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public uint Count { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetUint(o + __p.bb_pos) : (uint)0; } }
 
-  public static Offset<BehaveAsSakura__Tasks__UntilFailureDesc> CreateBehaveAsSakura__Tasks__UntilFailureDesc(FlatBufferBuilder builder,
+  public static Offset<BehaveAsSakura__Tasks__UntilFailureTaskDesc> CreateBehaveAsSakura__Tasks__UntilFailureTaskDesc(FlatBufferBuilder builder,
       uint count = 0) {
     builder.StartObject(1);
-    BehaveAsSakura__Tasks__UntilFailureDesc.AddCount(builder, count);
-    return BehaveAsSakura__Tasks__UntilFailureDesc.EndBehaveAsSakura__Tasks__UntilFailureDesc(builder);
+    BehaveAsSakura__Tasks__UntilFailureTaskDesc.AddCount(builder, count);
+    return BehaveAsSakura__Tasks__UntilFailureTaskDesc.EndBehaveAsSakura__Tasks__UntilFailureTaskDesc(builder);
   }
 
-  public static void StartBehaveAsSakura__Tasks__UntilFailureDesc(FlatBufferBuilder builder) { builder.StartObject(1); }
+  public static void StartBehaveAsSakura__Tasks__UntilFailureTaskDesc(FlatBufferBuilder builder) { builder.StartObject(1); }
   public static void AddCount(FlatBufferBuilder builder, uint count) { builder.AddUint(0, count, 0); }
-  public static Offset<BehaveAsSakura__Tasks__UntilFailureDesc> EndBehaveAsSakura__Tasks__UntilFailureDesc(FlatBufferBuilder builder) {
+  public static Offset<BehaveAsSakura__Tasks__UntilFailureTaskDesc> EndBehaveAsSakura__Tasks__UntilFailureTaskDesc(FlatBufferBuilder builder) {
     int o = builder.EndObject();
-    return new Offset<BehaveAsSakura__Tasks__UntilFailureDesc>(o);
+    return new Offset<BehaveAsSakura__Tasks__UntilFailureTaskDesc>(o);
   }
 };
 
-struct BehaveAsSakura__Tasks__UntilSuccessDesc : IFlatbufferObject
+struct BehaveAsSakura__Tasks__UntilSuccessTaskDesc : IFlatbufferObject
 {
   private Table __p;
   public ByteBuffer ByteBuffer { get { return __p.bb; } }
-  public static BehaveAsSakura__Tasks__UntilSuccessDesc GetRootAsBehaveAsSakura__Tasks__UntilSuccessDesc(ByteBuffer _bb) { return GetRootAsBehaveAsSakura__Tasks__UntilSuccessDesc(_bb, new BehaveAsSakura__Tasks__UntilSuccessDesc()); }
-  public static BehaveAsSakura__Tasks__UntilSuccessDesc GetRootAsBehaveAsSakura__Tasks__UntilSuccessDesc(ByteBuffer _bb, BehaveAsSakura__Tasks__UntilSuccessDesc obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public static BehaveAsSakura__Tasks__UntilSuccessTaskDesc GetRootAsBehaveAsSakura__Tasks__UntilSuccessTaskDesc(ByteBuffer _bb) { return GetRootAsBehaveAsSakura__Tasks__UntilSuccessTaskDesc(_bb, new BehaveAsSakura__Tasks__UntilSuccessTaskDesc()); }
+  public static BehaveAsSakura__Tasks__UntilSuccessTaskDesc GetRootAsBehaveAsSakura__Tasks__UntilSuccessTaskDesc(ByteBuffer _bb, BehaveAsSakura__Tasks__UntilSuccessTaskDesc obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __p.bb_pos = _i; __p.bb = _bb; }
-  public BehaveAsSakura__Tasks__UntilSuccessDesc __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public BehaveAsSakura__Tasks__UntilSuccessTaskDesc __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public uint Count { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetUint(o + __p.bb_pos) : (uint)0; } }
 
-  public static Offset<BehaveAsSakura__Tasks__UntilSuccessDesc> CreateBehaveAsSakura__Tasks__UntilSuccessDesc(FlatBufferBuilder builder,
+  public static Offset<BehaveAsSakura__Tasks__UntilSuccessTaskDesc> CreateBehaveAsSakura__Tasks__UntilSuccessTaskDesc(FlatBufferBuilder builder,
       uint count = 0) {
     builder.StartObject(1);
-    BehaveAsSakura__Tasks__UntilSuccessDesc.AddCount(builder, count);
-    return BehaveAsSakura__Tasks__UntilSuccessDesc.EndBehaveAsSakura__Tasks__UntilSuccessDesc(builder);
+    BehaveAsSakura__Tasks__UntilSuccessTaskDesc.AddCount(builder, count);
+    return BehaveAsSakura__Tasks__UntilSuccessTaskDesc.EndBehaveAsSakura__Tasks__UntilSuccessTaskDesc(builder);
   }
 
-  public static void StartBehaveAsSakura__Tasks__UntilSuccessDesc(FlatBufferBuilder builder) { builder.StartObject(1); }
+  public static void StartBehaveAsSakura__Tasks__UntilSuccessTaskDesc(FlatBufferBuilder builder) { builder.StartObject(1); }
   public static void AddCount(FlatBufferBuilder builder, uint count) { builder.AddUint(0, count, 0); }
-  public static Offset<BehaveAsSakura__Tasks__UntilSuccessDesc> EndBehaveAsSakura__Tasks__UntilSuccessDesc(FlatBufferBuilder builder) {
+  public static Offset<BehaveAsSakura__Tasks__UntilSuccessTaskDesc> EndBehaveAsSakura__Tasks__UntilSuccessTaskDesc(FlatBufferBuilder builder) {
     int o = builder.EndObject();
-    return new Offset<BehaveAsSakura__Tasks__UntilSuccessDesc>(o);
+    return new Offset<BehaveAsSakura__Tasks__UntilSuccessTaskDesc>(o);
   }
 };
 
@@ -1595,17 +1595,17 @@ namespace BehaveAsSakura.Serialization
 
             if (obj is BehaveAsSakura.Tasks.UntilFailureTaskDesc)
             {
-                var o = BehaveAsSakura__Tasks__UntilFailureDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilFailureTaskDesc)obj);
+                var o = BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilFailureTaskDesc)obj);
                 offset = o.HasValue ? o.Value.Value : 0;
-                type = BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureDesc;
+                type = BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureTaskDesc;
                 return true;
             }
 
             if (obj is BehaveAsSakura.Tasks.UntilSuccessTaskDesc)
             {
-                var o = BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilSuccessTaskDesc)obj);
+                var o = BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilSuccessTaskDesc)obj);
                 offset = o.HasValue ? o.Value.Value : 0;
-                type = BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessDesc;
+                type = BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessTaskDesc;
                 return true;
             }
 
@@ -1775,20 +1775,20 @@ namespace BehaveAsSakura.Serialization
 
                 if (obj is BehaveAsSakura.Tasks.UntilFailureTaskDesc)
                 {
-                    var o = BehaveAsSakura__Tasks__UntilFailureDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilFailureTaskDesc)obj);
+                    var o = BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilFailureTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
                     offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureDesc, 
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureTaskDesc, 
                                 offset);
                     continue;
                 }
 
                 if (obj is BehaveAsSakura.Tasks.UntilSuccessTaskDesc)
                 {
-                    var o = BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilSuccessTaskDesc)obj);
+                    var o = BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilSuccessTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
                     offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessDesc, 
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessTaskDesc, 
                                 offset);
                     continue;
                 }
@@ -1885,12 +1885,12 @@ namespace BehaveAsSakura.Serialization
                         objects[i] = BehaveAsSakura__Tasks__SubTreeTaskDesc__Serializer.Instance.Deserialize(wrapper.Value.Body<BehaveAsSakura__Tasks__SubTreeTaskDesc>());
                         break;
 
-                    case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureDesc:
-                        objects[i] = BehaveAsSakura__Tasks__UntilFailureDesc__Serializer.Instance.Deserialize(wrapper.Value.Body<BehaveAsSakura__Tasks__UntilFailureDesc>());
+                    case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureTaskDesc:
+                        objects[i] = BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer.Instance.Deserialize(wrapper.Value.Body<BehaveAsSakura__Tasks__UntilFailureTaskDesc>());
                         break;
 
-                    case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessDesc:
-                        objects[i] = BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer.Instance.Deserialize(wrapper.Value.Body<BehaveAsSakura__Tasks__UntilSuccessDesc>());
+                    case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessTaskDesc:
+                        objects[i] = BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer.Instance.Deserialize(wrapper.Value.Body<BehaveAsSakura__Tasks__UntilSuccessTaskDesc>());
                         break;
 
                     case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitEventTaskDesc:
@@ -2721,11 +2721,11 @@ namespace BehaveAsSakura.Serialization
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SubTreeTaskDesc:
                     return BehaveAsSakura__Tasks__SubTreeTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__SubTreeTaskDesc>());
 
-                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureDesc:
-                    return BehaveAsSakura__Tasks__UntilFailureDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilFailureDesc>());
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureTaskDesc:
+                    return BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilFailureTaskDesc>());
 
-                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessDesc:
-                    return BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilSuccessDesc>());
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessTaskDesc:
+                    return BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilSuccessTaskDesc>());
 
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitEventTaskDesc:
                     return BehaveAsSakura__Tasks__WaitEventTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__WaitEventTaskDesc>());
@@ -2752,7 +2752,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var vectorChildTaskIds = default(VectorOffset?);
             if (obj.ChildTaskIds != null)
-                vectorChildTaskIds = BehaveAsSakura__Tasks__CompositeTaskDescWrapper.CreateChildTaskIdsVector(fbb, obj.ChildTaskIds);
+                vectorChildTaskIds = BehaveAsSakura__Tasks__CompositeTaskDescWrapper.CreateChildTaskIdsVector(fbb, obj.ChildTaskIds.ToArray());
             var offsetName = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Name))
                 offsetName =  fbb.CreateString(obj.Name);
@@ -2785,7 +2785,7 @@ namespace BehaveAsSakura.Serialization
         {
             return new BehaveAsSakura.Tasks.CompositeTaskDescWrapper()
             {
-                ChildTaskIds = DeserializeScalar(obj.ChildTaskIdsLength, obj.ChildTaskIds),
+                ChildTaskIds = DeserializeScalar<System.UInt32>(obj.ChildTaskIdsLength, obj.ChildTaskIds).ToList(),
                 Id = obj.Id,
                 Name = obj.Name,
                 Comment = obj.Comment,
@@ -2836,11 +2836,11 @@ namespace BehaveAsSakura.Serialization
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SubTreeTaskDesc:
                     return BehaveAsSakura__Tasks__SubTreeTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__SubTreeTaskDesc>());
 
-                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureDesc:
-                    return BehaveAsSakura__Tasks__UntilFailureDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilFailureDesc>());
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureTaskDesc:
+                    return BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilFailureTaskDesc>());
 
-                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessDesc:
-                    return BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilSuccessDesc>());
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessTaskDesc:
+                    return BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilSuccessTaskDesc>());
 
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitEventTaskDesc:
                     return BehaveAsSakura__Tasks__WaitEventTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__WaitEventTaskDesc>());
@@ -2968,11 +2968,11 @@ namespace BehaveAsSakura.Serialization
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SubTreeTaskDesc:
                     return BehaveAsSakura__Tasks__SubTreeTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__SubTreeTaskDesc>());
 
-                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureDesc:
-                    return BehaveAsSakura__Tasks__UntilFailureDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilFailureDesc>());
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureTaskDesc:
+                    return BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilFailureTaskDesc>());
 
-                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessDesc:
-                    return BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilSuccessDesc>());
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessTaskDesc:
+                    return BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__UntilSuccessTaskDesc>());
 
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitEventTaskDesc:
                     return BehaveAsSakura__Tasks__WaitEventTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__WaitEventTaskDesc>());
@@ -3453,23 +3453,23 @@ namespace BehaveAsSakura.Serialization
         }
     }
 
-    class BehaveAsSakura__Tasks__UntilFailureDesc__Serializer : Serializer<BehaveAsSakura.Tasks.UntilFailureTaskDesc, BehaveAsSakura__Tasks__UntilFailureDesc>
+    class BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer : Serializer<BehaveAsSakura.Tasks.UntilFailureTaskDesc, BehaveAsSakura__Tasks__UntilFailureTaskDesc>
     {
-        public static readonly BehaveAsSakura__Tasks__UntilFailureDesc__Serializer Instance = new BehaveAsSakura__Tasks__UntilFailureDesc__Serializer();
+        public static readonly BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer Instance = new BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer();
 
-        public override Offset<BehaveAsSakura__Tasks__UntilFailureDesc>? Serialize(FlatBufferBuilder fbb, BehaveAsSakura.Tasks.UntilFailureTaskDesc obj)
+        public override Offset<BehaveAsSakura__Tasks__UntilFailureTaskDesc>? Serialize(FlatBufferBuilder fbb, BehaveAsSakura.Tasks.UntilFailureTaskDesc obj)
         {
             if (obj == null)
                 return null;
-            BehaveAsSakura__Tasks__UntilFailureDesc.StartBehaveAsSakura__Tasks__UntilFailureDesc(fbb);
-            BehaveAsSakura__Tasks__UntilFailureDesc.AddCount(fbb, obj.Count);
-            return BehaveAsSakura__Tasks__UntilFailureDesc.EndBehaveAsSakura__Tasks__UntilFailureDesc(fbb);
+            BehaveAsSakura__Tasks__UntilFailureTaskDesc.StartBehaveAsSakura__Tasks__UntilFailureTaskDesc(fbb);
+            BehaveAsSakura__Tasks__UntilFailureTaskDesc.AddCount(fbb, obj.Count);
+            return BehaveAsSakura__Tasks__UntilFailureTaskDesc.EndBehaveAsSakura__Tasks__UntilFailureTaskDesc(fbb);
         }
-        protected override BehaveAsSakura__Tasks__UntilFailureDesc GetRootAs(ByteBuffer buffer)
+        protected override BehaveAsSakura__Tasks__UntilFailureTaskDesc GetRootAs(ByteBuffer buffer)
         {
-            return BehaveAsSakura__Tasks__UntilFailureDesc.GetRootAsBehaveAsSakura__Tasks__UntilFailureDesc(buffer);
+            return BehaveAsSakura__Tasks__UntilFailureTaskDesc.GetRootAsBehaveAsSakura__Tasks__UntilFailureTaskDesc(buffer);
         }
-        public override BehaveAsSakura.Tasks.UntilFailureTaskDesc Deserialize(BehaveAsSakura__Tasks__UntilFailureDesc obj)
+        public override BehaveAsSakura.Tasks.UntilFailureTaskDesc Deserialize(BehaveAsSakura__Tasks__UntilFailureTaskDesc obj)
         {
             return new BehaveAsSakura.Tasks.UntilFailureTaskDesc()
             {
@@ -3478,23 +3478,23 @@ namespace BehaveAsSakura.Serialization
         }
     }
 
-    class BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer : Serializer<BehaveAsSakura.Tasks.UntilSuccessTaskDesc, BehaveAsSakura__Tasks__UntilSuccessDesc>
+    class BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer : Serializer<BehaveAsSakura.Tasks.UntilSuccessTaskDesc, BehaveAsSakura__Tasks__UntilSuccessTaskDesc>
     {
-        public static readonly BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer Instance = new BehaveAsSakura__Tasks__UntilSuccessDesc__Serializer();
+        public static readonly BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer Instance = new BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer();
 
-        public override Offset<BehaveAsSakura__Tasks__UntilSuccessDesc>? Serialize(FlatBufferBuilder fbb, BehaveAsSakura.Tasks.UntilSuccessTaskDesc obj)
+        public override Offset<BehaveAsSakura__Tasks__UntilSuccessTaskDesc>? Serialize(FlatBufferBuilder fbb, BehaveAsSakura.Tasks.UntilSuccessTaskDesc obj)
         {
             if (obj == null)
                 return null;
-            BehaveAsSakura__Tasks__UntilSuccessDesc.StartBehaveAsSakura__Tasks__UntilSuccessDesc(fbb);
-            BehaveAsSakura__Tasks__UntilSuccessDesc.AddCount(fbb, obj.Count);
-            return BehaveAsSakura__Tasks__UntilSuccessDesc.EndBehaveAsSakura__Tasks__UntilSuccessDesc(fbb);
+            BehaveAsSakura__Tasks__UntilSuccessTaskDesc.StartBehaveAsSakura__Tasks__UntilSuccessTaskDesc(fbb);
+            BehaveAsSakura__Tasks__UntilSuccessTaskDesc.AddCount(fbb, obj.Count);
+            return BehaveAsSakura__Tasks__UntilSuccessTaskDesc.EndBehaveAsSakura__Tasks__UntilSuccessTaskDesc(fbb);
         }
-        protected override BehaveAsSakura__Tasks__UntilSuccessDesc GetRootAs(ByteBuffer buffer)
+        protected override BehaveAsSakura__Tasks__UntilSuccessTaskDesc GetRootAs(ByteBuffer buffer)
         {
-            return BehaveAsSakura__Tasks__UntilSuccessDesc.GetRootAsBehaveAsSakura__Tasks__UntilSuccessDesc(buffer);
+            return BehaveAsSakura__Tasks__UntilSuccessTaskDesc.GetRootAsBehaveAsSakura__Tasks__UntilSuccessTaskDesc(buffer);
         }
-        public override BehaveAsSakura.Tasks.UntilSuccessTaskDesc Deserialize(BehaveAsSakura__Tasks__UntilSuccessDesc obj)
+        public override BehaveAsSakura.Tasks.UntilSuccessTaskDesc Deserialize(BehaveAsSakura__Tasks__UntilSuccessTaskDesc obj)
         {
             return new BehaveAsSakura.Tasks.UntilSuccessTaskDesc()
             {
@@ -3641,7 +3641,7 @@ namespace BehaveAsSakura.Serialization
             return new BehaveAsSakura.Events.SubscriptionProps()
             {
                 Type = obj.Type,
-                TaskIds = DeserializeScalar(obj.TaskIdsLength, obj.TaskIds),
+                TaskIds = DeserializeScalar<System.UInt32>(obj.TaskIdsLength, obj.TaskIds),
             };
         }
     }

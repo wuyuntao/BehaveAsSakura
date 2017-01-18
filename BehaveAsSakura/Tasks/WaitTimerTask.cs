@@ -7,7 +7,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 17)]
-    public class WaitTimerTaskDesc : ITaskDesc
+    public class WaitTimerTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]
         public VariableDesc Time { get; set; }

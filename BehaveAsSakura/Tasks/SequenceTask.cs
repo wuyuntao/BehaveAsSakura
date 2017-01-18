@@ -4,7 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 12)]
-    public class SequenceTaskDesc : ITaskDesc
+    public class SequenceTaskDesc : ICompositeTaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {

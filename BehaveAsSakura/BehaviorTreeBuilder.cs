@@ -108,18 +108,8 @@ namespace BehaveAsSakura
 
         public CompositeTaskBuilder AppendChild(TaskBuilder builder)
         {
-            if (task.ChildTaskIds == null)
-            {
-                task.ChildTaskIds = new uint[] { builder.Task.Id };
-            }
-            else
-            {
-                var children = new uint[task.ChildTaskIds.Length + 1];
-                Array.Copy(task.ChildTaskIds, children, task.ChildTaskIds.Length);
-                children[task.ChildTaskIds.Length] = builder.Task.Id;
-                task.ChildTaskIds = children;
-            }
-
+            task.ChildTaskIds.Add(builder.Task.Id);
+            
             return this;
         }
     }

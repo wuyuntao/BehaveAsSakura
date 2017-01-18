@@ -6,9 +6,14 @@
 
         public event EventAppliedHandler OnEventApplied;
 
-        protected EditorState(string id)
+        public EditorDomain Domain { get; private set; }
+
+        public EditorRepository Repository { get { return Domain.Repository; } }
+
+        protected EditorState(EditorDomain domain, string id)
             : base(id)
         {
+            Domain = domain;
         }
 
         public virtual void ApplyEvent(EditorEvent e)

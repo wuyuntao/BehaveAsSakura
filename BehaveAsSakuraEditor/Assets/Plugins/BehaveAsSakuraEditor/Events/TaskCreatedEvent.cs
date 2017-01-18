@@ -4,7 +4,7 @@ namespace BehaveAsSakura.Editor
 {
     public class TaskCreatedEvent : EditorEvent
     {
-        public Type TaskType { get; set; }
+        public TaskState NewTask { get; set; }
 
         public TaskCreatedEvent(string id)
             : base(id)

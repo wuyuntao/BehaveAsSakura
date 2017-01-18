@@ -4,7 +4,7 @@ using BehaveAsSakura.Tasks;
 namespace BehaveAsSakura.Tests
 {
     [BehaveAsTable]
-    public sealed class DumpLogTaskDesc : ITaskDesc
+    public sealed class DumpLogTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]
         public string Text { get; set; }

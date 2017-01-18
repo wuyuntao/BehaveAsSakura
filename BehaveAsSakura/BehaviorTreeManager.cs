@@ -1,6 +1,7 @@
 ﻿using BehaveAsSakura.Tasks;
 using BehaveAsSakura.Variables;
 using System;
+using System.Linq;
 
 namespace BehaveAsSakura
 {
@@ -49,7 +50,7 @@ namespace BehaveAsSakura
                 {
                     var compositeTask = (CompositeTask)task;
                     var childTaskIds = ((CompositeTaskDescWrapper)descWrapper).ChildTaskIds;
-                    var childTasks = Array.ConvertAll(childTaskIds, i => CreateTask(tree, treeDesc, task, i));
+                    var childTasks = childTaskIds.Select(i => CreateTask(tree, treeDesc, task, i)).ToArray();
                     compositeTask.InitializeChildren(childTasks);
                 }
             }

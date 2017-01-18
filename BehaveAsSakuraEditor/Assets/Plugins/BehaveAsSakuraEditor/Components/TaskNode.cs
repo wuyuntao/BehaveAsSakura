@@ -6,12 +6,12 @@ namespace BehaveAsSakura.Editor
 {
     public abstract class TaskNode : Node
     {
-        private uint taskId;
+        public TaskState Task { get; private set; }
 
-        protected TaskNode(EditorDomain domain, EditorComponent parent, uint taskId, Vector2 position, Vector2 size, GUIStyle style)
+        protected TaskNode(EditorDomain domain, EditorComponent parent, TaskState task, Vector2 position, Vector2 size, GUIStyle style)
             : base(domain, parent, null, position, size, style)
         {
-            this.taskId = taskId;
+            Task = task;
         }
 
         public override void OnContextMenu(Event e)
@@ -19,24 +19,21 @@ namespace BehaveAsSakura.Editor
             base.OnContextMenu(e);
 
             var menu = new GenericMenu();
-            EditorHelper.AddNewTaskMenuItems(menu, CanCreateChildTask(), OnContextMenu_NewTask);
+            EditorHelper.AddNewTaskMenuItems(menu, CanCreateChildTask(), (s) => OnContextMenu_NewTask((Type)s, e.mousePosition));
             menu.ShowAsContext();
 
             e.Use();
         }
 
+        private void OnContextMenu_NewTask(Type taskType, Vector2 taskPosition)
+        {
+            Domain.CommandHandler.ProcessCommand(new CreateTaskCommand(Task.Id)
+            {
+                TaskType = taskType,
+                TaskPosition = taskPosition,
+            });
+        }
+
         protected abstract bool CanCreateChildTask();
-
-        private void OnContextMenu_NewTask(object userData)
-        {
-            var taskType = (Type)userData;
-
-            Debug.LogFormat("OnContextMenu_NewTask {0}", taskType);
-        }
-
-        protected TaskState Task
-        {
-            get { return (TaskState)Repository.States[TaskState.GetId(taskId)]; }
-        }
     }
 }

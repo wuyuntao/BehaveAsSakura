@@ -5,8 +5,8 @@ namespace BehaveAsSakura.Editor
 {
     public class LeafTaskNode : TaskNode
     {
-        protected LeafTaskNode(EditorDomain domain, EditorComponent parent, uint taskId, Vector2 position, Vector2 size, GUIStyle style)
-            : base(domain, parent, taskId, position, size, style)
+        protected LeafTaskNode(EditorDomain domain, EditorComponent parent, TaskState task, Vector2 position, Vector2 size, GUIStyle style)
+            : base(domain, parent, task, position, size, style)
         {
         }
 

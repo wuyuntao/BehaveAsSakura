@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace BehaveAsSakura.Editor
@@ -20,13 +19,14 @@ namespace BehaveAsSakura.Editor
             window.titleContent = new GUIContent(I18n._("Untitled Behavior Tree"));
 
             var repo = new EditorRepository();
-
-            var tree = new BehaviorTreeState(BehaviorTreeState.DefaultId);
-            repo.States[BehaviorTreeState.DefaultId] = tree;
-
             var handler = new BehaviorTreeCommandHandler();
+            var domain = new EditorDomain(repo, handler);
 
-            window.domain = new EditorDomain(repo, handler);
+            var treeId = BehaviorTreeState.GetId();
+            var tree = new BehaviorTreeState(domain, treeId);
+            repo.States[treeId] = tree;
+
+            window.domain = domain;
             window.view = new BehaviorTreeView(window.domain, tree, window.position.size);
         }
 

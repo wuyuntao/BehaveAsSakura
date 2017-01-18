@@ -7,7 +7,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 1)]
-    public class ConditionalEvaluatorTaskDesc : ITaskDesc
+    public class ConditionalEvaluatorTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]
         public VariableDesc Left { get; set; }

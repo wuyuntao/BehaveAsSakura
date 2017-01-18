@@ -5,7 +5,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 13)]
-    public class SubTreeTaskDesc : ITaskDesc
+    public class SubTreeTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]
         public VariableDesc SubTreePath { get; set; }

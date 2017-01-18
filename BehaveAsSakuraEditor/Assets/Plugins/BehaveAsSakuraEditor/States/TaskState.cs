@@ -1,5 +1,6 @@
 ﻿using BehaveAsSakura.Tasks;
-using System.Collections.Generic;
+using System;
+using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
@@ -12,24 +13,44 @@ namespace BehaveAsSakura.Editor
 
         public TaskDescWrapper Desc { get; set; }
 
-        public List<uint> ChildTaskIds { get; set; }
+        public Vector2 Position { get; set; }
 
-        public TaskState(string id)
-            : base(id)
+        public TaskState(EditorDomain domain, string id, TaskDescWrapper taskDesc)
+            : base(domain, id)
         {
-            ChildTaskIds = new List<uint>();
+            Desc = taskDesc;
         }
 
         public override void ApplyEvent(EditorEvent e)
         {
             if (e is TaskCreatedEvent)
             {
+                OnTaskCreatedEvent((TaskCreatedEvent)e);
             }
             else if (e is TaskRemovedEvent)
             {
             }
 
             base.ApplyEvent(e);
+        }
+
+        private void OnTaskCreatedEvent(TaskCreatedEvent e)
+        {
+            Repository.States[e.NewTask.Id] = e.NewTask;
+
+            if (Desc is DecoratorTaskDescWrapper)
+            {
+                var desc = (DecoratorTaskDescWrapper)Desc;
+                desc.ChildTaskId = e.NewTask.Desc.Id;
+            }
+            else if (Desc is CompositeTaskDescWrapper)
+            {
+                var desc = (CompositeTaskDescWrapper)Desc;
+                desc.ChildTaskIds.Add(e.NewTask.Desc.Id);
+            }
+
+            var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
+            tree.NextTaskId = Math.Max(tree.NextTaskId, e.NewTask.Desc.Id) + 1;
         }
     }
 }

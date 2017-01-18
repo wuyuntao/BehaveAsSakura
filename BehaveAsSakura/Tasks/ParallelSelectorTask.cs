@@ -4,7 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 5)]
-    public class ParallelSelectorTaskDesc : ParallelTaskDesc, ITaskDesc
+    public class ParallelSelectorTaskDesc : ParallelTaskDesc, ICompositeTaskDesc
     {
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {

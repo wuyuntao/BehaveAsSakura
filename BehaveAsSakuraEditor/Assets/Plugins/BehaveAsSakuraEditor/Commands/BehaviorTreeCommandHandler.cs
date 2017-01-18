@@ -25,10 +25,7 @@ namespace BehaveAsSakura.Editor
                 var tree = (BehaviorTreeState)parent;
                 if (tree.RootTaskId > 0)
                 {
-                    parent.ApplyEvent(new TaskNotCreatedEvent(command.Id)
-                    {
-                        Reason = "Behavior tree already has root task"
-                    });
+                    parent.ApplyEvent(new TaskNotCreatedEvent(command.Id) { Reason = "Behavior tree already has root task" });
                     return;
                 }
             }
@@ -37,10 +34,7 @@ namespace BehaveAsSakura.Editor
                 var task = (TaskState)parent;
                 if (task.Desc is LeafTaskDescWrapper)
                 {
-                    parent.ApplyEvent(new TaskNotCreatedEvent(command.Id)
-                    {
-                        Reason = "Leaf task cannot have child task"
-                    });
+                    parent.ApplyEvent(new TaskNotCreatedEvent(command.Id) { Reason = "Leaf task cannot have child task" });
                     return;
                 }
                 else if (task.Desc is DecoratorTaskDescWrapper)
@@ -48,10 +42,7 @@ namespace BehaveAsSakura.Editor
                     var desc = (DecoratorTaskDescWrapper)task.Desc;
                     if (desc.ChildTaskId != 0)
                     {
-                        parent.ApplyEvent(new TaskNotCreatedEvent(command.Id)
-                        {
-                            Reason = "Decorator task can only has one child task"
-                        });
+                        parent.ApplyEvent(new TaskNotCreatedEvent(command.Id) { Reason = "Decorator task can only has one child task" });
                         return;
                     }
                 }
@@ -59,10 +50,15 @@ namespace BehaveAsSakura.Editor
             else
                 throw new NotSupportedException(command.Id);
 
-            parent.ApplyEvent(new TaskCreatedEvent(command.Id)
             {
-                TaskType = command.TaskType
-            });
+                var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
+                TaskDescWrapper taskDescWrapper = null;
+                taskDescWrapper.Id = tree.NextTaskId;
+                taskDescWrapper.CustomDesc = (ITaskDesc)Activator.CreateInstance(command.TaskType);
+                var taskState = new TaskState(Domain, TaskState.GetId(tree.NextTaskId), taskDescWrapper);
+
+                parent.ApplyEvent(new TaskCreatedEvent(command.Id) { NewTask = taskState });
+            }
         }
 
         private void OnRemoveTaskCommand(RemoveTaskCommand command)

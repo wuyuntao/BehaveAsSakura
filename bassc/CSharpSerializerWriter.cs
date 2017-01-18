@@ -368,6 +368,7 @@ namespace {schema.Namespace}
                 if (IsCollectionType(f.Type))
                 {
                     var elementType = GetElementType(f.Type);
+                    var toArray = IsListType(f.Type) ? ".ToArray()" : "";
 
                     if (elementType == typeof(string))
                     {
@@ -382,7 +383,7 @@ namespace {schema.Namespace}
                     {
                         builder.AppendLine($@"            var vector{f.Name} = default(VectorOffset?);
             if (obj.{f.Name} != null)
-                vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, obj.{f.Name});");
+                vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, obj.{f.Name}{toArray});");
                     }
                     else if (IsEnumType(elementType))
                     {
