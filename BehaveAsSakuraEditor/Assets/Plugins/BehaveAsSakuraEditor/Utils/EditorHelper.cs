@@ -18,7 +18,11 @@ namespace BehaveAsSakura.Editor
 
             return from a in assemblies
                    from t in a.GetTypes()
-                   where t != typeof(ITaskDesc) && typeof(ITaskDesc).IsAssignableFrom(t)
+                   where t != typeof(ITaskDesc)
+                        && t != typeof(ILeafTaskDesc)
+                        && t != typeof(IDecoratorTaskDesc)
+                        && t != typeof(ICompositeTaskDesc)
+                        && typeof(ITaskDesc).IsAssignableFrom(t)
                    select t;
         }
 

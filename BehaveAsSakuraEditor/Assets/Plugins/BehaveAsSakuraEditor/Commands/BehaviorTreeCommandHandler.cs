@@ -52,10 +52,22 @@ namespace BehaveAsSakura.Editor
 
             {
                 var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
-                TaskDescWrapper taskDescWrapper = null;
+                TaskDescWrapper taskDescWrapper;
+                if (typeof(ILeafTaskDesc).IsAssignableFrom(command.TaskType))
+                    taskDescWrapper = new LeafTaskDescWrapper();
+                else if (typeof(IDecoratorTaskDesc).IsAssignableFrom(command.TaskType))
+                    taskDescWrapper = new DecoratorTaskDescWrapper();
+                else if (typeof(ICompositeTaskDesc).IsAssignableFrom(command.TaskType))
+                    taskDescWrapper = new CompositeTaskDescWrapper();
+                else
+                    throw new NotSupportedException(command.TaskType.ToString());
                 taskDescWrapper.Id = tree.NextTaskId;
                 taskDescWrapper.CustomDesc = (ITaskDesc)Activator.CreateInstance(command.TaskType);
-                var taskState = new TaskState(Domain, TaskState.GetId(tree.NextTaskId), taskDescWrapper);
+                var taskState = new TaskState(Domain, TaskState.GetId(tree.NextTaskId))
+                {
+                    Desc = taskDescWrapper,
+                    Position = command.TaskPosition,
+                };
 
                 parent.ApplyEvent(new TaskCreatedEvent(command.Id) { NewTask = taskState });
             }

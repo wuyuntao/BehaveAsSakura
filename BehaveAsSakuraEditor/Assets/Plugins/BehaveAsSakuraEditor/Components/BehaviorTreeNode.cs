@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BehaveAsSakura.Tasks;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -29,7 +30,23 @@ namespace BehaveAsSakura.Editor
 
         private void OnTaskCreatedEvent(TaskCreatedEvent e)
         {
-            throw new NotImplementedException();
+            TaskNode node;
+            if (e.NewTask.Desc is LeafTaskDescWrapper)
+            {
+                node = new LeafTaskNode(Domain, this, e.NewTask);
+            }
+            else if (e.NewTask.Desc is DecoratorTaskDescWrapper)
+            {
+                node = new DecoratorTaskNode(Domain, this, e.NewTask);
+            }
+            else if (e.NewTask.Desc is CompositeTaskDescWrapper)
+            {
+                node = new CompositeTaskNode(Domain, this, e.NewTask);
+            }
+            else
+                throw new NotSupportedException(e.NewTask.Desc.ToString());
+
+            Children.Add(node);
         }
 
         private static void OnTaskNotCreatedEvent(EditorEvent e)
@@ -46,7 +63,7 @@ namespace BehaveAsSakura.Editor
             base.OnContextMenu(e);
 
             var menu = new GenericMenu();
-            EditorHelper.AddNewTaskMenuItems(menu, Tree.RootTaskId == 0, (s) => OnContextMenu_NewTask((Type)s, e.mousePosition));
+            EditorHelper.AddNewTaskMenuItems(menu, Tree.RootTaskId == 0, (s) => OnContextMenu_NewTask((Type)s, e.mousePosition - RootView.ScrollOffset));
             menu.ShowAsContext();
 
             e.Use();

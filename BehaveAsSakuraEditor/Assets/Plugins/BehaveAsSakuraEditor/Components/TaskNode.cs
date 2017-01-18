@@ -8,8 +8,13 @@ namespace BehaveAsSakura.Editor
     {
         public TaskState Task { get; private set; }
 
-        protected TaskNode(EditorDomain domain, EditorComponent parent, TaskState task, Vector2 position, Vector2 size, GUIStyle style)
-            : base(domain, parent, null, position, size, style)
+        protected TaskNode(EditorDomain domain, EditorComponent parent, TaskState task)
+            : base(domain
+                  , parent
+                  , I18n._(string.Format("Title of task '{0}'", task.Desc.CustomDesc.GetType().FullName))
+                  , task.Position
+                  , EditorConfiguration.TaskNodeSize
+                  , EditorConfiguration.TaskNodeStyle)
         {
             Task = task;
         }
@@ -19,7 +24,7 @@ namespace BehaveAsSakura.Editor
             base.OnContextMenu(e);
 
             var menu = new GenericMenu();
-            EditorHelper.AddNewTaskMenuItems(menu, CanCreateChildTask(), (s) => OnContextMenu_NewTask((Type)s, e.mousePosition));
+            EditorHelper.AddNewTaskMenuItems(menu, CanCreateChildTask(), (s) => OnContextMenu_NewTask((Type)s, e.mousePosition - RootView.ScrollOffset));
             menu.ShowAsContext();
 
             e.Use();

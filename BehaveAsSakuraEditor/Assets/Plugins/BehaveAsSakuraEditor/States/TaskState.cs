@@ -15,10 +15,9 @@ namespace BehaveAsSakura.Editor
 
         public Vector2 Position { get; set; }
 
-        public TaskState(EditorDomain domain, string id, TaskDescWrapper taskDesc)
+        public TaskState(EditorDomain domain, string id)
             : base(domain, id)
         {
-            Desc = taskDesc;
         }
 
         public override void ApplyEvent(EditorEvent e)

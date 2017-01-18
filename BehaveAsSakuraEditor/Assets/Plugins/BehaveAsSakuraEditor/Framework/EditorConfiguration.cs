@@ -32,5 +32,7 @@ namespace BehaveAsSakura.Editor
             },
             border = new RectOffset(12, 12, 12, 12),
         };
+
+        public static readonly Logger.Level LoggerLevel = Logger.Level.Debug;
     }
 }
