@@ -528,7 +528,7 @@ namespace {schema.Namespace}
 
                     if (elementType == typeof(string) || IsScalarType(elementType))
                     {
-                        builder.Append($"                {f.Name} = DeserializeScalar(obj.{f.Name}Length, obj.{f.Name})");
+                        builder.Append($"                {f.Name} = DeserializeScalar<{elementType.FullName}>(obj.{f.Name}Length, obj.{f.Name})");
                     }
                     else if (IsEnumType(elementType))
                     {

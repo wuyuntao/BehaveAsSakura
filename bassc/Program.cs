@@ -36,11 +36,6 @@ namespace BehaveAsSakura.SerializationCompiler
                 var outputPath = Path.Combine(Environment.CurrentDirectory, Options.OutputPath);
                 CSharpSerializerWriter.ToFile(schema, csharpPath, outputPath);
             }
-
-#if DEBUG
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-#endif
         }
 
         private static IEnumerable<Assembly> LoadAssemblies()
