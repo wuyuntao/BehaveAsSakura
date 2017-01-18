@@ -21,9 +21,8 @@ namespace BehaveAsSakura.Editor
 
             var repo = new EditorRepository();
 
-            var treeId = string.Format("{0}-{1}", typeof(BehaviorTreeState).Name, Guid.NewGuid());
-            var tree = new BehaviorTreeState(treeId);
-            repo.States[treeId] = tree;
+            var tree = new BehaviorTreeState(BehaviorTreeState.DefaultId);
+            repo.States[BehaviorTreeState.DefaultId] = tree;
 
             var handler = new BehaviorTreeCommandHandler();
 

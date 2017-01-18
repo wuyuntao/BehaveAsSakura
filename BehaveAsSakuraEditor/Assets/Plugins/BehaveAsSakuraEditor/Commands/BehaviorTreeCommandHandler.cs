@@ -23,7 +23,7 @@ namespace BehaveAsSakura.Editor
             if (parent is BehaviorTreeState)
             {
                 var tree = (BehaviorTreeState)parent;
-                if (tree.RootTask != null)
+                if (tree.RootTaskId > 0)
                 {
                     parent.ApplyEvent(new TaskNotCreatedEvent(command.Id)
                     {

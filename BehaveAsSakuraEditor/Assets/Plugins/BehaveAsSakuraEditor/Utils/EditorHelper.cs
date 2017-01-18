@@ -22,17 +22,23 @@ namespace BehaveAsSakura.Editor
                    select t;
         }
 
-        public static void AddNewTaskMenuItems(GenericMenu menu, GenericMenu.MenuFunction2 callback)
+        public static void AddNewTaskMenuItems(GenericMenu menu, bool enabled, GenericMenu.MenuFunction2 callback)
         {
             var newTaskText = I18n._("New task");
-
-            foreach (var t in FindAllTaskDescs())
+            if (enabled)
             {
-                var categoryText = I18n._(string.Format("Category of task '{0}'", t.FullName));
-                var titleText = I18n._(string.Format("Title of task '{0}'", t.FullName));
-                var menuItemText = string.Format("{0}/{1}/{2}", newTaskText, categoryText, titleText);
+                foreach (var t in FindAllTaskDescs())
+                {
+                    var categoryText = I18n._(string.Format("Category of task '{0}'", t.FullName));
+                    var titleText = I18n._(string.Format("Title of task '{0}'", t.FullName));
+                    var menuItemText = string.Format("{0}/{1}/{2}", newTaskText, categoryText, titleText);
 
-                menu.AddItem(new GUIContent(menuItemText), false, callback, t);
+                    menu.AddItem(new GUIContent(menuItemText), false, callback, t);
+                }
+            }
+            else
+            {
+                menu.AddDisabledItem(new GUIContent(newTaskText));
             }
         }
 

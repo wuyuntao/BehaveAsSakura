@@ -5,9 +5,11 @@ namespace BehaveAsSakura.Editor
 {
     public class BehaviorTreeState : EditorState
     {
-        public string FilePath;
+        public const string DefaultId = "BehaviorTree";
 
-        public TaskState RootTask;
+        public string FilePath { get; private set; }
+
+        public uint RootTaskId { get; private set; }
 
         public BehaviorTreeState(string id)
             : base(id)

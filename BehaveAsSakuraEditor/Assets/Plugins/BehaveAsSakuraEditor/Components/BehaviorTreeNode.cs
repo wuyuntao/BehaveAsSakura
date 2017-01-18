@@ -16,10 +16,10 @@ namespace BehaveAsSakura.Editor
             base.OnContextMenu(e);
 
             var menu = new GenericMenu();
-
-            EditorHelper.AddNewTaskMenuItems(menu, OnContextMenu_NewTask);
-
+            var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.DefaultId];
+            EditorHelper.AddNewTaskMenuItems(menu, tree.RootTaskId == 0, OnContextMenu_NewTask);
             menu.ShowAsContext();
+
             e.Use();
         }
 
