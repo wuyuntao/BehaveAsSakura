@@ -7,6 +7,8 @@ namespace BehaveAsSakura.Editor
     {
         public override void ProcessCommand(EditorCommand command)
         {
+            base.ProcessCommand(command);
+
             if (command is CreateTaskCommand)
             {
                 OnCreateTaskCommand((CreateTaskCommand)command);

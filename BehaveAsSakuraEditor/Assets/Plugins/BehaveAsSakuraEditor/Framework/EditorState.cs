@@ -16,8 +16,15 @@
             Domain = domain;
         }
 
+        public override string ToString()
+        {
+            return Id;
+        }
+
         public virtual void ApplyEvent(EditorEvent e)
         {
+            Logger.Debug("'{0}' Apply event '{1}'", this, e);
+
             if (OnEventApplied != null)
                 OnEventApplied(this, e);
         }
