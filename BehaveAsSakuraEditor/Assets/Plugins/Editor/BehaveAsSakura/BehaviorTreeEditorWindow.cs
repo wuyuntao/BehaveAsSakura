@@ -7,7 +7,7 @@ namespace BehaveAsSakura.Editor
     public class BehaviorTreeEditorWindow : EditorWindow
     {
         private EditorDomain domain;
-        private BehaviorTreeNodeCanvas view;
+        private BehaviorTreeView view;
 
         [MenuItem("BehaveAsSakura/New Behavior Tree")]
         private static void NewBehaviorTree()
@@ -28,7 +28,7 @@ namespace BehaveAsSakura.Editor
             var handler = new BehaviorTreeCommandHandler();
 
             window.domain = new EditorDomain(repo, handler);
-            window.view = new BehaviorTreeNodeCanvas(window.domain);
+            window.view = new BehaviorTreeView(window.domain, tree, window.position.size);
         }
 
         private void OnGUI()
