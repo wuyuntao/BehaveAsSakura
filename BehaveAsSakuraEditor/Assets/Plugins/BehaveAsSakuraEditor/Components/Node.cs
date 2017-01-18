@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
     public abstract class Node : EditorComponent
     {
-        public new BehaviorTreeView Parent { get; private set; }
+        public BehaviorTreeView RootView { get; private set; }
 
         public string Title { get; private set; }
 
@@ -14,14 +15,25 @@ namespace BehaveAsSakura.Editor
 
         public GUIStyle Style { get; private set; }
 
-        protected Node(EditorDomain domain, BehaviorTreeView parent, string title, Vector2 position, Vector2 size, GUIStyle style)
+        protected Node(EditorDomain domain, EditorComponent parent, string title, Vector2 position, Vector2 size, GUIStyle style)
             : base(domain, parent)
         {
-            Parent = parent;
             Title = title;
             Position = position;
             Size = size;
             Style = style;
+            RootView = FindRootView();
+        }
+
+        private BehaviorTreeView FindRootView()
+        {
+            for (EditorComponent e = this; e != null; e = e.Parent)
+            {
+                if (e is BehaviorTreeView)
+                    return (BehaviorTreeView)e;
+            }
+
+            throw new InvalidOperationException("Failed to find root view");
         }
 
         public override void OnGUI()
@@ -39,7 +51,7 @@ namespace BehaveAsSakura.Editor
             var rect = CalculateGUIRect();
             if (rect.Contains(e.mousePosition))
             {
-                if (e.button == 1)
+                if (EditorHelper.IsRightButton(e))
                 {
                     OnContextMenu(e);
                     return true;
@@ -56,7 +68,7 @@ namespace BehaveAsSakura.Editor
 
         private Rect CalculateGUIRect()
         {
-            return new Rect(Position + Parent.ScrollOffset - Size / 2, Size);
+            return new Rect(Position + RootView.ScrollOffset - Size / 2, Size);
         }
     }
 }

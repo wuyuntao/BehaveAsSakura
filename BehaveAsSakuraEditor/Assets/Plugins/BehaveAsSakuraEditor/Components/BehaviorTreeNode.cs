@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEditor;
+using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
@@ -7,6 +9,25 @@ namespace BehaveAsSakura.Editor
         public BehaviorTreeNode(EditorDomain domain, BehaviorTreeView parent, string title)
             : base(domain, parent, title, EditorConfiguration.BehaviorTreeNodePosition, EditorConfiguration.BehaviorTreeNodeSize, EditorConfiguration.BehaviorTreeNodeStyle)
         {
+        }
+
+        public override void OnContextMenu(Event e)
+        {
+            base.OnContextMenu(e);
+
+            var menu = new GenericMenu();
+
+            EditorHelper.AddNewTaskMenuItems(menu, OnContextMenu_NewTask);
+
+            menu.ShowAsContext();
+            e.Use();
+        }
+
+        private void OnContextMenu_NewTask(object userData)
+        {
+            var taskType = (Type)userData;
+
+            Debug.LogFormat("OnContextMenu_NewTask {0}", taskType);
         }
     }
 }

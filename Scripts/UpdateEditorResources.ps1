@@ -12,11 +12,11 @@ mkdir -force $PluginsPath
 cp -recurse -force "$NodeEditorPath\Editor" $PluginsPath
 cp -recurse -force "$NodeEditorPath\Node_Editor" $PluginsPath
 
-mkdir -force "$PluginsPath\BehaveAsSakura\Assemblies"
+mkdir -force "$PluginsPath\BehaveAsSakuraEditor\Assemblies"
 
-cp -recurse -force "$BehaveAsSakuraPath\BehaveAsSakura.*" "$PluginsPath\BehaveAsSakura\Assemblies"
-cp -recurse -force "$FlatBufferPath\FlatBuffers.*" "$PluginsPath\BehaveAsSakura\Assemblies"
+cp -recurse -force "$BehaveAsSakuraPath\BehaveAsSakura.*" "$PluginsPath\BehaveAsSakuraEditor\Assemblies"
+cp -recurse -force "$FlatBufferPath\FlatBuffers.*" "$PluginsPath\BehaveAsSakuraEditor\Assemblies"
 
 pushd $CompilerPath
-& ".\bassc.exe" -o "$PluginsPath\BehaveAsSakura\Assemblies\BehaveAsSakuraSerializer.cs"
+& ".\bassc.exe" -o "$PluginsPath\BehaveAsSakuraEditor\Assemblies\BehaveAsSakuraSerializer.cs"
 popd
