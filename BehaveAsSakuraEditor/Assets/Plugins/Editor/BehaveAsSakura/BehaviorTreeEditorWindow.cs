@@ -16,7 +16,7 @@ namespace BehaveAsSakura.Editor
 
             var window = GetWindow<BehaviorTreeEditorWindow>();
 
-            window.minSize = EditorSettings.MinWindowSize;
+            window.minSize = EditorConfiguration.MinWindowSize;
             window.titleContent = new GUIContent(I18n._("Untitled Behavior Tree"));
 
             var repo = new EditorRepository();
