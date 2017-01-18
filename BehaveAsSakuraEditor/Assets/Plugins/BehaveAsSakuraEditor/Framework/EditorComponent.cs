@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
-    public  abstract class EditorComponent
+    public abstract class EditorComponent
     {
         public EditorDomain Domain { get; private set; }
 
@@ -20,9 +22,17 @@ namespace BehaveAsSakura.Editor
         public virtual void OnGUI()
         {
             foreach (var child in Children)
-            {
                 child.OnGUI();
-            }
+        }
+
+        public virtual bool OnMouseDown(Event e)
+        {
+            return Children.Any(c => c.OnMouseDown(e));
+        }
+
+        public virtual bool OnMouseUp(Event e)
+        {
+            return Children.Any(c => c.OnMouseUp(e));
         }
     }
 }

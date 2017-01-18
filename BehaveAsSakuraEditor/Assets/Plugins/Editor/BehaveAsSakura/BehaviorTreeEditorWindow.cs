@@ -33,6 +33,20 @@ namespace BehaveAsSakura.Editor
 
         private void OnGUI()
         {
+            if (view == null)
+                return;
+
+            switch (Event.current.type)
+            {
+                case EventType.MouseDown:
+                    view.OnMouseDown(Event.current);
+                    break;
+
+                case EventType.MouseUp:
+                    view.OnMouseUp(Event.current);
+                    break;
+            }
+
             view.OnGUI();
         }
     }

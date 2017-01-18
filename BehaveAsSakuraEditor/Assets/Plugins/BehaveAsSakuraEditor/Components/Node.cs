@@ -28,9 +28,35 @@ namespace BehaveAsSakura.Editor
         {
             base.OnGUI();
 
-            var rect = new Rect(Position + Parent.ScrollOffset - Size / 2, Size);
+            GUI.Box(CalculateGUIRect(), Title, Style);
+        }
 
-            GUI.Box(rect, Title, Style);
+        public override bool OnMouseUp(Event e)
+        {
+            if (base.OnMouseUp(e))
+                return true;
+
+            var rect = CalculateGUIRect();
+            if (rect.Contains(e.mousePosition))
+            {
+                if (e.button == 1)
+                {
+                    OnContextMenu(e);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public virtual void OnContextMenu(Event e)
+        {
+            Debug.LogFormat("OnContextMenu");
+        }
+
+        private Rect CalculateGUIRect()
+        {
+            return new Rect(Position + Parent.ScrollOffset - Size / 2, Size);
         }
     }
 }
