@@ -14,7 +14,7 @@ namespace BehaveAsSakura.Editor
         public BehaviorTreeState Tree { get; private set; }
 
         public BehaviorTreeView(EditorDomain domain, BehaviorTreeState tree, Vector2 windowSize)
-            : base(domain, null)
+            : base(domain, null, string.Format("{0}-View", tree.Id))
         {
             Tree = tree;
             size = windowSize;

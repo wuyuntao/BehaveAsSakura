@@ -15,8 +15,8 @@ namespace BehaveAsSakura.Editor
 
         public GUIStyle Style { get; protected set; }
 
-        protected Node(EditorDomain domain, EditorComponent parent, string title, Vector2 position, Vector2 size, GUIStyle style)
-            : base(domain, parent)
+        protected Node(EditorDomain domain, EditorComponent parent, string id, string title, Vector2 position, Vector2 size, GUIStyle style)
+            : base(domain, parent, id)
         {
             Title = title;
             Position = position;

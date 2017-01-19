@@ -9,7 +9,13 @@ namespace BehaveAsSakura.Editor
         public BehaviorTreeState Tree { get; private set; }
 
         public BehaviorTreeNode(EditorDomain domain, BehaviorTreeView parent)
-            : base(domain, parent, I18n._("Root Node"), EditorConfiguration.BehaviorTreeNodePosition, EditorConfiguration.BehaviorTreeNodeSize, EditorConfiguration.BehaviorTreeNodeStyle)
+            : base(domain
+                  , parent
+                  , string.Format("{0}-Node", parent.Tree.Id)
+                  , I18n._("Root Node")
+                  , EditorConfiguration.BehaviorTreeNodePosition
+                  , EditorConfiguration.BehaviorTreeNodeSize
+                  , EditorConfiguration.BehaviorTreeNodeStyle)
         {
             Tree = parent.Tree;
             Tree.OnEventApplied += Tree_OnEventApplied;

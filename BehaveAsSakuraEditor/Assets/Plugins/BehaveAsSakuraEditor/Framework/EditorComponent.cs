@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
-    public abstract class EditorComponent
+    public abstract class EditorComponent : EditorObject
     {
         public EditorDomain Domain { get; private set; }
 
@@ -14,7 +14,8 @@ namespace BehaveAsSakura.Editor
 
         public List<EditorComponent> Children { get; private set; }
 
-        protected EditorComponent(EditorDomain domain, EditorComponent parent)
+        protected EditorComponent(EditorDomain domain, EditorComponent parent, string id)
+            : base(id)
         {
             Domain = domain;
             Parent = parent;

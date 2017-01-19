@@ -12,6 +12,7 @@ namespace BehaveAsSakura.Editor
         protected TaskNode(EditorDomain domain, EditorComponent parent, TaskState task)
             : base(domain
                   , parent
+                  , string.Format("{0}-Node", task.Id)
                   , I18n._(string.Format("Title of task '{0}'", task.Desc.CustomDesc.GetType().FullName))
                   , task.Position
                   , EditorConfiguration.TaskNodeSize
@@ -19,18 +20,6 @@ namespace BehaveAsSakura.Editor
         {
             Task = task;
             Task.OnEventApplied += Task_OnEventApplied;
-        }
-
-        private void Task_OnEventApplied(EditorState state, EditorEvent e)
-        {
-            if (e is TaskCreatedEvent)
-            {
-                Children.Add(Create(this, (TaskCreatedEvent)e));
-            }
-            else if (e is TaskNotCreatedEvent)
-            {
-                EditorHelper.DisplayDialog("Failed to create task", ((TaskNotCreatedEvent)e).Reason);
-            }
         }
 
         public static TaskNode Create(EditorComponent parent, TaskCreatedEvent e)
@@ -49,6 +38,18 @@ namespace BehaveAsSakura.Editor
             }
             else
                 throw new NotSupportedException(e.NewTask.Desc.ToString());
+        }
+
+        private void Task_OnEventApplied(EditorState state, EditorEvent e)
+        {
+            if (e is TaskCreatedEvent)
+            {
+                Children.Add(Create(this, (TaskCreatedEvent)e));
+            }
+            else if (e is TaskNotCreatedEvent)
+            {
+                EditorHelper.DisplayDialog("Failed to create task", ((TaskNotCreatedEvent)e).Reason);
+            }
         }
 
         public override void OnGUI()
