@@ -7,7 +7,7 @@ namespace BehaveAsSakura.Editor
     {
         public static readonly Vector2 MinWindowSize = new Vector2(800, 600);
 
-        public static readonly Vector2 BehaviorTreeNodeSize = new Vector2(100, 100);
+        public static readonly Vector2 BehaviorTreeNodeSize = new Vector2(100, 60);
 
         public static readonly Vector2 BehaviorTreeNodePosition = new Vector2(0, 0);
 
@@ -21,7 +21,7 @@ namespace BehaveAsSakura.Editor
             border = new RectOffset(12, 12, 12, 12),
         };
 
-        public static readonly Vector2 TaskNodeSize = new Vector2(100, 100);
+        public static readonly Vector2 TaskNodeSize = new Vector2(100, 60);
 
         public static readonly GUIStyle TaskNodeStyle = new GUIStyle()
         {
@@ -32,6 +32,8 @@ namespace BehaveAsSakura.Editor
             },
             border = new RectOffset(12, 12, 12, 12),
         };
+
+        public static readonly Vector2 TaskNodeMinSpace = new Vector2(30, 30);
 
         public static readonly Logger.Level LoggerLevel = Logger.Level.Debug;
     }

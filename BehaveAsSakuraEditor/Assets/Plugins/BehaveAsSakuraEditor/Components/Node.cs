@@ -7,13 +7,13 @@ namespace BehaveAsSakura.Editor
     {
         public BehaviorTreeView RootView { get; private set; }
 
-        public string Title { get; private set; }
+        public string Title { get; protected set; }
 
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; protected set; }
 
-        public Vector2 Size { get; private set; }
+        public Vector2 Size { get; protected set; }
 
-        public GUIStyle Style { get; private set; }
+        public GUIStyle Style { get; protected set; }
 
         protected Node(EditorDomain domain, EditorComponent parent, string title, Vector2 position, Vector2 size, GUIStyle style)
             : base(domain, parent)

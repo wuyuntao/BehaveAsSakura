@@ -15,6 +15,8 @@ namespace BehaveAsSakura.Editor
 
         public Vector2 Position { get; set; }
 
+        public bool IsCollapsed { get; set; }
+
         public TaskState(EditorDomain domain, string id)
             : base(domain, id)
         {
@@ -50,6 +52,7 @@ namespace BehaveAsSakura.Editor
 
             var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
             tree.NextTaskId = Math.Max(tree.NextTaskId, e.NewTask.Desc.Id) + 1;
+            LayoutHelper.Calculate(tree);
         }
     }
 }

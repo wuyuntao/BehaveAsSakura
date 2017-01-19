@@ -38,7 +38,10 @@ namespace BehaveAsSakura.Editor
         {
             Repository.States[e.NewTask.Id] = e.NewTask;
 
+            RootTaskId = e.NewTask.Desc.Id;
             NextTaskId = Math.Max(NextTaskId, e.NewTask.Desc.Id) + 1;
+
+            LayoutHelper.Calculate(this);
         }
     }
 }

@@ -60,5 +60,14 @@ namespace BehaveAsSakura.Editor
         {
             return e.button == 2;
         }
+
+        public static void DisplayDialog(string title, string message)
+        {
+            title = I18n._(title);
+            message = I18n._(message);
+            var ok = I18n._("Ok");
+
+            EditorUtility.DisplayDialog(title, message, ok);
+        }
     }
 }

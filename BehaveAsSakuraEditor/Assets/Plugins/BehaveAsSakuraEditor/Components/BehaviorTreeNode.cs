@@ -1,5 +1,4 @@
-﻿using BehaveAsSakura.Tasks;
-using System;
+﻿using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,42 +19,12 @@ namespace BehaveAsSakura.Editor
         {
             if (e is TaskCreatedEvent)
             {
-                OnTaskCreatedEvent((TaskCreatedEvent)e);
+                Children.Add(TaskNode.Create(this, (TaskCreatedEvent)e));
             }
             else if (e is TaskNotCreatedEvent)
             {
-                OnTaskNotCreatedEvent(e);
+                EditorHelper.DisplayDialog("Failed to create task", ((TaskNotCreatedEvent)e).Reason);
             }
-        }
-
-        private void OnTaskCreatedEvent(TaskCreatedEvent e)
-        {
-            TaskNode node;
-            if (e.NewTask.Desc is LeafTaskDescWrapper)
-            {
-                node = new LeafTaskNode(Domain, this, e.NewTask);
-            }
-            else if (e.NewTask.Desc is DecoratorTaskDescWrapper)
-            {
-                node = new DecoratorTaskNode(Domain, this, e.NewTask);
-            }
-            else if (e.NewTask.Desc is CompositeTaskDescWrapper)
-            {
-                node = new CompositeTaskNode(Domain, this, e.NewTask);
-            }
-            else
-                throw new NotSupportedException(e.NewTask.Desc.ToString());
-
-            Children.Add(node);
-        }
-
-        private static void OnTaskNotCreatedEvent(EditorEvent e)
-        {
-            var title = I18n._("Failed to create task");
-            var message = I18n._(((TaskNotCreatedEvent)e).Reason);
-            var ok = I18n._("Ok");
-
-            EditorUtility.DisplayDialog(title, message, ok);
         }
 
         public override void OnContextMenu(Event e)
