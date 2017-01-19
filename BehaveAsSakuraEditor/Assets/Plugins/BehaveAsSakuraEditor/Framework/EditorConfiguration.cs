@@ -36,5 +36,13 @@ namespace BehaveAsSakura.Editor
         public static readonly Vector2 TaskNodeMinSpace = new Vector2(30, 30);
 
         public static readonly Logger.Level LoggerLevel = Logger.Level.Debug;
+
+        public static readonly float TaskNodeConnectionPadding = 8;
+
+        public static readonly float TaskNodeConnectionTangent = 30;
+
+        public static readonly Color TaskNodeConnectionColor = Color.white;
+
+        public static readonly float TaskNodeConnectionLineWidth = 3;
     }
 }

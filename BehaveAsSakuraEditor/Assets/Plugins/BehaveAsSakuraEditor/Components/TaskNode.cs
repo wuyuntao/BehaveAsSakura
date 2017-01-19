@@ -56,6 +56,38 @@ namespace BehaveAsSakura.Editor
             Position = Task.Position;
 
             base.OnGUI();
+
+            DrawConnection();
+        }
+
+        private void DrawConnection()
+        {
+            var fromPoint = RootView.ToWindowPosition(Position + new Vector2(0, -EditorConfiguration.TaskNodeSize.y / 2 + EditorConfiguration.TaskNodeConnectionPadding));
+            Vector2 toPoint;
+            if (Parent is BehaviorTreeNode)
+            {
+                var parent = (BehaviorTreeNode)Parent;
+
+                toPoint = parent.Position + new Vector2(0, EditorConfiguration.BehaviorTreeNodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
+            }
+            else if (Parent is TaskNode)
+            {
+                var parent = (TaskNode)Parent;
+
+                toPoint = parent.Position + new Vector2(0, EditorConfiguration.TaskNodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
+            }
+            else
+                throw new NotSupportedException(Parent.ToString());
+
+            toPoint = RootView.ToWindowPosition(toPoint);
+
+            Handles.DrawBezier(fromPoint
+                    , toPoint
+                    , fromPoint - Vector2.up * EditorConfiguration.TaskNodeConnectionTangent
+                    , toPoint - Vector2.down * EditorConfiguration.TaskNodeConnectionTangent
+                    , EditorConfiguration.TaskNodeConnectionColor
+                    , null
+                    , EditorConfiguration.TaskNodeConnectionLineWidth);
         }
 
         private static void OnTaskNotCreatedEvent(EditorEvent e)
@@ -72,18 +104,17 @@ namespace BehaveAsSakura.Editor
             base.OnContextMenu(e);
 
             var menu = new GenericMenu();
-            EditorHelper.AddNewTaskMenuItems(menu, CanCreateChildTask(), (s) => OnContextMenu_NewTask((Type)s, e.mousePosition - RootView.ScrollOffset));
+            EditorHelper.AddNewTaskMenuItems(menu, CanCreateChildTask(), (s) => OnContextMenu_NewTask((Type)s));
             menu.ShowAsContext();
 
             e.Use();
         }
 
-        private void OnContextMenu_NewTask(Type taskType, Vector2 taskPosition)
+        private void OnContextMenu_NewTask(Type taskType)
         {
             Domain.CommandHandler.ProcessCommand(new CreateTaskCommand(Task.Id)
             {
                 TaskType = taskType,
-                TaskPosition = taskPosition,
             });
         }
 

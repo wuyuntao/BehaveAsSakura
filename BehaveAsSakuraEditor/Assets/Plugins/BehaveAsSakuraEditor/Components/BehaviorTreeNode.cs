@@ -32,18 +32,17 @@ namespace BehaveAsSakura.Editor
             base.OnContextMenu(e);
 
             var menu = new GenericMenu();
-            EditorHelper.AddNewTaskMenuItems(menu, Tree.RootTaskId == 0, (s) => OnContextMenu_NewTask((Type)s, e.mousePosition - RootView.ScrollOffset));
+            EditorHelper.AddNewTaskMenuItems(menu, Tree.RootTaskId == 0, (s) => OnContextMenu_NewTask((Type)s));
             menu.ShowAsContext();
 
             e.Use();
         }
 
-        private void OnContextMenu_NewTask(Type taskType, Vector2 taskPosition)
+        private void OnContextMenu_NewTask(Type taskType)
         {
             Domain.CommandHandler.ProcessCommand(new CreateTaskCommand(Tree.Id)
             {
                 TaskType = taskType,
-                TaskPosition = taskPosition,
             });
         }
     }

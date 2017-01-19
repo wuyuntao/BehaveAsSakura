@@ -68,7 +68,6 @@ namespace BehaveAsSakura.Editor
                 var taskState = new TaskState(Domain, TaskState.GetId(tree.NextTaskId))
                 {
                     Desc = taskDescWrapper,
-                    Position = command.TaskPosition,
                 };
 
                 parent.ApplyEvent(new TaskCreatedEvent(command.Id) { NewTask = taskState });

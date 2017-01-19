@@ -7,8 +7,6 @@ namespace BehaveAsSakura.Editor
     {
         public Type TaskType { get; set; }
 
-        public Vector2 TaskPosition { get; set; }
-
         public CreateTaskCommand(string id)
             : base(id)
         {

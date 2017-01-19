@@ -68,7 +68,7 @@ namespace BehaveAsSakura.Editor
 
         private Rect CalculateGUIRect()
         {
-            return new Rect(Position + RootView.ScrollOffset - Size / 2, Size);
+            return new Rect(RootView.ToWindowPosition(Position - Size / 2), Size);
         }
     }
 }
