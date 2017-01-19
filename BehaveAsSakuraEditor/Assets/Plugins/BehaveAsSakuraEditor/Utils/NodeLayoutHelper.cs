@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
-    static class LayoutHelper
+    static class NodeLayoutHelper
     {
         public static void Calculate(BehaviorTreeState tree)
         {
@@ -79,6 +79,5 @@ namespace BehaveAsSakura.Editor
 
             public float LaneWidth { get; set; }
         }
-
     }
 }

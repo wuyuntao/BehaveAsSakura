@@ -52,7 +52,7 @@ namespace BehaveAsSakura.Editor
 
             var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
             tree.NextTaskId = Math.Max(tree.NextTaskId, e.NewTask.Desc.Id) + 1;
-            LayoutHelper.Calculate(tree);
+            NodeLayoutHelper.Calculate(tree);
         }
     }
 }

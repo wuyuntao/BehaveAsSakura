@@ -41,7 +41,7 @@ namespace BehaveAsSakura.Editor
             RootTaskId = e.NewTask.Desc.Id;
             NextTaskId = Math.Max(NextTaskId, e.NewTask.Desc.Id) + 1;
 
-            LayoutHelper.Calculate(this);
+            NodeLayoutHelper.Calculate(this);
         }
     }
 }
