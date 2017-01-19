@@ -19,7 +19,6 @@ namespace BehaveAsSakura.Editor
             scrollOffset = new Vector2(windowSize.x / 2, EditorConfiguration.BehaviorTreeNodeSize.y);
             background = (Texture2D)Resources.Load(EditorConfiguration.BehaviorTreeBackgroundPath);
 
-            Children.Add(new PropertyGridView(domain, this));
             Children.Add(new BehaviorTreeNode(domain, this));
         }
 

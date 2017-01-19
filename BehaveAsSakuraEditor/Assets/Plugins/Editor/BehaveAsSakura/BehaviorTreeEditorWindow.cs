@@ -13,17 +13,16 @@ namespace BehaveAsSakura.Editor
         {
             //I18n.SetLanguage( "zh_CN" );
 
-            var window = GetWindow<BehaviorTreeEditorWindow>();
+            var window = GetWindow<BehaviorTreeEditorWindow>(I18n._("Untitled Behavior Tree"), typeof(SceneView));
 
             window.minSize = EditorConfiguration.MinWindowSize;
-            window.titleContent = new GUIContent(I18n._("Untitled Behavior Tree"));
 
             var repo = new EditorRepository();
             var handler = new BehaviorTreeCommandHandler();
             var domain = new EditorDomain(repo, handler);
 
             var treeId = BehaviorTreeState.GetId();
-            var tree = new BehaviorTreeState(domain, treeId);
+            var tree = EditorState.CreateState<BehaviorTreeState>(domain, treeId);
             repo.States[treeId] = tree;
 
             window.domain = domain;

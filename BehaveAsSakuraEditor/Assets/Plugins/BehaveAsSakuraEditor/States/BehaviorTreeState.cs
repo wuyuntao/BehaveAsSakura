@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
@@ -15,8 +16,7 @@ namespace BehaveAsSakura.Editor
 
         public uint NextTaskId { get; set; }
 
-        public BehaviorTreeState(EditorDomain domain, string id)
-            : base(domain, id)
+        public BehaviorTreeState()
         {
             NextTaskId = 1;
         }

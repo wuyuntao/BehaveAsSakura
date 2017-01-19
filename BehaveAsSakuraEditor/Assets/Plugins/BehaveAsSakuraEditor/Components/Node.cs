@@ -45,6 +45,24 @@ namespace BehaveAsSakura.Editor
             base.OnGUI();
         }
 
+        public override bool OnMouseDown(Event e)
+        {
+            if (base.OnMouseDown(e))
+                return true;
+
+            var rect = CalculateGUIRect();
+            if (rect.Contains(e.mousePosition))
+            {
+                if (EditorHelper.IsLeftButton(e))
+                {
+                    OnSelect(e);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public override bool OnMouseUp(Event e)
         {
             if (base.OnMouseUp(e))
@@ -65,7 +83,10 @@ namespace BehaveAsSakura.Editor
 
         public virtual void OnContextMenu(Event e)
         {
-            Debug.LogFormat("OnContextMenu");
+        }
+
+        public virtual void OnSelect(Event e)
+        {
         }
 
         private Rect CalculateGUIRect()

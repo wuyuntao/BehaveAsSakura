@@ -100,6 +100,13 @@ namespace BehaveAsSakura.Editor
             EditorUtility.DisplayDialog(title, message, ok);
         }
 
+        public override void OnSelect(Event e)
+        {
+            base.OnSelect(e);
+
+            Selection.activeObject = Task;
+        }
+
         public override void OnContextMenu(Event e)
         {
             base.OnContextMenu(e);

@@ -33,6 +33,13 @@ namespace BehaveAsSakura.Editor
             }
         }
 
+        public override void OnSelect(Event e)
+        {
+            base.OnSelect(e);
+
+            Selection.activeObject = Tree;
+        }
+
         public override void OnContextMenu(Event e)
         {
             base.OnContextMenu(e);

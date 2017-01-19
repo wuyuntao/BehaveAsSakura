@@ -1,6 +1,8 @@
-﻿namespace BehaveAsSakura.Editor
+﻿using UnityEngine;
+
+namespace BehaveAsSakura.Editor
 {
-    public abstract class EditorState : EditorObject
+    public abstract class EditorState : ScriptableObject
     {
         public delegate void EventAppliedHandler(EditorState state, EditorEvent e);
 
@@ -8,12 +10,18 @@
 
         public EditorDomain Domain { get; private set; }
 
+        public string Id { get; private set; }
+
         public EditorRepository Repository { get { return Domain.Repository; } }
 
-        protected EditorState(EditorDomain domain, string id)
-            : base(id)
+        public static T CreateState<T>(EditorDomain domain, string id)
+            where T : EditorState, new()
         {
-            Domain = domain;
+            var state = CreateInstance<T>();
+            state.Domain = domain;
+            state.Id = id;
+
+            return state;
         }
 
         public override string ToString()

@@ -65,10 +65,8 @@ namespace BehaveAsSakura.Editor
                     throw new NotSupportedException(command.TaskType.ToString());
                 taskDescWrapper.Id = tree.NextTaskId;
                 taskDescWrapper.CustomDesc = (ITaskDesc)Activator.CreateInstance(command.TaskType);
-                var taskState = new TaskState(Domain, TaskState.GetId(tree.NextTaskId))
-                {
-                    Desc = taskDescWrapper,
-                };
+                var taskState = EditorState.CreateState<TaskState>(Domain, TaskState.GetId(tree.NextTaskId));
+                taskState.Desc = taskDescWrapper;
 
                 parent.ApplyEvent(new TaskCreatedEvent(command.Id) { NewTask = taskState });
             }

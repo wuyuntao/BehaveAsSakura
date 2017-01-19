@@ -17,11 +17,6 @@ namespace BehaveAsSakura.Editor
 
         public bool IsCollapsed { get; set; }
 
-        public TaskState(EditorDomain domain, string id)
-            : base(domain, id)
-        {
-        }
-
         public override void ApplyEvent(EditorEvent e)
         {
             if (e is TaskCreatedEvent)
