@@ -44,6 +44,18 @@ namespace BehaveAsSakura.Editor
                 case EventType.MouseUp:
                     view.OnMouseUp(Event.current);
                     break;
+
+                case EventType.MouseDrag:
+                    view.OnMouseDrag(Event.current);
+                    break;
+
+                case EventType.MouseMove:
+                    view.OnMouseMove(Event.current);
+                    break;
+
+                case EventType.Layout:
+                    view.OnLayoutChange(Event.current, position);
+                    break;
             }
 
             view.OnGUI();

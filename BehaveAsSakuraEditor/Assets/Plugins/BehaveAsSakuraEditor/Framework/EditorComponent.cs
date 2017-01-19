@@ -36,5 +36,20 @@ namespace BehaveAsSakura.Editor
         {
             return Children.Any(c => c.OnMouseUp(e));
         }
+
+        public virtual bool OnMouseDrag(Event e)
+        {
+            return Children.Any(c => c.OnMouseDrag(e));
+        }
+
+        public virtual bool OnMouseMove(Event e)
+        {
+            return Children.Any(c => c.OnMouseMove(e));
+        }
+
+        public virtual bool OnLayoutChange(Event e, Rect windowPosition)
+        {
+            return Children.Any(c => c.OnLayoutChange(e, windowPosition));
+        }
     }
 }
