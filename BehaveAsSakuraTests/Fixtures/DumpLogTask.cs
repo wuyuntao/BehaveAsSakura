@@ -4,6 +4,7 @@ using BehaveAsSakura.Tasks;
 namespace BehaveAsSakura.Tests
 {
     [BehaveAsTable]
+    [BehaveAsUnionInclude(typeof(ITaskDesc), 31)]
     public sealed class DumpLogTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]

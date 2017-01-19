@@ -55,6 +55,20 @@ enum BehaveAsSakura__Tasks__TaskState : byte
  WaitForEnqueue = 4,
 };
 
+enum BehaveAsSakura__Tests__TestEnum1 : sbyte
+{
+ Value1 = 0,
+ Value3 = 3,
+ Value7 = 7,
+};
+
+enum BehaveAsSakura__Tests__TestData1___TestEnum2 : uint
+{
+ Value1 = 0,
+ Value3 = 3,
+ Value7 = 7,
+};
+
 enum BehaveAsSakura__Events__IEvent : byte
 {
  NONE = 0,
@@ -82,6 +96,8 @@ enum BehaveAsSakura__Tasks__ITaskDesc : byte
  BehaveAsSakura__Tasks__UntilSuccessTaskDesc = 15,
  BehaveAsSakura__Tasks__WaitEventTaskDesc = 16,
  BehaveAsSakura__Tasks__WaitTimerTaskDesc = 17,
+ BehaveAsSakura__Tests__DataTypeTestTaskDesc = 30,
+ BehaveAsSakura__Tests__DumpLogTaskDesc = 31,
 };
 
 enum BehaveAsSakura__Tasks__ITaskProps : byte
@@ -1335,6 +1351,314 @@ struct BehaveAsSakura__Events__TimerTriggeredEvent : IFlatbufferObject
   }
 };
 
+struct BehaveAsSakura__Tests__TestData1 : IFlatbufferObject
+{
+  private Table __p;
+  public ByteBuffer ByteBuffer { get { return __p.bb; } }
+  public static BehaveAsSakura__Tests__TestData1 GetRootAsBehaveAsSakura__Tests__TestData1(ByteBuffer _bb) { return GetRootAsBehaveAsSakura__Tests__TestData1(_bb, new BehaveAsSakura__Tests__TestData1()); }
+  public static BehaveAsSakura__Tests__TestData1 GetRootAsBehaveAsSakura__Tests__TestData1(ByteBuffer _bb, BehaveAsSakura__Tests__TestData1 obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public void __init(int _i, ByteBuffer _bb) { __p.bb_pos = _i; __p.bb = _bb; }
+  public BehaveAsSakura__Tests__TestData1 __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+
+  public string StringValue { get { int o = __p.__offset(4); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+  public ArraySegment<byte>? GetStringValueBytes() { return __p.__vector_as_arraysegment(4); }
+  public bool BooleanValue { get { int o = __p.__offset(6); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public float FloatValue { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetFloat(o + __p.bb_pos) : (float)0.0f; } }
+  public BehaveAsSakura__Tests__TestEnum1 EnumValue { get { int o = __p.__offset(10); return o != 0 ? (BehaveAsSakura__Tests__TestEnum1)__p.bb.GetSbyte(o + __p.bb_pos) : BehaveAsSakura__Tests__TestEnum1.Value1; } }
+  public BehaveAsSakura__Tests__TestData1___TestEnum2 EmbeddedEnumValue { get { int o = __p.__offset(12); return o != 0 ? (BehaveAsSakura__Tests__TestData1___TestEnum2)__p.bb.GetUint(o + __p.bb_pos) : BehaveAsSakura__Tests__TestData1___TestEnum2.Value1; } }
+  public BehaveAsSakura__Tests__TestData2? NestedValue { get { int o = __p.__offset(14); return o != 0 ? (BehaveAsSakura__Tests__TestData2?)(new BehaveAsSakura__Tests__TestData2()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public string StringArray(int j) { int o = __p.__offset(16); return o != 0 ? __p.__string(__p.__vector(o) + j * 4) : null; }
+  public int StringArrayLength { get { int o = __p.__offset(16); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public bool BooleanArray(int j) { int o = __p.__offset(18); return o != 0 ? 0!=__p.bb.Get(__p.__vector(o) + j * 1) : false; }
+  public int BooleanArrayLength { get { int o = __p.__offset(18); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetBooleanArrayBytes() { return __p.__vector_as_arraysegment(18); }
+  public ulong ULongArray(int j) { int o = __p.__offset(20); return o != 0 ? __p.bb.GetUlong(__p.__vector(o) + j * 8) : (ulong)0; }
+  public int ULongArrayLength { get { int o = __p.__offset(20); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetULongArrayBytes() { return __p.__vector_as_arraysegment(20); }
+  public BehaveAsSakura__Tests__TestEnum1 EnumArray(int j) { int o = __p.__offset(22); return o != 0 ? (BehaveAsSakura__Tests__TestEnum1)__p.bb.GetSbyte(__p.__vector(o) + j * 1) : (BehaveAsSakura__Tests__TestEnum1)0; }
+  public int EnumArrayLength { get { int o = __p.__offset(22); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetEnumArrayBytes() { return __p.__vector_as_arraysegment(22); }
+  public BehaveAsSakura__Tests__TestData1___TestEnum2 EmbeddedEnumArray(int j) { int o = __p.__offset(24); return o != 0 ? (BehaveAsSakura__Tests__TestData1___TestEnum2)__p.bb.GetUint(__p.__vector(o) + j * 4) : (BehaveAsSakura__Tests__TestData1___TestEnum2)0; }
+  public int EmbeddedEnumArrayLength { get { int o = __p.__offset(24); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetEmbeddedEnumArrayBytes() { return __p.__vector_as_arraysegment(24); }
+  public BehaveAsSakura__Tests__TestData2? NestedClassArray(int j) { int o = __p.__offset(26); return o != 0 ? (BehaveAsSakura__Tests__TestData2?)(new BehaveAsSakura__Tests__TestData2()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int NestedClassArrayLength { get { int o = __p.__offset(26); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public string StringList(int j) { int o = __p.__offset(28); return o != 0 ? __p.__string(__p.__vector(o) + j * 4) : null; }
+  public int StringListLength { get { int o = __p.__offset(28); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public bool BooleanList(int j) { int o = __p.__offset(30); return o != 0 ? 0!=__p.bb.Get(__p.__vector(o) + j * 1) : false; }
+  public int BooleanListLength { get { int o = __p.__offset(30); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetBooleanListBytes() { return __p.__vector_as_arraysegment(30); }
+  public uint UIntList(int j) { int o = __p.__offset(32); return o != 0 ? __p.bb.GetUint(__p.__vector(o) + j * 4) : (uint)0; }
+  public int UIntListLength { get { int o = __p.__offset(32); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetUIntListBytes() { return __p.__vector_as_arraysegment(32); }
+  public BehaveAsSakura__Tests__TestEnum1 EnumList(int j) { int o = __p.__offset(34); return o != 0 ? (BehaveAsSakura__Tests__TestEnum1)__p.bb.GetSbyte(__p.__vector(o) + j * 1) : (BehaveAsSakura__Tests__TestEnum1)0; }
+  public int EnumListLength { get { int o = __p.__offset(34); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetEnumListBytes() { return __p.__vector_as_arraysegment(34); }
+  public BehaveAsSakura__Tests__TestData1___TestEnum2 EmbeddedEnumList(int j) { int o = __p.__offset(36); return o != 0 ? (BehaveAsSakura__Tests__TestData1___TestEnum2)__p.bb.GetUint(__p.__vector(o) + j * 4) : (BehaveAsSakura__Tests__TestData1___TestEnum2)0; }
+  public int EmbeddedEnumListLength { get { int o = __p.__offset(36); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetEmbeddedEnumListBytes() { return __p.__vector_as_arraysegment(36); }
+  public BehaveAsSakura__Tests__TestData2? NestedClassList(int j) { int o = __p.__offset(38); return o != 0 ? (BehaveAsSakura__Tests__TestData2?)(new BehaveAsSakura__Tests__TestData2()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int NestedClassListLength { get { int o = __p.__offset(38); return o != 0 ? __p.__vector_len(o) : 0; } }
+
+  public static Offset<BehaveAsSakura__Tests__TestData1> CreateBehaveAsSakura__Tests__TestData1(FlatBufferBuilder builder,
+      StringOffset stringValueOffset = default(StringOffset),
+      bool booleanValue = false,
+      float floatValue = 0.0f,
+      BehaveAsSakura__Tests__TestEnum1 enumValue = BehaveAsSakura__Tests__TestEnum1.Value1,
+      BehaveAsSakura__Tests__TestData1___TestEnum2 embeddedEnumValue = BehaveAsSakura__Tests__TestData1___TestEnum2.Value1,
+      Offset<BehaveAsSakura__Tests__TestData2> nestedValueOffset = default(Offset<BehaveAsSakura__Tests__TestData2>),
+      VectorOffset stringArrayOffset = default(VectorOffset),
+      VectorOffset booleanArrayOffset = default(VectorOffset),
+      VectorOffset uLongArrayOffset = default(VectorOffset),
+      VectorOffset enumArrayOffset = default(VectorOffset),
+      VectorOffset embeddedEnumArrayOffset = default(VectorOffset),
+      VectorOffset nestedClassArrayOffset = default(VectorOffset),
+      VectorOffset stringListOffset = default(VectorOffset),
+      VectorOffset booleanListOffset = default(VectorOffset),
+      VectorOffset uIntListOffset = default(VectorOffset),
+      VectorOffset enumListOffset = default(VectorOffset),
+      VectorOffset embeddedEnumListOffset = default(VectorOffset),
+      VectorOffset nestedClassListOffset = default(VectorOffset)) {
+    builder.StartObject(18);
+    BehaveAsSakura__Tests__TestData1.AddNestedClassList(builder, nestedClassListOffset);
+    BehaveAsSakura__Tests__TestData1.AddEmbeddedEnumList(builder, embeddedEnumListOffset);
+    BehaveAsSakura__Tests__TestData1.AddEnumList(builder, enumListOffset);
+    BehaveAsSakura__Tests__TestData1.AddUIntList(builder, uIntListOffset);
+    BehaveAsSakura__Tests__TestData1.AddBooleanList(builder, booleanListOffset);
+    BehaveAsSakura__Tests__TestData1.AddStringList(builder, stringListOffset);
+    BehaveAsSakura__Tests__TestData1.AddNestedClassArray(builder, nestedClassArrayOffset);
+    BehaveAsSakura__Tests__TestData1.AddEmbeddedEnumArray(builder, embeddedEnumArrayOffset);
+    BehaveAsSakura__Tests__TestData1.AddEnumArray(builder, enumArrayOffset);
+    BehaveAsSakura__Tests__TestData1.AddULongArray(builder, uLongArrayOffset);
+    BehaveAsSakura__Tests__TestData1.AddBooleanArray(builder, booleanArrayOffset);
+    BehaveAsSakura__Tests__TestData1.AddStringArray(builder, stringArrayOffset);
+    BehaveAsSakura__Tests__TestData1.AddNestedValue(builder, nestedValueOffset);
+    BehaveAsSakura__Tests__TestData1.AddEmbeddedEnumValue(builder, embeddedEnumValue);
+    BehaveAsSakura__Tests__TestData1.AddFloatValue(builder, floatValue);
+    BehaveAsSakura__Tests__TestData1.AddStringValue(builder, stringValueOffset);
+    BehaveAsSakura__Tests__TestData1.AddEnumValue(builder, enumValue);
+    BehaveAsSakura__Tests__TestData1.AddBooleanValue(builder, booleanValue);
+    return BehaveAsSakura__Tests__TestData1.EndBehaveAsSakura__Tests__TestData1(builder);
+  }
+
+  public static void StartBehaveAsSakura__Tests__TestData1(FlatBufferBuilder builder) { builder.StartObject(18); }
+  public static void AddStringValue(FlatBufferBuilder builder, StringOffset stringValueOffset) { builder.AddOffset(0, stringValueOffset.Value, 0); }
+  public static void AddBooleanValue(FlatBufferBuilder builder, bool booleanValue) { builder.AddBool(1, booleanValue, false); }
+  public static void AddFloatValue(FlatBufferBuilder builder, float floatValue) { builder.AddFloat(2, floatValue, 0.0f); }
+  public static void AddEnumValue(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestEnum1 enumValue) { builder.AddSbyte(3, (sbyte)enumValue, 0); }
+  public static void AddEmbeddedEnumValue(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestData1___TestEnum2 embeddedEnumValue) { builder.AddUint(4, (uint)embeddedEnumValue, 0); }
+  public static void AddNestedValue(FlatBufferBuilder builder, Offset<BehaveAsSakura__Tests__TestData2> nestedValueOffset) { builder.AddOffset(5, nestedValueOffset.Value, 0); }
+  public static void AddStringArray(FlatBufferBuilder builder, VectorOffset stringArrayOffset) { builder.AddOffset(6, stringArrayOffset.Value, 0); }
+  public static VectorOffset CreateStringArrayVector(FlatBufferBuilder builder, StringOffset[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartStringArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddBooleanArray(FlatBufferBuilder builder, VectorOffset booleanArrayOffset) { builder.AddOffset(7, booleanArrayOffset.Value, 0); }
+  public static VectorOffset CreateBooleanArrayVector(FlatBufferBuilder builder, bool[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddBool(data[i]); return builder.EndVector(); }
+  public static void StartBooleanArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void AddULongArray(FlatBufferBuilder builder, VectorOffset uLongArrayOffset) { builder.AddOffset(8, uLongArrayOffset.Value, 0); }
+  public static VectorOffset CreateULongArrayVector(FlatBufferBuilder builder, ulong[] data) { builder.StartVector(8, data.Length, 8); for (int i = data.Length - 1; i >= 0; i--) builder.AddUlong(data[i]); return builder.EndVector(); }
+  public static void StartULongArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(8, numElems, 8); }
+  public static void AddEnumArray(FlatBufferBuilder builder, VectorOffset enumArrayOffset) { builder.AddOffset(9, enumArrayOffset.Value, 0); }
+  public static VectorOffset CreateEnumArrayVector(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestEnum1[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddSbyte((sbyte)data[i]); return builder.EndVector(); }
+  public static void StartEnumArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void AddEmbeddedEnumArray(FlatBufferBuilder builder, VectorOffset embeddedEnumArrayOffset) { builder.AddOffset(10, embeddedEnumArrayOffset.Value, 0); }
+  public static VectorOffset CreateEmbeddedEnumArrayVector(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestData1___TestEnum2[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddUint((uint)data[i]); return builder.EndVector(); }
+  public static void StartEmbeddedEnumArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddNestedClassArray(FlatBufferBuilder builder, VectorOffset nestedClassArrayOffset) { builder.AddOffset(11, nestedClassArrayOffset.Value, 0); }
+  public static VectorOffset CreateNestedClassArrayVector(FlatBufferBuilder builder, Offset<BehaveAsSakura__Tests__TestData2>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartNestedClassArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddStringList(FlatBufferBuilder builder, VectorOffset stringListOffset) { builder.AddOffset(12, stringListOffset.Value, 0); }
+  public static VectorOffset CreateStringListVector(FlatBufferBuilder builder, StringOffset[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartStringListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddBooleanList(FlatBufferBuilder builder, VectorOffset booleanListOffset) { builder.AddOffset(13, booleanListOffset.Value, 0); }
+  public static VectorOffset CreateBooleanListVector(FlatBufferBuilder builder, bool[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddBool(data[i]); return builder.EndVector(); }
+  public static void StartBooleanListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void AddUIntList(FlatBufferBuilder builder, VectorOffset uIntListOffset) { builder.AddOffset(14, uIntListOffset.Value, 0); }
+  public static VectorOffset CreateUIntListVector(FlatBufferBuilder builder, uint[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddUint(data[i]); return builder.EndVector(); }
+  public static void StartUIntListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddEnumList(FlatBufferBuilder builder, VectorOffset enumListOffset) { builder.AddOffset(15, enumListOffset.Value, 0); }
+  public static VectorOffset CreateEnumListVector(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestEnum1[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddSbyte((sbyte)data[i]); return builder.EndVector(); }
+  public static void StartEnumListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void AddEmbeddedEnumList(FlatBufferBuilder builder, VectorOffset embeddedEnumListOffset) { builder.AddOffset(16, embeddedEnumListOffset.Value, 0); }
+  public static VectorOffset CreateEmbeddedEnumListVector(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestData1___TestEnum2[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddUint((uint)data[i]); return builder.EndVector(); }
+  public static void StartEmbeddedEnumListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddNestedClassList(FlatBufferBuilder builder, VectorOffset nestedClassListOffset) { builder.AddOffset(17, nestedClassListOffset.Value, 0); }
+  public static VectorOffset CreateNestedClassListVector(FlatBufferBuilder builder, Offset<BehaveAsSakura__Tests__TestData2>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartNestedClassListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static Offset<BehaveAsSakura__Tests__TestData1> EndBehaveAsSakura__Tests__TestData1(FlatBufferBuilder builder) {
+    int o = builder.EndObject();
+    return new Offset<BehaveAsSakura__Tests__TestData1>(o);
+  }
+};
+
+struct BehaveAsSakura__Tests__TestData2 : IFlatbufferObject
+{
+  private Table __p;
+  public ByteBuffer ByteBuffer { get { return __p.bb; } }
+  public static BehaveAsSakura__Tests__TestData2 GetRootAsBehaveAsSakura__Tests__TestData2(ByteBuffer _bb) { return GetRootAsBehaveAsSakura__Tests__TestData2(_bb, new BehaveAsSakura__Tests__TestData2()); }
+  public static BehaveAsSakura__Tests__TestData2 GetRootAsBehaveAsSakura__Tests__TestData2(ByteBuffer _bb, BehaveAsSakura__Tests__TestData2 obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public void __init(int _i, ByteBuffer _bb) { __p.bb_pos = _i; __p.bb = _bb; }
+  public BehaveAsSakura__Tests__TestData2 __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+
+  public long LongValue { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetLong(o + __p.bb_pos) : (long)0; } }
+  public ulong ULongValue { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetUlong(o + __p.bb_pos) : (ulong)0; } }
+
+  public static Offset<BehaveAsSakura__Tests__TestData2> CreateBehaveAsSakura__Tests__TestData2(FlatBufferBuilder builder,
+      long longValue = 0,
+      ulong uLongValue = 0) {
+    builder.StartObject(2);
+    BehaveAsSakura__Tests__TestData2.AddULongValue(builder, uLongValue);
+    BehaveAsSakura__Tests__TestData2.AddLongValue(builder, longValue);
+    return BehaveAsSakura__Tests__TestData2.EndBehaveAsSakura__Tests__TestData2(builder);
+  }
+
+  public static void StartBehaveAsSakura__Tests__TestData2(FlatBufferBuilder builder) { builder.StartObject(2); }
+  public static void AddLongValue(FlatBufferBuilder builder, long longValue) { builder.AddLong(0, longValue, 0); }
+  public static void AddULongValue(FlatBufferBuilder builder, ulong uLongValue) { builder.AddUlong(1, uLongValue, 0); }
+  public static Offset<BehaveAsSakura__Tests__TestData2> EndBehaveAsSakura__Tests__TestData2(FlatBufferBuilder builder) {
+    int o = builder.EndObject();
+    return new Offset<BehaveAsSakura__Tests__TestData2>(o);
+  }
+};
+
+struct BehaveAsSakura__Tests__DataTypeTestTaskDesc : IFlatbufferObject
+{
+  private Table __p;
+  public ByteBuffer ByteBuffer { get { return __p.bb; } }
+  public static BehaveAsSakura__Tests__DataTypeTestTaskDesc GetRootAsBehaveAsSakura__Tests__DataTypeTestTaskDesc(ByteBuffer _bb) { return GetRootAsBehaveAsSakura__Tests__DataTypeTestTaskDesc(_bb, new BehaveAsSakura__Tests__DataTypeTestTaskDesc()); }
+  public static BehaveAsSakura__Tests__DataTypeTestTaskDesc GetRootAsBehaveAsSakura__Tests__DataTypeTestTaskDesc(ByteBuffer _bb, BehaveAsSakura__Tests__DataTypeTestTaskDesc obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public void __init(int _i, ByteBuffer _bb) { __p.bb_pos = _i; __p.bb = _bb; }
+  public BehaveAsSakura__Tests__DataTypeTestTaskDesc __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+
+  public string StringValue { get { int o = __p.__offset(4); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+  public ArraySegment<byte>? GetStringValueBytes() { return __p.__vector_as_arraysegment(4); }
+  public bool BooleanValue { get { int o = __p.__offset(6); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public byte ByteValue { get { int o = __p.__offset(8); return o != 0 ? __p.bb.Get(o + __p.bb_pos) : (byte)0; } }
+  public BehaveAsSakura__Tests__TestEnum1 EnumValue { get { int o = __p.__offset(10); return o != 0 ? (BehaveAsSakura__Tests__TestEnum1)__p.bb.GetSbyte(o + __p.bb_pos) : BehaveAsSakura__Tests__TestEnum1.Value1; } }
+  public BehaveAsSakura__Tests__TestData1___TestEnum2 EmbeddedEnumValue { get { int o = __p.__offset(12); return o != 0 ? (BehaveAsSakura__Tests__TestData1___TestEnum2)__p.bb.GetUint(o + __p.bb_pos) : BehaveAsSakura__Tests__TestData1___TestEnum2.Value1; } }
+  public BehaveAsSakura__Tests__TestData1? NestedValue { get { int o = __p.__offset(14); return o != 0 ? (BehaveAsSakura__Tests__TestData1?)(new BehaveAsSakura__Tests__TestData1()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public string StringArray(int j) { int o = __p.__offset(16); return o != 0 ? __p.__string(__p.__vector(o) + j * 4) : null; }
+  public int StringArrayLength { get { int o = __p.__offset(16); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public bool BooleanArray(int j) { int o = __p.__offset(18); return o != 0 ? 0!=__p.bb.Get(__p.__vector(o) + j * 1) : false; }
+  public int BooleanArrayLength { get { int o = __p.__offset(18); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetBooleanArrayBytes() { return __p.__vector_as_arraysegment(18); }
+  public short ShortArray(int j) { int o = __p.__offset(20); return o != 0 ? __p.bb.GetShort(__p.__vector(o) + j * 2) : (short)0; }
+  public int ShortArrayLength { get { int o = __p.__offset(20); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetShortArrayBytes() { return __p.__vector_as_arraysegment(20); }
+  public BehaveAsSakura__Tests__TestEnum1 EnumArray(int j) { int o = __p.__offset(22); return o != 0 ? (BehaveAsSakura__Tests__TestEnum1)__p.bb.GetSbyte(__p.__vector(o) + j * 1) : (BehaveAsSakura__Tests__TestEnum1)0; }
+  public int EnumArrayLength { get { int o = __p.__offset(22); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetEnumArrayBytes() { return __p.__vector_as_arraysegment(22); }
+  public BehaveAsSakura__Tests__TestData1___TestEnum2 EmbeddedEnumArray(int j) { int o = __p.__offset(24); return o != 0 ? (BehaveAsSakura__Tests__TestData1___TestEnum2)__p.bb.GetUint(__p.__vector(o) + j * 4) : (BehaveAsSakura__Tests__TestData1___TestEnum2)0; }
+  public int EmbeddedEnumArrayLength { get { int o = __p.__offset(24); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetEmbeddedEnumArrayBytes() { return __p.__vector_as_arraysegment(24); }
+  public BehaveAsSakura__Tests__TestData1? NestedClassArray(int j) { int o = __p.__offset(26); return o != 0 ? (BehaveAsSakura__Tests__TestData1?)(new BehaveAsSakura__Tests__TestData1()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int NestedClassArrayLength { get { int o = __p.__offset(26); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public string StringList(int j) { int o = __p.__offset(28); return o != 0 ? __p.__string(__p.__vector(o) + j * 4) : null; }
+  public int StringListLength { get { int o = __p.__offset(28); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public bool BooleanList(int j) { int o = __p.__offset(30); return o != 0 ? 0!=__p.bb.Get(__p.__vector(o) + j * 1) : false; }
+  public int BooleanListLength { get { int o = __p.__offset(30); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetBooleanListBytes() { return __p.__vector_as_arraysegment(30); }
+  public int ShortList(int j) { int o = __p.__offset(32); return o != 0 ? __p.bb.GetInt(__p.__vector(o) + j * 4) : (int)0; }
+  public int ShortListLength { get { int o = __p.__offset(32); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetShortListBytes() { return __p.__vector_as_arraysegment(32); }
+  public BehaveAsSakura__Tests__TestEnum1 EnumList(int j) { int o = __p.__offset(34); return o != 0 ? (BehaveAsSakura__Tests__TestEnum1)__p.bb.GetSbyte(__p.__vector(o) + j * 1) : (BehaveAsSakura__Tests__TestEnum1)0; }
+  public int EnumListLength { get { int o = __p.__offset(34); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetEnumListBytes() { return __p.__vector_as_arraysegment(34); }
+  public BehaveAsSakura__Tests__TestData1___TestEnum2 EmbeddedEnumList(int j) { int o = __p.__offset(36); return o != 0 ? (BehaveAsSakura__Tests__TestData1___TestEnum2)__p.bb.GetUint(__p.__vector(o) + j * 4) : (BehaveAsSakura__Tests__TestData1___TestEnum2)0; }
+  public int EmbeddedEnumListLength { get { int o = __p.__offset(36); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public ArraySegment<byte>? GetEmbeddedEnumListBytes() { return __p.__vector_as_arraysegment(36); }
+  public BehaveAsSakura__Tests__TestData1? NestedClassList(int j) { int o = __p.__offset(38); return o != 0 ? (BehaveAsSakura__Tests__TestData1?)(new BehaveAsSakura__Tests__TestData1()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int NestedClassListLength { get { int o = __p.__offset(38); return o != 0 ? __p.__vector_len(o) : 0; } }
+
+  public static Offset<BehaveAsSakura__Tests__DataTypeTestTaskDesc> CreateBehaveAsSakura__Tests__DataTypeTestTaskDesc(FlatBufferBuilder builder,
+      StringOffset stringValueOffset = default(StringOffset),
+      bool booleanValue = false,
+      byte byteValue = 0,
+      BehaveAsSakura__Tests__TestEnum1 enumValue = BehaveAsSakura__Tests__TestEnum1.Value1,
+      BehaveAsSakura__Tests__TestData1___TestEnum2 embeddedEnumValue = BehaveAsSakura__Tests__TestData1___TestEnum2.Value1,
+      Offset<BehaveAsSakura__Tests__TestData1> nestedValueOffset = default(Offset<BehaveAsSakura__Tests__TestData1>),
+      VectorOffset stringArrayOffset = default(VectorOffset),
+      VectorOffset booleanArrayOffset = default(VectorOffset),
+      VectorOffset shortArrayOffset = default(VectorOffset),
+      VectorOffset enumArrayOffset = default(VectorOffset),
+      VectorOffset embeddedEnumArrayOffset = default(VectorOffset),
+      VectorOffset nestedClassArrayOffset = default(VectorOffset),
+      VectorOffset stringListOffset = default(VectorOffset),
+      VectorOffset booleanListOffset = default(VectorOffset),
+      VectorOffset shortListOffset = default(VectorOffset),
+      VectorOffset enumListOffset = default(VectorOffset),
+      VectorOffset embeddedEnumListOffset = default(VectorOffset),
+      VectorOffset nestedClassListOffset = default(VectorOffset)) {
+    builder.StartObject(18);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddNestedClassList(builder, nestedClassListOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEmbeddedEnumList(builder, embeddedEnumListOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEnumList(builder, enumListOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddShortList(builder, shortListOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddBooleanList(builder, booleanListOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddStringList(builder, stringListOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddNestedClassArray(builder, nestedClassArrayOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEmbeddedEnumArray(builder, embeddedEnumArrayOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEnumArray(builder, enumArrayOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddShortArray(builder, shortArrayOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddBooleanArray(builder, booleanArrayOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddStringArray(builder, stringArrayOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddNestedValue(builder, nestedValueOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEmbeddedEnumValue(builder, embeddedEnumValue);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddStringValue(builder, stringValueOffset);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEnumValue(builder, enumValue);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddByteValue(builder, byteValue);
+    BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddBooleanValue(builder, booleanValue);
+    return BehaveAsSakura__Tests__DataTypeTestTaskDesc.EndBehaveAsSakura__Tests__DataTypeTestTaskDesc(builder);
+  }
+
+  public static void StartBehaveAsSakura__Tests__DataTypeTestTaskDesc(FlatBufferBuilder builder) { builder.StartObject(18); }
+  public static void AddStringValue(FlatBufferBuilder builder, StringOffset stringValueOffset) { builder.AddOffset(0, stringValueOffset.Value, 0); }
+  public static void AddBooleanValue(FlatBufferBuilder builder, bool booleanValue) { builder.AddBool(1, booleanValue, false); }
+  public static void AddByteValue(FlatBufferBuilder builder, byte byteValue) { builder.AddByte(2, byteValue, 0); }
+  public static void AddEnumValue(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestEnum1 enumValue) { builder.AddSbyte(3, (sbyte)enumValue, 0); }
+  public static void AddEmbeddedEnumValue(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestData1___TestEnum2 embeddedEnumValue) { builder.AddUint(4, (uint)embeddedEnumValue, 0); }
+  public static void AddNestedValue(FlatBufferBuilder builder, Offset<BehaveAsSakura__Tests__TestData1> nestedValueOffset) { builder.AddOffset(5, nestedValueOffset.Value, 0); }
+  public static void AddStringArray(FlatBufferBuilder builder, VectorOffset stringArrayOffset) { builder.AddOffset(6, stringArrayOffset.Value, 0); }
+  public static VectorOffset CreateStringArrayVector(FlatBufferBuilder builder, StringOffset[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartStringArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddBooleanArray(FlatBufferBuilder builder, VectorOffset booleanArrayOffset) { builder.AddOffset(7, booleanArrayOffset.Value, 0); }
+  public static VectorOffset CreateBooleanArrayVector(FlatBufferBuilder builder, bool[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddBool(data[i]); return builder.EndVector(); }
+  public static void StartBooleanArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void AddShortArray(FlatBufferBuilder builder, VectorOffset shortArrayOffset) { builder.AddOffset(8, shortArrayOffset.Value, 0); }
+  public static VectorOffset CreateShortArrayVector(FlatBufferBuilder builder, short[] data) { builder.StartVector(2, data.Length, 2); for (int i = data.Length - 1; i >= 0; i--) builder.AddShort(data[i]); return builder.EndVector(); }
+  public static void StartShortArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(2, numElems, 2); }
+  public static void AddEnumArray(FlatBufferBuilder builder, VectorOffset enumArrayOffset) { builder.AddOffset(9, enumArrayOffset.Value, 0); }
+  public static VectorOffset CreateEnumArrayVector(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestEnum1[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddSbyte((sbyte)data[i]); return builder.EndVector(); }
+  public static void StartEnumArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void AddEmbeddedEnumArray(FlatBufferBuilder builder, VectorOffset embeddedEnumArrayOffset) { builder.AddOffset(10, embeddedEnumArrayOffset.Value, 0); }
+  public static VectorOffset CreateEmbeddedEnumArrayVector(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestData1___TestEnum2[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddUint((uint)data[i]); return builder.EndVector(); }
+  public static void StartEmbeddedEnumArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddNestedClassArray(FlatBufferBuilder builder, VectorOffset nestedClassArrayOffset) { builder.AddOffset(11, nestedClassArrayOffset.Value, 0); }
+  public static VectorOffset CreateNestedClassArrayVector(FlatBufferBuilder builder, Offset<BehaveAsSakura__Tests__TestData1>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartNestedClassArrayVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddStringList(FlatBufferBuilder builder, VectorOffset stringListOffset) { builder.AddOffset(12, stringListOffset.Value, 0); }
+  public static VectorOffset CreateStringListVector(FlatBufferBuilder builder, StringOffset[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartStringListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddBooleanList(FlatBufferBuilder builder, VectorOffset booleanListOffset) { builder.AddOffset(13, booleanListOffset.Value, 0); }
+  public static VectorOffset CreateBooleanListVector(FlatBufferBuilder builder, bool[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddBool(data[i]); return builder.EndVector(); }
+  public static void StartBooleanListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void AddShortList(FlatBufferBuilder builder, VectorOffset shortListOffset) { builder.AddOffset(14, shortListOffset.Value, 0); }
+  public static VectorOffset CreateShortListVector(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddInt(data[i]); return builder.EndVector(); }
+  public static void StartShortListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddEnumList(FlatBufferBuilder builder, VectorOffset enumListOffset) { builder.AddOffset(15, enumListOffset.Value, 0); }
+  public static VectorOffset CreateEnumListVector(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestEnum1[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddSbyte((sbyte)data[i]); return builder.EndVector(); }
+  public static void StartEnumListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void AddEmbeddedEnumList(FlatBufferBuilder builder, VectorOffset embeddedEnumListOffset) { builder.AddOffset(16, embeddedEnumListOffset.Value, 0); }
+  public static VectorOffset CreateEmbeddedEnumListVector(FlatBufferBuilder builder, BehaveAsSakura__Tests__TestData1___TestEnum2[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddUint((uint)data[i]); return builder.EndVector(); }
+  public static void StartEmbeddedEnumListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddNestedClassList(FlatBufferBuilder builder, VectorOffset nestedClassListOffset) { builder.AddOffset(17, nestedClassListOffset.Value, 0); }
+  public static VectorOffset CreateNestedClassListVector(FlatBufferBuilder builder, Offset<BehaveAsSakura__Tests__TestData1>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static void StartNestedClassListVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static Offset<BehaveAsSakura__Tests__DataTypeTestTaskDesc> EndBehaveAsSakura__Tests__DataTypeTestTaskDesc(FlatBufferBuilder builder) {
+    int o = builder.EndObject();
+    return new Offset<BehaveAsSakura__Tests__DataTypeTestTaskDesc>(o);
+  }
+};
+
 struct BehaveAsSakura__Tests__DumpLogTaskDesc : IFlatbufferObject
 {
   private Table __p;
@@ -1407,7 +1731,7 @@ namespace BehaveAsSakura.Serialization
         {
             if (objects == null)
                 return null;
-            
+
             var offsets = new Offset<BehaveAsSakura__Events__IEvent__UnionWrapper>[objects.Count];
             for (int i = 0; i < objects.Count; i++)
             {
@@ -1422,8 +1746,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Events__SimpleEventTriggeredEvent__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Events.SimpleEventTriggeredEvent)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Events__IEvent__UnionWrapper.CreateBehaveAsSakura__Events__IEvent__UnionWrapper(fbb, 
-                                BehaveAsSakura__Events__IEvent.BehaveAsSakura__Events__SimpleEventTriggeredEvent, 
+                    offsets[i] = BehaveAsSakura__Events__IEvent__UnionWrapper.CreateBehaveAsSakura__Events__IEvent__UnionWrapper(fbb,
+                                BehaveAsSakura__Events__IEvent.BehaveAsSakura__Events__SimpleEventTriggeredEvent,
                                 offset);
                     continue;
                 }
@@ -1432,8 +1756,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Events__TimerTriggeredEvent__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Events.TimerTriggeredEvent)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Events__IEvent__UnionWrapper.CreateBehaveAsSakura__Events__IEvent__UnionWrapper(fbb, 
-                                BehaveAsSakura__Events__IEvent.BehaveAsSakura__Events__TimerTriggeredEvent, 
+                    offsets[i] = BehaveAsSakura__Events__IEvent__UnionWrapper.CreateBehaveAsSakura__Events__IEvent__UnionWrapper(fbb,
+                                BehaveAsSakura__Events__IEvent.BehaveAsSakura__Events__TimerTriggeredEvent,
                                 offset);
                     continue;
                 }
@@ -1448,7 +1772,7 @@ namespace BehaveAsSakura.Serialization
         {
             if (objectsLength == 0)
                 return null;
-            
+
             var objects = new BehaveAsSakura.Events.IEvent[objectsLength];
             for (int i = 0; i < objectsLength; i++)
             {
@@ -1625,6 +1949,22 @@ namespace BehaveAsSakura.Serialization
                 return true;
             }
 
+            if (obj is BehaveAsSakura.Tests.DataTypeTestTaskDesc)
+            {
+                var o = BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tests.DataTypeTestTaskDesc)obj);
+                offset = o.HasValue ? o.Value.Value : 0;
+                type = BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DataTypeTestTaskDesc;
+                return true;
+            }
+
+            if (obj is BehaveAsSakura.Tests.DumpLogTaskDesc)
+            {
+                var o = BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tests.DumpLogTaskDesc)obj);
+                offset = o.HasValue ? o.Value.Value : 0;
+                type = BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DumpLogTaskDesc;
+                return true;
+            }
+
             throw new NotSupportedException(obj.GetType().FullName);
         }
 
@@ -1632,7 +1972,7 @@ namespace BehaveAsSakura.Serialization
         {
             if (objects == null)
                 return null;
-            
+
             var offsets = new Offset<BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper>[objects.Count];
             for (int i = 0; i < objects.Count; i++)
             {
@@ -1647,8 +1987,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__ConditionalEvaluatorTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.ConditionalEvaluatorTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ConditionalEvaluatorTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ConditionalEvaluatorTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1657,8 +1997,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__InverterTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.InverterTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__InverterTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__InverterTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1667,8 +2007,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__ListenEventTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.ListenEventTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ListenEventTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ListenEventTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1677,8 +2017,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__LogTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.LogTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__LogTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__LogTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1687,8 +2027,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__ParallelSelectorTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.ParallelSelectorTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ParallelSelectorTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ParallelSelectorTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1697,8 +2037,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__ParallelTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.ParallelTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ParallelTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ParallelTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1707,8 +2047,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__RepeaterTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.RepeaterTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__RepeaterTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__RepeaterTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1717,8 +2057,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__ReturnFailureTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.ReturnFailureTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ReturnFailureTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ReturnFailureTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1727,8 +2067,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__ReturnSuccessTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.ReturnSuccessTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ReturnSuccessTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__ReturnSuccessTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1737,8 +2077,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__SelectorTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.SelectorTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SelectorTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SelectorTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1747,8 +2087,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__SendEventTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.SendEventTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SendEventTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SendEventTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1757,8 +2097,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__SequenceTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.SequenceTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SequenceTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SequenceTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1767,8 +2107,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__SubTreeTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.SubTreeTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SubTreeTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__SubTreeTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1777,8 +2117,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__UntilFailureTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilFailureTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilFailureTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1787,8 +2127,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__UntilSuccessTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.UntilSuccessTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__UntilSuccessTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1797,8 +2137,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__WaitEventTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.WaitEventTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitEventTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitEventTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1807,8 +2147,28 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__WaitTimerTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.WaitTimerTaskDesc)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitTimerTaskDesc, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitTimerTaskDesc,
+                                offset);
+                    continue;
+                }
+
+                if (obj is BehaveAsSakura.Tests.DataTypeTestTaskDesc)
+                {
+                    var o = BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tests.DataTypeTestTaskDesc)obj);
+                    var offset = o.HasValue ? o.Value.Value : 0;
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DataTypeTestTaskDesc,
+                                offset);
+                    continue;
+                }
+
+                if (obj is BehaveAsSakura.Tests.DumpLogTaskDesc)
+                {
+                    var o = BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tests.DumpLogTaskDesc)obj);
+                    var offset = o.HasValue ? o.Value.Value : 0;
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskDesc__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskDesc__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DumpLogTaskDesc,
                                 offset);
                     continue;
                 }
@@ -1823,7 +2183,7 @@ namespace BehaveAsSakura.Serialization
         {
             if (objectsLength == 0)
                 return null;
-            
+
             var objects = new BehaveAsSakura.Tasks.ITaskDesc[objectsLength];
             for (int i = 0; i < objectsLength; i++)
             {
@@ -1899,6 +2259,14 @@ namespace BehaveAsSakura.Serialization
 
                     case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitTimerTaskDesc:
                         objects[i] = BehaveAsSakura__Tasks__WaitTimerTaskDesc__Serializer.Instance.Deserialize(wrapper.Value.Body<BehaveAsSakura__Tasks__WaitTimerTaskDesc>());
+                        break;
+
+                    case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DataTypeTestTaskDesc:
+                        objects[i] = BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer.Instance.Deserialize(wrapper.Value.Body<BehaveAsSakura__Tests__DataTypeTestTaskDesc>());
+                        break;
+
+                    case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DumpLogTaskDesc:
+                        objects[i] = BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer.Instance.Deserialize(wrapper.Value.Body<BehaveAsSakura__Tests__DumpLogTaskDesc>());
                         break;
 
                     case BehaveAsSakura__Tasks__ITaskDesc.NONE:
@@ -1979,7 +2347,7 @@ namespace BehaveAsSakura.Serialization
         {
             if (objects == null)
                 return null;
-            
+
             var offsets = new Offset<BehaveAsSakura__Tasks__ITaskProps__UnionWrapper>[objects.Count];
             for (int i = 0; i < objects.Count; i++)
             {
@@ -1994,8 +2362,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__ListenEventTaskProps__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.ListenEventTaskProps)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__ListenEventTaskProps, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__ListenEventTaskProps,
                                 offset);
                     continue;
                 }
@@ -2004,8 +2372,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__RepeaterTaskProps__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.RepeaterTaskProps)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__RepeaterTaskProps, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__RepeaterTaskProps,
                                 offset);
                     continue;
                 }
@@ -2014,8 +2382,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__SequenceTaskProps__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.SequenceTaskProps)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__SequenceTaskProps, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__SequenceTaskProps,
                                 offset);
                     continue;
                 }
@@ -2024,8 +2392,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__SubTreeTaskProps__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.SubTreeTaskProps)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__SubTreeTaskProps, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__SubTreeTaskProps,
                                 offset);
                     continue;
                 }
@@ -2034,8 +2402,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__WaitEventTaskProps__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.WaitEventTaskProps)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__WaitEventTaskProps, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__WaitEventTaskProps,
                                 offset);
                     continue;
                 }
@@ -2044,8 +2412,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__WaitTimerTaskProps__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.WaitTimerTaskProps)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__WaitTimerTaskProps, 
+                    offsets[i] = BehaveAsSakura__Tasks__ITaskProps__UnionWrapper.CreateBehaveAsSakura__Tasks__ITaskProps__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__ITaskProps.BehaveAsSakura__Tasks__WaitTimerTaskProps,
                                 offset);
                     continue;
                 }
@@ -2060,7 +2428,7 @@ namespace BehaveAsSakura.Serialization
         {
             if (objectsLength == 0)
                 return null;
-            
+
             var objects = new BehaveAsSakura.Tasks.ITaskProps[objectsLength];
             for (int i = 0; i < objectsLength; i++)
             {
@@ -2148,7 +2516,7 @@ namespace BehaveAsSakura.Serialization
         {
             if (objects == null)
                 return null;
-            
+
             var offsets = new Offset<BehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper>[objects.Count];
             for (int i = 0; i < objects.Count; i++)
             {
@@ -2163,8 +2531,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__LeafTaskDescWrapper__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.LeafTaskDescWrapper)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper.CreateBehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__TaskDescWrapper.BehaveAsSakura__Tasks__LeafTaskDescWrapper, 
+                    offsets[i] = BehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper.CreateBehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__TaskDescWrapper.BehaveAsSakura__Tasks__LeafTaskDescWrapper,
                                 offset);
                     continue;
                 }
@@ -2173,8 +2541,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__DecoratorTaskDescWrapper__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.DecoratorTaskDescWrapper)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper.CreateBehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__TaskDescWrapper.BehaveAsSakura__Tasks__DecoratorTaskDescWrapper, 
+                    offsets[i] = BehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper.CreateBehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__TaskDescWrapper.BehaveAsSakura__Tasks__DecoratorTaskDescWrapper,
                                 offset);
                     continue;
                 }
@@ -2183,8 +2551,8 @@ namespace BehaveAsSakura.Serialization
                 {
                     var o = BehaveAsSakura__Tasks__CompositeTaskDescWrapper__Serializer.Instance.Serialize(fbb, (BehaveAsSakura.Tasks.CompositeTaskDescWrapper)obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = BehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper.CreateBehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper(fbb, 
-                                BehaveAsSakura__Tasks__TaskDescWrapper.BehaveAsSakura__Tasks__CompositeTaskDescWrapper, 
+                    offsets[i] = BehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper.CreateBehaveAsSakura__Tasks__TaskDescWrapper__UnionWrapper(fbb,
+                                BehaveAsSakura__Tasks__TaskDescWrapper.BehaveAsSakura__Tasks__CompositeTaskDescWrapper,
                                 offset);
                     continue;
                 }
@@ -2199,7 +2567,7 @@ namespace BehaveAsSakura.Serialization
         {
             if (objectsLength == 0)
                 return null;
-            
+
             var objects = new BehaveAsSakura.Tasks.TaskDescWrapper[objectsLength];
             for (int i = 0; i < objectsLength; i++)
             {
@@ -2447,7 +2815,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetValue = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Value))
-                offsetValue =  fbb.CreateString(obj.Value);
+                offsetValue = fbb.CreateString(obj.Value);
             BehaveAsSakura__Variables__VariableDesc.StartBehaveAsSakura__Variables__VariableDesc(fbb);
             BehaveAsSakura__Variables__VariableDesc.AddType(fbb, (BehaveAsSakura__Variables__VariableType)(System.Byte)obj.Type);
             BehaveAsSakura__Variables__VariableDesc.AddSource(fbb, (BehaveAsSakura__Variables__VariableSource)(System.Byte)obj.Source);
@@ -2512,7 +2880,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetName = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Name))
-                offsetName =  fbb.CreateString(obj.Name);
+                offsetName = fbb.CreateString(obj.Name);
             var offsetDesc = BehaveAsSakura__Variables__VariableDesc__Serializer.Instance.Serialize(fbb, obj.Desc);
             BehaveAsSakura__Variables__NamedVariableDesc.StartBehaveAsSakura__Variables__NamedVariableDesc(fbb);
             if (offsetName.HasValue)
@@ -2641,10 +3009,10 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetName = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Name))
-                offsetName =  fbb.CreateString(obj.Name);
+                offsetName = fbb.CreateString(obj.Name);
             var offsetComment = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Comment))
-                offsetComment =  fbb.CreateString(obj.Comment);
+                offsetComment = fbb.CreateString(obj.Comment);
             int offsetCustomDesc;
             BehaveAsSakura__Tasks__ITaskDesc typeCustomDesc;
             BehaveAsSakura__Tasks__ITaskDesc__UnionSerializer.Serialize(fbb, obj.CustomDesc, out offsetCustomDesc, out typeCustomDesc);
@@ -2733,6 +3101,12 @@ namespace BehaveAsSakura.Serialization
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitTimerTaskDesc:
                     return BehaveAsSakura__Tasks__WaitTimerTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__WaitTimerTaskDesc>());
 
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DataTypeTestTaskDesc:
+                    return BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tests__DataTypeTestTaskDesc>());
+
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DumpLogTaskDesc:
+                    return BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tests__DumpLogTaskDesc>());
+
                 case BehaveAsSakura__Tasks__ITaskDesc.NONE:
                     return null;
 
@@ -2755,10 +3129,10 @@ namespace BehaveAsSakura.Serialization
                 vectorChildTaskIds = BehaveAsSakura__Tasks__CompositeTaskDescWrapper.CreateChildTaskIdsVector(fbb, obj.ChildTaskIds.ToArray());
             var offsetName = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Name))
-                offsetName =  fbb.CreateString(obj.Name);
+                offsetName = fbb.CreateString(obj.Name);
             var offsetComment = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Comment))
-                offsetComment =  fbb.CreateString(obj.Comment);
+                offsetComment = fbb.CreateString(obj.Comment);
             int offsetCustomDesc;
             BehaveAsSakura__Tasks__ITaskDesc typeCustomDesc;
             BehaveAsSakura__Tasks__ITaskDesc__UnionSerializer.Serialize(fbb, obj.CustomDesc, out offsetCustomDesc, out typeCustomDesc);
@@ -2848,6 +3222,12 @@ namespace BehaveAsSakura.Serialization
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitTimerTaskDesc:
                     return BehaveAsSakura__Tasks__WaitTimerTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__WaitTimerTaskDesc>());
 
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DataTypeTestTaskDesc:
+                    return BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tests__DataTypeTestTaskDesc>());
+
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DumpLogTaskDesc:
+                    return BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tests__DumpLogTaskDesc>());
+
                 case BehaveAsSakura__Tasks__ITaskDesc.NONE:
                     return null;
 
@@ -2890,10 +3270,10 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetName = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Name))
-                offsetName =  fbb.CreateString(obj.Name);
+                offsetName = fbb.CreateString(obj.Name);
             var offsetComment = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Comment))
-                offsetComment =  fbb.CreateString(obj.Comment);
+                offsetComment = fbb.CreateString(obj.Comment);
             int offsetCustomDesc;
             BehaveAsSakura__Tasks__ITaskDesc typeCustomDesc;
             BehaveAsSakura__Tasks__ITaskDesc__UnionSerializer.Serialize(fbb, obj.CustomDesc, out offsetCustomDesc, out typeCustomDesc);
@@ -2980,6 +3360,12 @@ namespace BehaveAsSakura.Serialization
                 case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tasks__WaitTimerTaskDesc:
                     return BehaveAsSakura__Tasks__WaitTimerTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tasks__WaitTimerTaskDesc>());
 
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DataTypeTestTaskDesc:
+                    return BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tests__DataTypeTestTaskDesc>());
+
+                case BehaveAsSakura__Tasks__ITaskDesc.BehaveAsSakura__Tests__DumpLogTaskDesc:
+                    return BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer.Instance.Deserialize(obj.CustomDesc<BehaveAsSakura__Tests__DumpLogTaskDesc>());
+
                 case BehaveAsSakura__Tasks__ITaskDesc.NONE:
                     return null;
 
@@ -2999,7 +3385,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetEventType = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.EventType))
-                offsetEventType =  fbb.CreateString(obj.EventType);
+                offsetEventType = fbb.CreateString(obj.EventType);
             BehaveAsSakura__Tasks__ListenEventTaskDesc.StartBehaveAsSakura__Tasks__ListenEventTaskDesc(fbb);
             if (offsetEventType.HasValue)
                 BehaveAsSakura__Tasks__ListenEventTaskDesc.AddEventType(fbb, offsetEventType.Value);
@@ -3053,7 +3439,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetMessage = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Message))
-                offsetMessage =  fbb.CreateString(obj.Message);
+                offsetMessage = fbb.CreateString(obj.Message);
             var vectorMessageParameters = default(VectorOffset?);
             if (obj.MessageParameters != null)
             {
@@ -3260,7 +3646,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetEventType = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.EventType))
-                offsetEventType =  fbb.CreateString(obj.EventType);
+                offsetEventType = fbb.CreateString(obj.EventType);
             BehaveAsSakura__Tasks__SendEventTaskDesc.StartBehaveAsSakura__Tasks__SendEventTaskDesc(fbb);
             if (offsetEventType.HasValue)
                 BehaveAsSakura__Tasks__SendEventTaskDesc.AddEventType(fbb, offsetEventType.Value);
@@ -3513,7 +3899,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetEventType = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.EventType))
-                offsetEventType =  fbb.CreateString(obj.EventType);
+                offsetEventType = fbb.CreateString(obj.EventType);
             BehaveAsSakura__Tasks__WaitEventTaskDesc.StartBehaveAsSakura__Tasks__WaitEventTaskDesc(fbb);
             if (offsetEventType.HasValue)
                 BehaveAsSakura__Tasks__WaitEventTaskDesc.AddEventType(fbb, offsetEventType.Value);
@@ -3621,7 +4007,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetType = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Type))
-                offsetType =  fbb.CreateString(obj.Type);
+                offsetType = fbb.CreateString(obj.Type);
             var vectorTaskIds = default(VectorOffset?);
             if (obj.TaskIds != null)
                 vectorTaskIds = BehaveAsSakura__Events__SubscriptionProps.CreateTaskIdsVector(fbb, obj.TaskIds);
@@ -3697,7 +4083,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetEventType = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.EventType))
-                offsetEventType =  fbb.CreateString(obj.EventType);
+                offsetEventType = fbb.CreateString(obj.EventType);
             BehaveAsSakura__Events__SimpleEventTriggeredEvent.StartBehaveAsSakura__Events__SimpleEventTriggeredEvent(fbb);
             if (offsetEventType.HasValue)
                 BehaveAsSakura__Events__SimpleEventTriggeredEvent.AddEventType(fbb, offsetEventType.Value);
@@ -3741,6 +4127,307 @@ namespace BehaveAsSakura.Serialization
         }
     }
 
+    class BehaveAsSakura__Tests__TestData1__Serializer : Serializer<BehaveAsSakura.Tests.TestData1, BehaveAsSakura__Tests__TestData1>
+    {
+        public static readonly BehaveAsSakura__Tests__TestData1__Serializer Instance = new BehaveAsSakura__Tests__TestData1__Serializer();
+
+        public override Offset<BehaveAsSakura__Tests__TestData1>? Serialize(FlatBufferBuilder fbb, BehaveAsSakura.Tests.TestData1 obj)
+        {
+            if (obj == null)
+                return null;
+            var offsetStringValue = default(StringOffset?);
+            if (!string.IsNullOrEmpty(obj.StringValue))
+                offsetStringValue = fbb.CreateString(obj.StringValue);
+            var offsetNestedValue = BehaveAsSakura__Tests__TestData2__Serializer.Instance.Serialize(fbb, obj.NestedValue);
+            var vectorStringArray = default(VectorOffset?);
+            if (obj.StringArray != null)
+            {
+                var offsetsStringArray = SerializeString(fbb, obj.StringArray);
+                vectorStringArray = BehaveAsSakura__Tests__TestData1.CreateStringArrayVector(fbb, offsetsStringArray);
+            }
+            var vectorBooleanArray = default(VectorOffset?);
+            if (obj.BooleanArray != null)
+                vectorBooleanArray = BehaveAsSakura__Tests__TestData1.CreateBooleanArrayVector(fbb, obj.BooleanArray);
+            var vectorULongArray = default(VectorOffset?);
+            if (obj.ULongArray != null)
+                vectorULongArray = BehaveAsSakura__Tests__TestData1.CreateULongArrayVector(fbb, obj.ULongArray);
+            var vectorEnumArray = default(VectorOffset?);
+            if (obj.EnumArray != null)
+            {
+                var castedEnumArray = obj.EnumArray.Select(e => (BehaveAsSakura__Tests__TestEnum1)(System.SByte)e).ToArray();
+                vectorEnumArray = BehaveAsSakura__Tests__TestData1.CreateEnumArrayVector(fbb, castedEnumArray);
+            }
+            var vectorEmbeddedEnumArray = default(VectorOffset?);
+            if (obj.EmbeddedEnumArray != null)
+            {
+                var castedEmbeddedEnumArray = obj.EmbeddedEnumArray.Select(e => (BehaveAsSakura__Tests__TestData1___TestEnum2)(System.UInt32)e).ToArray();
+                vectorEmbeddedEnumArray = BehaveAsSakura__Tests__TestData1.CreateEmbeddedEnumArrayVector(fbb, castedEmbeddedEnumArray);
+            }
+            var vectorNestedClassArray = default(VectorOffset?);
+            if (obj.NestedClassArray != null)
+            {
+                var offsetsNestedClassArray = BehaveAsSakura__Tests__TestData2__Serializer.Instance.Serialize(fbb, obj.NestedClassArray);
+                vectorNestedClassArray = BehaveAsSakura__Tests__TestData1.CreateNestedClassArrayVector(fbb, offsetsNestedClassArray);
+            }
+            var vectorStringList = default(VectorOffset?);
+            if (obj.StringList != null)
+            {
+                var offsetsStringList = SerializeString(fbb, obj.StringList.ToArray());
+                vectorStringList = BehaveAsSakura__Tests__TestData1.CreateStringListVector(fbb, offsetsStringList);
+            }
+            var vectorBooleanList = default(VectorOffset?);
+            if (obj.BooleanList != null)
+                vectorBooleanList = BehaveAsSakura__Tests__TestData1.CreateBooleanListVector(fbb, obj.BooleanList.ToArray());
+            var vectorUIntList = default(VectorOffset?);
+            if (obj.UIntList != null)
+                vectorUIntList = BehaveAsSakura__Tests__TestData1.CreateUIntListVector(fbb, obj.UIntList.ToArray());
+            var vectorEnumList = default(VectorOffset?);
+            if (obj.EnumList != null)
+            {
+                var castedEnumList = obj.EnumList.Select(e => (BehaveAsSakura__Tests__TestEnum1)(System.SByte)e).ToArray();
+                vectorEnumList = BehaveAsSakura__Tests__TestData1.CreateEnumListVector(fbb, castedEnumList);
+            }
+            var vectorEmbeddedEnumList = default(VectorOffset?);
+            if (obj.EmbeddedEnumList != null)
+            {
+                var castedEmbeddedEnumList = obj.EmbeddedEnumList.Select(e => (BehaveAsSakura__Tests__TestData1___TestEnum2)(System.UInt32)e).ToArray();
+                vectorEmbeddedEnumList = BehaveAsSakura__Tests__TestData1.CreateEmbeddedEnumListVector(fbb, castedEmbeddedEnumList);
+            }
+            var vectorNestedClassList = default(VectorOffset?);
+            if (obj.NestedClassList != null)
+            {
+                var offsetsNestedClassList = BehaveAsSakura__Tests__TestData2__Serializer.Instance.Serialize(fbb, obj.NestedClassList);
+                vectorNestedClassList = BehaveAsSakura__Tests__TestData1.CreateNestedClassListVector(fbb, offsetsNestedClassList);
+            }
+            BehaveAsSakura__Tests__TestData1.StartBehaveAsSakura__Tests__TestData1(fbb);
+            if (offsetStringValue.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddStringValue(fbb, offsetStringValue.Value);
+            BehaveAsSakura__Tests__TestData1.AddBooleanValue(fbb, obj.BooleanValue);
+            BehaveAsSakura__Tests__TestData1.AddFloatValue(fbb, obj.FloatValue);
+            BehaveAsSakura__Tests__TestData1.AddEnumValue(fbb, (BehaveAsSakura__Tests__TestEnum1)(System.SByte)obj.EnumValue);
+            BehaveAsSakura__Tests__TestData1.AddEmbeddedEnumValue(fbb, (BehaveAsSakura__Tests__TestData1___TestEnum2)(System.UInt32)obj.EmbeddedEnumValue);
+            if (offsetNestedValue.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddNestedValue(fbb, offsetNestedValue.Value);
+            if (vectorStringArray.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddStringArray(fbb, vectorStringArray.Value);
+            if (vectorBooleanArray.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddBooleanArray(fbb, vectorBooleanArray.Value);
+            if (vectorULongArray.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddULongArray(fbb, vectorULongArray.Value);
+            if (vectorEnumArray.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddEnumArray(fbb, vectorEnumArray.Value);
+            if (vectorEmbeddedEnumArray.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddEmbeddedEnumArray(fbb, vectorEmbeddedEnumArray.Value);
+            if (vectorNestedClassArray.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddNestedClassArray(fbb, vectorNestedClassArray.Value);
+            if (vectorStringList.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddStringList(fbb, vectorStringList.Value);
+            if (vectorBooleanList.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddBooleanList(fbb, vectorBooleanList.Value);
+            if (vectorUIntList.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddUIntList(fbb, vectorUIntList.Value);
+            if (vectorEnumList.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddEnumList(fbb, vectorEnumList.Value);
+            if (vectorEmbeddedEnumList.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddEmbeddedEnumList(fbb, vectorEmbeddedEnumList.Value);
+            if (vectorNestedClassList.HasValue)
+                BehaveAsSakura__Tests__TestData1.AddNestedClassList(fbb, vectorNestedClassList.Value);
+            return BehaveAsSakura__Tests__TestData1.EndBehaveAsSakura__Tests__TestData1(fbb);
+        }
+        protected override BehaveAsSakura__Tests__TestData1 GetRootAs(ByteBuffer buffer)
+        {
+            return BehaveAsSakura__Tests__TestData1.GetRootAsBehaveAsSakura__Tests__TestData1(buffer);
+        }
+        public override BehaveAsSakura.Tests.TestData1 Deserialize(BehaveAsSakura__Tests__TestData1 obj)
+        {
+            return new BehaveAsSakura.Tests.TestData1()
+            {
+                StringValue = obj.StringValue,
+                BooleanValue = obj.BooleanValue,
+                FloatValue = obj.FloatValue,
+                EnumValue = (BehaveAsSakura.Tests.TestEnum1)(System.SByte)obj.EnumValue,
+                EmbeddedEnumValue = (BehaveAsSakura.Tests.TestData1.TestEnum2)(System.UInt32)obj.EmbeddedEnumValue,
+                NestedValue = BehaveAsSakura__Tests__TestData2__Serializer.Instance.Deserialize(obj.NestedValue),
+                StringArray = DeserializeScalar<System.String>(obj.StringArrayLength, obj.StringArray),
+                BooleanArray = DeserializeScalar<System.Boolean>(obj.BooleanArrayLength, obj.BooleanArray),
+                ULongArray = DeserializeScalar<System.UInt64>(obj.ULongArrayLength, obj.ULongArray),
+                EnumArray = DeserializeScalar(obj.EnumArrayLength, obj.EnumArray).Select(e => (BehaveAsSakura.Tests.TestEnum1)(System.SByte)e).ToArray(),
+                EmbeddedEnumArray = DeserializeScalar(obj.EmbeddedEnumArrayLength, obj.EmbeddedEnumArray).Select(e => (BehaveAsSakura.Tests.TestData1.TestEnum2)(System.UInt32)e).ToArray(),
+                NestedClassArray = BehaveAsSakura__Tests__TestData2__Serializer.Instance.Deserialize(obj.NestedClassArrayLength, obj.NestedClassArray),
+                StringList = DeserializeScalar<System.String>(obj.StringListLength, obj.StringList).ToList(),
+                BooleanList = DeserializeScalar<System.Boolean>(obj.BooleanListLength, obj.BooleanList).ToList(),
+                UIntList = DeserializeScalar<System.UInt32>(obj.UIntListLength, obj.UIntList).ToList(),
+                EnumList = DeserializeScalar(obj.EnumListLength, obj.EnumList).Select(e => (BehaveAsSakura.Tests.TestEnum1)(System.SByte)e).ToList(),
+                EmbeddedEnumList = DeserializeScalar(obj.EmbeddedEnumListLength, obj.EmbeddedEnumList).Select(e => (BehaveAsSakura.Tests.TestData1.TestEnum2)(System.UInt32)e).ToList(),
+                NestedClassList = BehaveAsSakura__Tests__TestData2__Serializer.Instance.Deserialize(obj.NestedClassListLength, obj.NestedClassList).ToList(),
+            };
+        }
+    }
+
+    class BehaveAsSakura__Tests__TestData2__Serializer : Serializer<BehaveAsSakura.Tests.TestData2, BehaveAsSakura__Tests__TestData2>
+    {
+        public static readonly BehaveAsSakura__Tests__TestData2__Serializer Instance = new BehaveAsSakura__Tests__TestData2__Serializer();
+
+        public override Offset<BehaveAsSakura__Tests__TestData2>? Serialize(FlatBufferBuilder fbb, BehaveAsSakura.Tests.TestData2 obj)
+        {
+            if (obj == null)
+                return null;
+            BehaveAsSakura__Tests__TestData2.StartBehaveAsSakura__Tests__TestData2(fbb);
+            BehaveAsSakura__Tests__TestData2.AddLongValue(fbb, obj.LongValue);
+            BehaveAsSakura__Tests__TestData2.AddULongValue(fbb, obj.ULongValue);
+            return BehaveAsSakura__Tests__TestData2.EndBehaveAsSakura__Tests__TestData2(fbb);
+        }
+        protected override BehaveAsSakura__Tests__TestData2 GetRootAs(ByteBuffer buffer)
+        {
+            return BehaveAsSakura__Tests__TestData2.GetRootAsBehaveAsSakura__Tests__TestData2(buffer);
+        }
+        public override BehaveAsSakura.Tests.TestData2 Deserialize(BehaveAsSakura__Tests__TestData2 obj)
+        {
+            return new BehaveAsSakura.Tests.TestData2()
+            {
+                LongValue = obj.LongValue,
+                ULongValue = obj.ULongValue,
+            };
+        }
+    }
+
+    class BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer : Serializer<BehaveAsSakura.Tests.DataTypeTestTaskDesc, BehaveAsSakura__Tests__DataTypeTestTaskDesc>
+    {
+        public static readonly BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer Instance = new BehaveAsSakura__Tests__DataTypeTestTaskDesc__Serializer();
+
+        public override Offset<BehaveAsSakura__Tests__DataTypeTestTaskDesc>? Serialize(FlatBufferBuilder fbb, BehaveAsSakura.Tests.DataTypeTestTaskDesc obj)
+        {
+            if (obj == null)
+                return null;
+            var offsetStringValue = default(StringOffset?);
+            if (!string.IsNullOrEmpty(obj.StringValue))
+                offsetStringValue = fbb.CreateString(obj.StringValue);
+            var offsetNestedValue = BehaveAsSakura__Tests__TestData1__Serializer.Instance.Serialize(fbb, obj.NestedValue);
+            var vectorStringArray = default(VectorOffset?);
+            if (obj.StringArray != null)
+            {
+                var offsetsStringArray = SerializeString(fbb, obj.StringArray);
+                vectorStringArray = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateStringArrayVector(fbb, offsetsStringArray);
+            }
+            var vectorBooleanArray = default(VectorOffset?);
+            if (obj.BooleanArray != null)
+                vectorBooleanArray = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateBooleanArrayVector(fbb, obj.BooleanArray);
+            var vectorShortArray = default(VectorOffset?);
+            if (obj.ShortArray != null)
+                vectorShortArray = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateShortArrayVector(fbb, obj.ShortArray);
+            var vectorEnumArray = default(VectorOffset?);
+            if (obj.EnumArray != null)
+            {
+                var castedEnumArray = obj.EnumArray.Select(e => (BehaveAsSakura__Tests__TestEnum1)(System.SByte)e).ToArray();
+                vectorEnumArray = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateEnumArrayVector(fbb, castedEnumArray);
+            }
+            var vectorEmbeddedEnumArray = default(VectorOffset?);
+            if (obj.EmbeddedEnumArray != null)
+            {
+                var castedEmbeddedEnumArray = obj.EmbeddedEnumArray.Select(e => (BehaveAsSakura__Tests__TestData1___TestEnum2)(System.UInt32)e).ToArray();
+                vectorEmbeddedEnumArray = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateEmbeddedEnumArrayVector(fbb, castedEmbeddedEnumArray);
+            }
+            var vectorNestedClassArray = default(VectorOffset?);
+            if (obj.NestedClassArray != null)
+            {
+                var offsetsNestedClassArray = BehaveAsSakura__Tests__TestData1__Serializer.Instance.Serialize(fbb, obj.NestedClassArray);
+                vectorNestedClassArray = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateNestedClassArrayVector(fbb, offsetsNestedClassArray);
+            }
+            var vectorStringList = default(VectorOffset?);
+            if (obj.StringList != null)
+            {
+                var offsetsStringList = SerializeString(fbb, obj.StringList.ToArray());
+                vectorStringList = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateStringListVector(fbb, offsetsStringList);
+            }
+            var vectorBooleanList = default(VectorOffset?);
+            if (obj.BooleanList != null)
+                vectorBooleanList = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateBooleanListVector(fbb, obj.BooleanList.ToArray());
+            var vectorShortList = default(VectorOffset?);
+            if (obj.ShortList != null)
+                vectorShortList = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateShortListVector(fbb, obj.ShortList.ToArray());
+            var vectorEnumList = default(VectorOffset?);
+            if (obj.EnumList != null)
+            {
+                var castedEnumList = obj.EnumList.Select(e => (BehaveAsSakura__Tests__TestEnum1)(System.SByte)e).ToArray();
+                vectorEnumList = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateEnumListVector(fbb, castedEnumList);
+            }
+            var vectorEmbeddedEnumList = default(VectorOffset?);
+            if (obj.EmbeddedEnumList != null)
+            {
+                var castedEmbeddedEnumList = obj.EmbeddedEnumList.Select(e => (BehaveAsSakura__Tests__TestData1___TestEnum2)(System.UInt32)e).ToArray();
+                vectorEmbeddedEnumList = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateEmbeddedEnumListVector(fbb, castedEmbeddedEnumList);
+            }
+            var vectorNestedClassList = default(VectorOffset?);
+            if (obj.NestedClassList != null)
+            {
+                var offsetsNestedClassList = BehaveAsSakura__Tests__TestData1__Serializer.Instance.Serialize(fbb, obj.NestedClassList);
+                vectorNestedClassList = BehaveAsSakura__Tests__DataTypeTestTaskDesc.CreateNestedClassListVector(fbb, offsetsNestedClassList);
+            }
+            BehaveAsSakura__Tests__DataTypeTestTaskDesc.StartBehaveAsSakura__Tests__DataTypeTestTaskDesc(fbb);
+            if (offsetStringValue.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddStringValue(fbb, offsetStringValue.Value);
+            BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddBooleanValue(fbb, obj.BooleanValue);
+            BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddByteValue(fbb, obj.ByteValue);
+            BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEnumValue(fbb, (BehaveAsSakura__Tests__TestEnum1)(System.SByte)obj.EnumValue);
+            BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEmbeddedEnumValue(fbb, (BehaveAsSakura__Tests__TestData1___TestEnum2)(System.UInt32)obj.EmbeddedEnumValue);
+            if (offsetNestedValue.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddNestedValue(fbb, offsetNestedValue.Value);
+            if (vectorStringArray.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddStringArray(fbb, vectorStringArray.Value);
+            if (vectorBooleanArray.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddBooleanArray(fbb, vectorBooleanArray.Value);
+            if (vectorShortArray.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddShortArray(fbb, vectorShortArray.Value);
+            if (vectorEnumArray.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEnumArray(fbb, vectorEnumArray.Value);
+            if (vectorEmbeddedEnumArray.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEmbeddedEnumArray(fbb, vectorEmbeddedEnumArray.Value);
+            if (vectorNestedClassArray.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddNestedClassArray(fbb, vectorNestedClassArray.Value);
+            if (vectorStringList.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddStringList(fbb, vectorStringList.Value);
+            if (vectorBooleanList.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddBooleanList(fbb, vectorBooleanList.Value);
+            if (vectorShortList.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddShortList(fbb, vectorShortList.Value);
+            if (vectorEnumList.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEnumList(fbb, vectorEnumList.Value);
+            if (vectorEmbeddedEnumList.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddEmbeddedEnumList(fbb, vectorEmbeddedEnumList.Value);
+            if (vectorNestedClassList.HasValue)
+                BehaveAsSakura__Tests__DataTypeTestTaskDesc.AddNestedClassList(fbb, vectorNestedClassList.Value);
+            return BehaveAsSakura__Tests__DataTypeTestTaskDesc.EndBehaveAsSakura__Tests__DataTypeTestTaskDesc(fbb);
+        }
+        protected override BehaveAsSakura__Tests__DataTypeTestTaskDesc GetRootAs(ByteBuffer buffer)
+        {
+            return BehaveAsSakura__Tests__DataTypeTestTaskDesc.GetRootAsBehaveAsSakura__Tests__DataTypeTestTaskDesc(buffer);
+        }
+        public override BehaveAsSakura.Tests.DataTypeTestTaskDesc Deserialize(BehaveAsSakura__Tests__DataTypeTestTaskDesc obj)
+        {
+            return new BehaveAsSakura.Tests.DataTypeTestTaskDesc()
+            {
+                StringValue = obj.StringValue,
+                BooleanValue = obj.BooleanValue,
+                ByteValue = obj.ByteValue,
+                EnumValue = (BehaveAsSakura.Tests.TestEnum1)(System.SByte)obj.EnumValue,
+                EmbeddedEnumValue = (BehaveAsSakura.Tests.TestData1.TestEnum2)(System.UInt32)obj.EmbeddedEnumValue,
+                NestedValue = BehaveAsSakura__Tests__TestData1__Serializer.Instance.Deserialize(obj.NestedValue),
+                StringArray = DeserializeScalar<System.String>(obj.StringArrayLength, obj.StringArray),
+                BooleanArray = DeserializeScalar<System.Boolean>(obj.BooleanArrayLength, obj.BooleanArray),
+                ShortArray = DeserializeScalar<System.Int16>(obj.ShortArrayLength, obj.ShortArray),
+                EnumArray = DeserializeScalar(obj.EnumArrayLength, obj.EnumArray).Select(e => (BehaveAsSakura.Tests.TestEnum1)(System.SByte)e).ToArray(),
+                EmbeddedEnumArray = DeserializeScalar(obj.EmbeddedEnumArrayLength, obj.EmbeddedEnumArray).Select(e => (BehaveAsSakura.Tests.TestData1.TestEnum2)(System.UInt32)e).ToArray(),
+                NestedClassArray = BehaveAsSakura__Tests__TestData1__Serializer.Instance.Deserialize(obj.NestedClassArrayLength, obj.NestedClassArray),
+                StringList = DeserializeScalar<System.String>(obj.StringListLength, obj.StringList).ToList(),
+                BooleanList = DeserializeScalar<System.Boolean>(obj.BooleanListLength, obj.BooleanList).ToList(),
+                ShortList = DeserializeScalar<System.Int32>(obj.ShortListLength, obj.ShortList).ToList(),
+                EnumList = DeserializeScalar(obj.EnumListLength, obj.EnumList).Select(e => (BehaveAsSakura.Tests.TestEnum1)(System.SByte)e).ToList(),
+                EmbeddedEnumList = DeserializeScalar(obj.EmbeddedEnumListLength, obj.EmbeddedEnumList).Select(e => (BehaveAsSakura.Tests.TestData1.TestEnum2)(System.UInt32)e).ToList(),
+                NestedClassList = BehaveAsSakura__Tests__TestData1__Serializer.Instance.Deserialize(obj.NestedClassListLength, obj.NestedClassList).ToList(),
+            };
+        }
+    }
+
     class BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer : Serializer<BehaveAsSakura.Tests.DumpLogTaskDesc, BehaveAsSakura__Tests__DumpLogTaskDesc>
     {
         public static readonly BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer Instance = new BehaveAsSakura__Tests__DumpLogTaskDesc__Serializer();
@@ -3751,7 +4438,7 @@ namespace BehaveAsSakura.Serialization
                 return null;
             var offsetText = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Text))
-                offsetText =  fbb.CreateString(obj.Text);
+                offsetText = fbb.CreateString(obj.Text);
             BehaveAsSakura__Tests__DumpLogTaskDesc.StartBehaveAsSakura__Tests__DumpLogTaskDesc(fbb);
             if (offsetText.HasValue)
                 BehaveAsSakura__Tests__DumpLogTaskDesc.AddText(fbb, offsetText.Value);

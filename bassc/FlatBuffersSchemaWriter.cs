@@ -194,7 +194,7 @@ namespace BehaveAsSakura.SerializationCompiler
                 }
             }
 
-            return type.FullName.Replace(".", "__");
+            return type.FullName.Replace(".", "__").Replace("+", "___");
         }
 
         private static string ConvertUnionWrapper(string typeName)

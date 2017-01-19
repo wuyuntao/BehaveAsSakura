@@ -113,7 +113,7 @@ namespace {schema.Namespace}
         {{
             if (objects == null)
                 return null;
-            
+
             var offsets = new Offset<{unionWrapperName}>[objects.Count];
             for (int i = 0; i < objects.Count; i++)
             {{
@@ -135,8 +135,8 @@ namespace {schema.Namespace}
                 {{
                     var o = {includedTypeSerializerName}.Instance.Serialize(fbb, ({includedTypeName})obj);
                     var offset = o.HasValue ? o.Value.Value : 0;
-                    offsets[i] = {unionWrapperName}.Create{unionWrapperName}(fbb, 
-                                {unionFbName}.{includedFbName}, 
+                    offsets[i] = {unionWrapperName}.Create{unionWrapperName}(fbb,
+                                {unionFbName}.{includedFbName},
                                 offset);
                     continue;
                 }}
@@ -161,7 +161,7 @@ namespace {schema.Namespace}
         {{
             if (objectsLength == 0)
                 return null;
-            
+
             var objects = new {unionName}[objectsLength];
             for (int i = 0; i < objectsLength; i++)
             {{
@@ -375,7 +375,7 @@ namespace {schema.Namespace}
                         builder.AppendLine($@"            var vector{f.Name} = default(VectorOffset?);
             if (obj.{f.Name} != null)
             {{
-                var offsets{f.Name} = SerializeString(fbb, obj.{f.Name});
+                var offsets{f.Name} = SerializeString(fbb, obj.{f.Name}{toArray});
                 vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, offsets{f.Name});
             }}");
                     }
@@ -393,7 +393,7 @@ namespace {schema.Namespace}
                         builder.AppendLine($@"            var vector{f.Name} = default(VectorOffset?);
             if (obj.{f.Name} != null)
             {{
-                var casted{f.Name} = Array.ConvertAll(obj.{f.Name}, e => ({fbEnumTypeName})({underlyingTypeName})e);
+                var casted{f.Name} = obj.{f.Name}.Select(e => ({fbEnumTypeName})({underlyingTypeName})e).ToArray();
                 vector{f.Name} = {fbObjectName}.Create{f.Name}Vector(fbb, casted{f.Name});
             }}");
                     }
@@ -426,7 +426,7 @@ namespace {schema.Namespace}
                     {
                         builder.AppendLine($@"            var offset{f.Name} = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.{f.Name}))
-                offset{f.Name} =  fbb.CreateString(obj.{f.Name});");
+                offset{f.Name} = fbb.CreateString(obj.{f.Name});");
                     }
                     else if (IsScalarType(f.Type) || IsEnumType(f.Type))
                     {
@@ -533,8 +533,11 @@ namespace {schema.Namespace}
                     }
                     else if (IsEnumType(elementType))
                     {
-                        var underlyingTypeName = Enum.GetUnderlyingType(f.Type).FullName;
-                        builder.Append($"                {f.Name} = DeserializeScalar(obj.{f.Name}Length, ({f.Type.FullName})({underlyingTypeName})obj.{f.Name})");
+                        var toArray = IsArrayType(f.Type) ? ".ToArray()" : "";
+                        var enumName = ConvertEnumName(elementType);
+                        var underlyingTypeName = Enum.GetUnderlyingType(elementType).FullName;
+
+                        builder.Append($"                {f.Name} = DeserializeScalar(obj.{f.Name}Length, obj.{f.Name}).Select(e => ({enumName})({underlyingTypeName})e){toArray}");
                     }
                     else if (IsUnionType(elementType, schema))
                     {
@@ -561,8 +564,9 @@ namespace {schema.Namespace}
                     }
                     else if (IsEnumType(f.Type))
                     {
+                        var enumName = ConvertEnumName(f.Type);
                         var underlyingTypeName = Enum.GetUnderlyingType(f.Type).FullName;
-                        builder.AppendLine($"                {f.Name} = ({f.Type.FullName})({underlyingTypeName})obj.{f.Name},");
+                        builder.AppendLine($"                {f.Name} = ({enumName})({underlyingTypeName})obj.{f.Name},");
                     }
                     else if (IsUnionType(f.Type, schema))
                     {
@@ -650,9 +654,14 @@ namespace {schema.Namespace}
 }}");
         }
 
+        private static string ConvertEnumName(Type type)
+        {
+            return type.FullName.Replace("+", "."); ;
+        }
+
         private static string ConvertTypeName(Type type)
         {
-            return type.FullName.Replace(".", "__");
+            return type.FullName.Replace(".", "__").Replace("+", "___"); ;
         }
 
         private static string ConvertSerializerName(Type type)

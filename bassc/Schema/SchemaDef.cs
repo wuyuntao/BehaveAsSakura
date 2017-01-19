@@ -30,6 +30,11 @@ namespace BehaveAsSakura.SerializationCompiler.Schema
 
             SearchAssemblies(assemblies, type =>
             {
+                if (!type.IsEnum)
+                    return;
+
+                // TODO Validate enum values must be specified in ascending order with a start value 0
+
                 var attr = type.GetCustomAttribute<BehaveAsEnumAttribute>(false);
                 if (attr != null)
                     Enums.Add(new EnumDef(type));

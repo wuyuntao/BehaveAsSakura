@@ -50,6 +50,7 @@
     <Compile Include="BehaviorTreeManagerTests.cs" />
     <Compile Include="Fixtures\BehaviorTreeOwner.cs" />
     <Compile Include="BehaviorTreeSerializationTests.cs" />
+    <Compile Include="Fixtures\DataTypeTestTask.cs" />
     <Compile Include="Fixtures\DumpLogTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\ConditionEvaluatorTaskTests.cs" />

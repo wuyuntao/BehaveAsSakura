@@ -19,6 +19,8 @@ namespace BehaveAsSakura.SerializationCompiler.Schema
 
             foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
+                // TODO Validate property must be one of scalar or table or array or list of scalar or table
+
                 var attr = property.GetCustomAttribute<BehaveAsFieldAttribute>();
                 if (attr != null)
                     Fields.Add(new FieldDef(property.Name, attr.Tag, property.PropertyType));
