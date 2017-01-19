@@ -7,9 +7,15 @@ namespace BehaveAsSakura.Editor
     {
         public static readonly Vector2 MinWindowSize = new Vector2(800, 600);
 
+        public static readonly string BehaviorTreeBackgroundPath = "BehaveAsSakuraEditor/Textures/BehavioreTreeViewBackground";
+
+        public static readonly int BehaviorTreeBackgroundDepth = 100;
+
         public static readonly Vector2 BehaviorTreeNodeSize = new Vector2(100, 60);
 
         public static readonly Vector2 BehaviorTreeNodePosition = new Vector2(0, 0);
+
+        public static readonly int BehaviorTreeNodeDepth = 90;
 
         public static readonly GUIStyle BehaviorTreeNodeStyle = new GUIStyle()
         {
@@ -44,5 +50,13 @@ namespace BehaveAsSakura.Editor
         public static readonly Color TaskNodeConnectionColor = Color.white;
 
         public static readonly float TaskNodeConnectionLineWidth = 3;
+
+        public static readonly string TranslationPath = "BehaveAsSakuraEditor/Translations";
+
+        public static readonly string Language = "en";
+
+        public static readonly int PropertyGridViewDepth = 80;
+
+        public static readonly int PropertyGridViewWidth = 400;
     }
 }

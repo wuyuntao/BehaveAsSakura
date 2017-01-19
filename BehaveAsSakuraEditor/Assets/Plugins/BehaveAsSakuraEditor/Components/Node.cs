@@ -38,9 +38,11 @@ namespace BehaveAsSakura.Editor
 
         public override void OnGUI()
         {
-            base.OnGUI();
+            GUI.depth = EditorConfiguration.BehaviorTreeNodeDepth;
 
             GUI.Box(CalculateGUIRect(), Title, Style);
+
+            base.OnGUI();
         }
 
         public override bool OnMouseUp(Event e)

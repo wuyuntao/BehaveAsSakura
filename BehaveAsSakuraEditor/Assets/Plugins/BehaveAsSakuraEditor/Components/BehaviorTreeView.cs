@@ -1,31 +1,32 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
     public class BehaviorTreeView : EditorComponent
     {
-        private const string backgroundPath = "BehaveAsSakuraEditor/Textures/BehavioreTreeViewBackground";
-
-        private Vector2 size;
         private Vector2 scrollOffset;
         private Texture2D background;
 
         public BehaviorTreeState Tree { get; private set; }
 
+        public Vector2 Size { get; private set; }
+
         public BehaviorTreeView(EditorDomain domain, BehaviorTreeState tree, Vector2 windowSize)
             : base(domain, null, string.Format("{0}-View", tree.Id))
         {
             Tree = tree;
-            size = windowSize;
+            Size = windowSize;
             scrollOffset = new Vector2(windowSize.x / 2, EditorConfiguration.BehaviorTreeNodeSize.y);
-            background = (Texture2D)Resources.Load(backgroundPath);
+            background = (Texture2D)Resources.Load(EditorConfiguration.BehaviorTreeBackgroundPath);
 
+            Children.Add(new PropertyGridView(domain, this));
             Children.Add(new BehaviorTreeNode(domain, this));
         }
 
         public override void OnGUI()
         {
+            GUI.depth = EditorConfiguration.BehaviorTreeBackgroundDepth;
+
             DrawBackground();
 
             base.OnGUI();
@@ -35,8 +36,9 @@ namespace BehaveAsSakura.Editor
         {
             var width = 1f / background.width;
             var height = 1f / background.height;
-            var viewRect = new Rect(0, 0, size.x, size.y);
-            var uvMapping = new Rect(-scrollOffset.x * width, (scrollOffset.y - size.y) * height, size.x * width, size.y * height);
+            var viewRect = new Rect(0, 0, Size.x, Size.y);
+            var uvMapping = new Rect(-scrollOffset.x * width, (scrollOffset.y - Size.y) * height, Size.x * width, Size.y * height);
+
             GUI.DrawTextureWithTexCoords(viewRect, background, uvMapping);
         }
 
@@ -53,7 +55,7 @@ namespace BehaveAsSakura.Editor
 
         public override bool OnLayoutChange(Event e, Rect windowPosition)
         {
-            size = windowPosition.size;
+            Size = windowPosition.size;
 
             return base.OnLayoutChange(e, windowPosition);
         }

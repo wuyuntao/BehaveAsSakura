@@ -8,8 +8,8 @@ namespace BehaveAsSakura.Editor
 {
     public class I18n
     {
-        private static string translationDirectory = "BehaveAsSakuraEditor/Translations";
-        private static I18n instance = new I18n("en");
+        private static string translationDirectory = EditorConfiguration.TranslationPath;
+        private static I18n instance = new I18n(EditorConfiguration.Language);
 
         private string language;
         private Dictionary<string, string> translations = new Dictionary<string, string>();
