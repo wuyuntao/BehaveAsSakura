@@ -58,5 +58,11 @@ namespace BehaveAsSakura.Editor
         public static readonly int PropertyGridViewDepth = 80;
 
         public static readonly int PropertyGridViewWidth = 400;
+
+        public static readonly string TaskIconPath = "BehaveAsSakuraEditor/Textures";
+
+        public static readonly string DefaultBehaviorTreeIconPath = "BehaveAsSakuraEditor/Textures/Default";
+
+        public static readonly string DefaultTaskIconPath = "BehaveAsSakuraEditor/Textures/Default";
     }
 }

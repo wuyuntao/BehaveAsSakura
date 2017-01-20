@@ -119,6 +119,15 @@ namespace BehaveAsSakura.Editor
             }
         }
 
+        public static void HeaderIconAndTitle(ScriptableObject target, Texture2D icon, string title)
+        {
+            typeof(EditorGUIUtility).InvokeMember("SetIconForObject"
+                    , BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.NonPublic
+                    , null, null, new object[] { target, icon });
+
+            target.name = title;
+        }
+
         public static string GetPropertyName(PropertyInfo pi)
         {
             var t = I18n.__("Name of '{0}.{1}'", pi.PropertyType.FullName, pi.Name);
@@ -141,6 +150,11 @@ namespace BehaveAsSakura.Editor
         public static string GetTaskDescription(Type type)
         {
             return I18n.__(string.Format("Description of task '{0}'", type.FullName));
+        }
+
+        public static string GetTaskIcon(Type type)
+        {
+            return string.Format("BehaveAsSakuraEditor/Textures/{0}", type.Name.Replace("TaskDesc", ""));
         }
     }
 }
