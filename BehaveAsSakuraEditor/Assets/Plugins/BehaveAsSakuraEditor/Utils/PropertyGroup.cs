@@ -60,7 +60,46 @@ namespace BehaveAsSakura.Editor
             if (pi.PropertyType.GetCustomAttributes(typeof(BehaveAsTableAttribute), true).Length > 0)
                 return new PropertyGroupItem(this, pi);
 
-            Logger.Error("Not implemented yet: {0}", pi.PropertyType);
+            if (pi.PropertyType.IsArray)
+                return CreateListItem(pi, pi.PropertyType.GetElementType());
+
+            if ((typeof(List<>)).IsAssignableFrom(pi.PropertyType))
+                return CreateListItem(pi, pi.PropertyType.GetGenericArguments()[0]);
+
+            Logger.Error("Unsupported property. Name: {0}+{1}, Type: {2}", valueType.FullName, pi.Name, pi.PropertyType);
+            return null;
+        }
+
+        private Item CreateListItem(PropertyInfo pi, Type elementType)
+        {
+            if (elementType == typeof(string))
+                return new ListItem<StringItem>(this, pi);
+
+            if (elementType == typeof(bool))
+                return new ListItem<BooleanItem>(this, pi);
+
+            if (elementType == typeof(byte) || elementType == typeof(sbyte)
+                    || elementType == typeof(short) || elementType == typeof(ushort)
+                    || elementType == typeof(int) || elementType == typeof(uint)
+                    || elementType == typeof(long) || elementType == typeof(ulong))
+                return new ListItem<IntItem>(this, pi);
+
+            if (elementType == typeof(long) || elementType == typeof(ulong))
+                return new ListItem<LongItem>(this, pi);
+
+            if (elementType == typeof(float))
+                return new ListItem<FloatItem>(this, pi);
+
+            if (elementType == typeof(double))
+                return new ListItem<DoubleItem>(this, pi);
+
+            if (elementType.IsEnum)
+                return new ListItem<EnumItem>(this, pi);
+
+            if (elementType.GetCustomAttributes(typeof(BehaveAsTableAttribute), true).Length > 0)
+                return new ListItem<PropertyGroupItem>(this, pi);
+
+            Logger.Error("Unsupported list property. Name: {0}+{1}, Type: {2}", valueType.FullName, pi.Name, pi.PropertyType);
             return null;
         }
 
@@ -188,6 +227,29 @@ namespace BehaveAsSakura.Editor
             public override void OnGUI()
             {
                 EditorHelper.Foldout(ref showGroup, name, () => group.OnGUI());
+            }
+        }
+
+        class ListItem<TElement> : Item
+            where TElement : Item
+        {
+            private List<TElement> elements = new List<TElement>();
+            private bool showList = true;
+
+            public ListItem(PropertyGroup owner, PropertyInfo pi)
+                : base(owner, pi)
+            {
+            }
+
+            public override void OnGUI()
+            {
+                EditorHelper.Foldout(ref showList, name, () =>
+                {
+                    EditorHelper.ReadOnlyTextField(I18n._("Size"), elements.Count.ToString());
+
+                    for (int i = 0; i < elements.Count; i++)
+                        elements[i].OnGUI();
+                });
             }
         }
     }
