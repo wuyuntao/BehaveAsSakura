@@ -46,10 +46,15 @@ namespace BehaveAsSakura.Editor
             if (base.OnMouseDrag(e))
                 return true;
 
-            scrollOffset += e.delta;
-            e.Use();
+            if (EditorHelper.IsLeftButton(e))
+            {
+                scrollOffset += e.delta;
+                e.Use();
 
-            return true;
+                return true;
+            }
+
+            return false;
         }
 
         public override bool OnLayoutChange(Event e, Rect windowPosition)

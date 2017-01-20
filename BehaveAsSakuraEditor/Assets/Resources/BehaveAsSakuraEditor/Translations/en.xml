@@ -6,6 +6,7 @@
   <Item Key="Ok" />
   <Item Key="Id" />
   <Item Key="Basic" />
+  <Item Key="Description" />
   <Item Key="Behavior tree already has root task" />
   <Item Key="Leaf task cannot have child task" />
   <Item Key="Decorator task can only has one child task" />

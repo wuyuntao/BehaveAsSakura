@@ -85,6 +85,24 @@ namespace BehaveAsSakura.Editor
             }
         }
 
+        private string TryTranslate(string key)
+        {
+            string value;
+            if (translations.TryGetValue(key, out value))
+                return value;
+            else
+                return null;
+        }
+
+        private string TryTranslate(string key, params object[] args)
+        {
+            string value;
+            if (translations.TryGetValue(key, out value))
+                return string.Format(value, args);
+            else
+                return null;
+        }
+
         public static void SetTranslationDirectory(string directory)
         {
             if (directory != translationDirectory)
@@ -118,6 +136,16 @@ namespace BehaveAsSakura.Editor
         public static string _(string key, params object[] args)
         {
             return instance.Translate(key, args);
+        }
+
+        public static string __(string key)
+        {
+            return instance.TryTranslate(key);
+        }
+
+        public static string __(string key, params object[] args)
+        {
+            return instance.TryTranslate(key, args);
         }
     }
 }

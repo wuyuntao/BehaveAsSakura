@@ -1,4 +1,5 @@
-﻿using BehaveAsSakura.Tasks;
+﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,13 @@ namespace BehaveAsSakura.Editor
                         && t != typeof(ICompositeTaskDesc)
                         && typeof(ITaskDesc).IsAssignableFrom(t)
                    select t;
+        }
+
+        public static IEnumerable<PropertyInfo> FindAllProperties(object obj)
+        {
+            return from p in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                   where p.GetCustomAttributes(typeof(BehaveAsFieldAttribute), true) != null
+                   select p;
         }
 
         public static void AddNewTaskMenuItems(GenericMenu menu, bool enabled, GenericMenu.MenuFunction2 callback)
@@ -75,6 +83,23 @@ namespace BehaveAsSakura.Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
             EditorGUILayout.SelectableLabel(text, EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+            EditorGUILayout.EndHorizontal();
+        }
+
+        public static string TextArea(string label, string text, int lineHeight = 4)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+            text = EditorGUILayout.TextArea(text, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
+            EditorGUILayout.EndHorizontal();
+            return text;
+        }
+
+        public static void ReadOnlyTextArea(string label, string text, int lineHeight = 4)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+            EditorGUILayout.SelectableLabel(text, EditorStyles.textArea, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
             EditorGUILayout.EndHorizontal();
         }
     }

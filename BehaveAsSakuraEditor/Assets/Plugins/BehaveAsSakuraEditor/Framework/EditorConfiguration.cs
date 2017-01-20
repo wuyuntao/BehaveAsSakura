@@ -5,7 +5,7 @@ namespace BehaveAsSakura.Editor
 {
     public static class EditorConfiguration
     {
-        public static readonly Vector2 MinWindowSize = new Vector2(800, 600);
+        public static readonly Vector2 MinWindowSize = new Vector2(400, 300);
 
         public static readonly string BehaviorTreeBackgroundPath = "BehaveAsSakuraEditor/Textures/BehavioreTreeViewBackground";
 
