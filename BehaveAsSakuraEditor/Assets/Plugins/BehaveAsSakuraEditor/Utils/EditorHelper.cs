@@ -41,8 +41,8 @@ namespace BehaveAsSakura.Editor
             {
                 foreach (var t in FindAllTaskDescs())
                 {
-                    var categoryText = I18n._(string.Format("Category of task '{0}'", t.FullName));
-                    var titleText = I18n._(string.Format("Title of task '{0}'", t.FullName));
+                    var categoryText = GetTaskCategory(t);
+                    var titleText = GetTaskTitle(t);
                     var menuItemText = string.Format("{0}/{1}/{2}", newTaskText, categoryText, titleText);
 
                     menu.AddItem(new GUIContent(menuItemText), false, callback, t);
@@ -81,7 +81,7 @@ namespace BehaveAsSakura.Editor
         public static void ReadOnlyTextField(string label, string text)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+            EditorGUILayout.LabelField(label, LabelWidth());
             EditorGUILayout.SelectableLabel(text, EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
             EditorGUILayout.EndHorizontal();
         }
@@ -89,7 +89,7 @@ namespace BehaveAsSakura.Editor
         public static string TextArea(string label, string text, int lineHeight = 4)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+            EditorGUILayout.LabelField(label, LabelWidth());
             text = EditorGUILayout.TextArea(text, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
             EditorGUILayout.EndHorizontal();
             return text;
@@ -98,9 +98,49 @@ namespace BehaveAsSakura.Editor
         public static void ReadOnlyTextArea(string label, string text, int lineHeight = 4)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+            EditorGUILayout.LabelField(label, LabelWidth());
             EditorGUILayout.SelectableLabel(text, EditorStyles.textArea, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
             EditorGUILayout.EndHorizontal();
+        }
+
+        private static GUILayoutOption LabelWidth()
+        {
+            return GUILayout.Width(EditorGUIUtility.labelWidth - 4 - 16 * EditorGUI.indentLevel);
+        }
+
+        public static void Foldout(ref bool foldout, string name, Action action)
+        {
+            foldout = EditorGUILayout.Foldout(foldout, name);
+            if (foldout)
+            {
+                EditorGUI.indentLevel++;
+                action();
+                EditorGUI.indentLevel--;
+            }
+        }
+
+        public static string GetPropertyName(PropertyInfo pi)
+        {
+            var t = I18n.__("Name of '{0}.{1}'", pi.PropertyType.FullName, pi.Name);
+
+            return t ?? pi.Name;
+        }
+
+        public static string GetTaskCategory(Type type)
+        {
+            return I18n._(string.Format("Category of task '{0}'", type.FullName));
+        }
+
+        public static string GetTaskTitle(Type type)
+        {
+            var t = I18n.__(string.Format("Title of task '{0}'", type.FullName));
+
+            return t ?? type.Name.Replace("TaskDesc", "");
+        }
+
+        public static string GetTaskDescription(Type type)
+        {
+            return I18n.__(string.Format("Description of task '{0}'", type.FullName));
         }
     }
 }

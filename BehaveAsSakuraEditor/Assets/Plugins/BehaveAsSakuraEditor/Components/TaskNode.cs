@@ -13,7 +13,7 @@ namespace BehaveAsSakura.Editor
             : base(domain
                   , parent
                   , string.Format("{0}-Node", task.Id)
-                  , I18n._(string.Format("Title of task '{0}'", task.Desc.CustomDesc.GetType().FullName))
+                  , EditorHelper.GetTaskTitle(task.Desc.CustomDesc.GetType())
                   , task.Position
                   , EditorConfiguration.TaskNodeSize
                   , EditorConfiguration.TaskNodeStyle)

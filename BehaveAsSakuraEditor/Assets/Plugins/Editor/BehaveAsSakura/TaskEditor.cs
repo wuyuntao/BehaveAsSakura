@@ -15,15 +15,18 @@ namespace BehaveAsSakura.Editor
         private string taskName;
         private string taskComment;
 
+        private PropertyGroup taskDesc;
+
         public void OnEnable()
         {
             state = (TaskState)target;
 
-            if (state.Desc != null)
-            {
-                taskName = state.Desc.Name;
-                taskComment = state.Desc.Comment;
-            }
+            if (state.Desc == null)
+                return;
+
+            taskName = state.Desc.Name;
+            taskComment = state.Desc.Comment;
+            taskDesc = new PropertyGroup(state.Desc.CustomDesc.GetType(), state.Desc.CustomDesc);
         }
 
         public override void OnInspectorGUI()
@@ -34,22 +37,22 @@ namespace BehaveAsSakura.Editor
             var basic = state.Desc;
             var custom = basic.CustomDesc;
 
-            showBasic = EditorGUILayout.Foldout(showBasic, I18n._("Basic"));
-            if (showBasic)
+            EditorHelper.Foldout(ref showBasic, I18n._("Basic"), () =>
             {
                 EditorHelper.ReadOnlyTextField(I18n._("Id"), basic.Id.ToString());
 
                 taskName = EditorGUILayout.TextField(I18n._("Name"), taskName);
                 taskComment = EditorHelper.TextArea(I18n._("Comment"), taskComment);
-            }
+            });
 
-            showCustom = EditorGUILayout.Foldout(showCustom, I18n._(string.Format("Title of task '{0}'", custom.GetType().FullName)));
-            if (showCustom)
+            EditorHelper.Foldout(ref showCustom, EditorHelper.GetTaskTitle(custom.GetType()), () =>
             {
-                var helpText = I18n.__(string.Format("Description of task '{0}'", custom.GetType().FullName));
+                var helpText = EditorHelper.GetTaskDescription(custom.GetType());
                 if (!string.IsNullOrEmpty(helpText))
                     EditorHelper.ReadOnlyTextArea(I18n._("Description"), helpText);
-            }
+
+                taskDesc.OnGUI();
+            });
         }
     }
 }
