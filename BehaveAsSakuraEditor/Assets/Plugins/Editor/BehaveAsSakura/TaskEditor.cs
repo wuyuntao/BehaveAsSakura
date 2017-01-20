@@ -1,6 +1,4 @@
-﻿using BehaveAsSakura.Tasks;
-using System.Reflection;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace BehaveAsSakura.Editor
 {
@@ -34,23 +32,22 @@ namespace BehaveAsSakura.Editor
             if (state.Desc == null)
                 return;
 
-            var basic = state.Desc;
-            var custom = basic.CustomDesc;
+            var descType = state.Desc.CustomDesc.GetType();
 
             EditorHelper.Foldout(ref showBasic, I18n._("Basic"), () =>
             {
-                EditorHelper.ReadOnlyTextField(I18n._("Id"), basic.Id.ToString());
+                EditorHelper.ReadOnlyTextField(I18n._("Id"), state.Desc.Id.ToString());
 
                 taskName = EditorGUILayout.TextField(I18n._("Name"), taskName);
                 taskComment = EditorHelper.TextArea(I18n._("Comment"), taskComment);
+
+                var help = EditorHelper.GetTaskDescription(descType);
+                if (!string.IsNullOrEmpty(help))
+                    EditorHelper.ReadOnlyTextArea(I18n._("Help"), help);
             });
 
-            EditorHelper.Foldout(ref showCustom, EditorHelper.GetTaskTitle(custom.GetType()), () =>
+            EditorHelper.Foldout(ref showCustom, EditorHelper.GetTaskTitle(descType), () =>
             {
-                var helpText = EditorHelper.GetTaskDescription(custom.GetType());
-                if (!string.IsNullOrEmpty(helpText))
-                    EditorHelper.ReadOnlyTextArea(I18n._("Description"), helpText);
-
                 taskDesc.OnGUI();
             });
         }

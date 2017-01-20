@@ -59,7 +59,7 @@ namespace BehaveAsSakura.Editor
 
             view.OnGUI();
 
-            Logger.Debug("OnGUI: {0}", Event.current);
+            //Logger.Debug("OnGUI: {0}", Event.current);
         }
     }
 }

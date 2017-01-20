@@ -16,11 +16,10 @@ namespace BehaveAsSakura.Editor
 
         public override void OnInspectorGUI()
         {
-            showBasic = EditorGUILayout.Foldout(showBasic, I18n._("Basic"));
-            if (showBasic)
+            EditorHelper.Foldout(ref showBasic, I18n._("Basic"), () =>
             {
                 EditorHelper.ReadOnlyTextField(I18n._("Id"), state.Id);
-            }
+            });
         }
     }
 }
