@@ -1,4 +1,5 @@
 ﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Utils;
 using BehaveAsSakura.Variables;
 
 namespace BehaveAsSakura.Tasks
@@ -9,6 +10,12 @@ namespace BehaveAsSakura.Tasks
     {
         [BehaveAsField(1)]
         public VariableDesc SubTreePath { get; set; }
+
+        void ITaskDesc.Validate()
+        {
+            SubTreePath.ValidateNotNull(nameof(SubTreePath));
+            SubTreePath.ValidateType(VariableType.String);
+        }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {

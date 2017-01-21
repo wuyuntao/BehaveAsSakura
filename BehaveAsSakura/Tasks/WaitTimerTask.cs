@@ -1,6 +1,7 @@
 ﻿using BehaveAsSakura.Attributes;
 using BehaveAsSakura.Events;
 using BehaveAsSakura.Timers;
+using BehaveAsSakura.Utils;
 using BehaveAsSakura.Variables;
 
 namespace BehaveAsSakura.Tasks
@@ -11,6 +12,13 @@ namespace BehaveAsSakura.Tasks
     {
         [BehaveAsField(1)]
         public VariableDesc Time { get; set; }
+
+        void ITaskDesc.Validate()
+        {
+            Time.ValidateNotNull(nameof(Time));
+            Time.ValidateType(VariableType.UInteger);
+        }
+
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {

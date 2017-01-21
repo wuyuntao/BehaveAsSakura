@@ -1,5 +1,6 @@
 ﻿using BehaveAsSakura.Attributes;
 using BehaveAsSakura.Events;
+using BehaveAsSakura.Utils;
 
 namespace BehaveAsSakura.Tasks
 {
@@ -9,6 +10,11 @@ namespace BehaveAsSakura.Tasks
     {
         [BehaveAsField(1)]
         public string EventType { get; set; }
+
+        void ITaskDesc.Validate()
+        {
+            EventType.ValidateNotEmpty(nameof(EventType));
+        }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {

@@ -6,6 +6,10 @@ namespace BehaveAsSakura.Tasks
     [BehaveAsUnionInclude(typeof(ITaskDesc), 8)]
     public class ReturnFailureTaskDesc : IDecoratorTaskDesc
     {
+        void ITaskDesc.Validate()
+        {
+        }
+
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
             return new ReturnFailureTask(tree, parentTask, id, this);

@@ -6,6 +6,10 @@ namespace BehaveAsSakura.Tasks
     [BehaveAsUnionInclude(typeof(ITaskDesc), 12)]
     public class SequenceTaskDesc : ICompositeTaskDesc
     {
+        void ITaskDesc.Validate()
+        {
+        }
+
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
             return new SequenceTask(tree, parentTask, id, this);

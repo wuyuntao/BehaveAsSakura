@@ -1,4 +1,5 @@
 ﻿using BehaveAsSakura.Tasks;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,9 +13,6 @@ namespace BehaveAsSakura.Editor
         private bool showBasic = true;
         private bool showCustom = true;
 
-        private string taskName;
-        private string taskComment;
-
         private PropertyGroup taskDesc;
 
         public void OnEnable()
@@ -24,16 +22,23 @@ namespace BehaveAsSakura.Editor
             if (state.Desc == null)
                 return;
 
-            taskName = state.Desc.Name;
-            taskComment = state.Desc.Comment;
-
             var taskDescType = state.Desc.CustomDesc.GetType();
             taskDesc = new PropertyGroup(state.Domain, null, taskDescType, EditorHelper.CloneObject(taskDescType, state.Desc.CustomDesc));
         }
 
         public void OnDisable()
         {
-            // Validate
+            if (state.Desc == null)
+                return;
+
+            try
+            {
+                state.Desc.CustomDesc.Validate();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Task '{0}' contains error: {1}", GetTaskTitle(state.Desc), ex);
+            }
         }
 
         protected override void OnHeaderGUI()
@@ -45,12 +50,22 @@ namespace BehaveAsSakura.Editor
                 if (icon == null)
                     icon = (Texture2D)Resources.Load(EditorConfiguration.DefaultTaskIconPath);
 
-                var title = string.Format("{0} #{1}", EditorHelper.GetTaskTitle(state.Desc.CustomDesc.GetType()), state.Desc.Id);
+                var title = GetTaskTitle(state.Desc);
 
                 EditorHelper.HeaderIconAndTitle(state, icon, title);
             }
 
             base.OnHeaderGUI();
+        }
+
+        private static string GetTaskTitle(TaskDescWrapper desc)
+        {
+            var title = string.Format("{0} #{1}", EditorHelper.GetTaskTitle(desc.CustomDesc.GetType()), desc.Id);
+
+            if (!string.IsNullOrEmpty(desc.Name))
+                title = string.Format("{0} ({1})", title, desc.Name);
+
+            return title;
         }
 
         public override void OnInspectorGUI()

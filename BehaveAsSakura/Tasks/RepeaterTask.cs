@@ -9,6 +9,10 @@ namespace BehaveAsSakura.Tasks
         [BehaveAsField(1)]
         public uint Count { get; set; }
 
+        void ITaskDesc.Validate()
+        {
+        }
+
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
             return new RepeaterTask(tree, parentTask, id, this);

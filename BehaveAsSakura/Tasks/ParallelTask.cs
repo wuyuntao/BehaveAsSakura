@@ -6,6 +6,10 @@ namespace BehaveAsSakura.Tasks
     [BehaveAsUnionInclude(typeof(ITaskDesc), 6)]
     public class ParallelTaskDesc : ICompositeTaskDesc
     {
+        void ITaskDesc.Validate()
+        {
+        }
+
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
             return new ParallelTask(tree, parentTask, id, this);

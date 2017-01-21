@@ -18,6 +18,17 @@ namespace BehaveAsSakura.Tasks
         [BehaveAsField(3)]
         public VariableDesc Right { get; set; }
 
+        void ITaskDesc.Validate()
+        {
+            Left.ValidateNotNull(nameof(Left));
+            Left.Validate();
+
+            Op.ValidateIsEnumDefined(nameof(Op));
+
+            Right.ValidateNotNull(nameof(Right));
+            Right.Validate();
+        }
+
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
             return new ConditionalEvaluatorTask(tree, parentTask, id, this);

@@ -1,6 +1,7 @@
 ﻿using BehaveAsSakura.Attributes;
 using BehaveAsSakura.Tasks;
 using System.Collections.Generic;
+using System;
 
 namespace BehaveAsSakura.Tests
 {
@@ -154,6 +155,10 @@ namespace BehaveAsSakura.Tests
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
             return new DataTypeTestTask(tree, parentTask, id, this);
+        }
+
+        void ITaskDesc.Validate()
+        {
         }
     }
 

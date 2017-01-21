@@ -74,6 +74,7 @@
     <Compile Include="Timers\TimerManager.cs" />
     <Compile Include="Utils\ComparisonOperator.cs" />
     <Compile Include="Utils\NumericExtension.cs" />
+    <Compile Include="Utils\ValidationExtension.cs" />
     <Compile Include="Variables\Variable.cs" />
     <Compile Include="Variables\VariableDesc.cs" />
     <Compile Include="Variables\VariableSet.cs" />

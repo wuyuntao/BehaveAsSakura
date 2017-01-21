@@ -38,7 +38,7 @@
   <Item Key="Category of task 'BehaveAsSakura.Tasks.SequenceTaskDesc'" Value="Flow Control" />
   <Item Key="Title of task 'BehaveAsSakura.Tasks.SequenceTaskDesc'" Value="Sequence" />
   <Item Key="Category of task 'BehaveAsSakura.Tasks.SubTreeTaskDesc'" Value="Action" />
-  <Item Key="Title of task 'BehaveAsSakura.Tasks.SubTreeTaskDesc'" Value="Embed Sub Behavior Tree" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.SubTreeTaskDesc'" Value="Sub Tree" />
   <Item Key="Category of task 'BehaveAsSakura.Tasks.UntilFailureTaskDesc'" Value="Loop" />
   <Item Key="Title of task 'BehaveAsSakura.Tasks.UntilFailureTaskDesc'" Value="Until Failure" />
   <Item Key="Category of task 'BehaveAsSakura.Tasks.UntilSuccessTaskDesc'" Value="Loop" />

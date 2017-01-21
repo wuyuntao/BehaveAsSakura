@@ -26,6 +26,8 @@ namespace BehaveAsSakura.Tasks
 
     public interface ITaskDesc
     {
+        void Validate();
+
         Task CreateTask(BehaviorTree tree, Task parentTask, uint id);
     }
 

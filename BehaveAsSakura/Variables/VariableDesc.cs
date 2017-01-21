@@ -1,4 +1,6 @@
 ﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Utils;
+using System;
 
 namespace BehaveAsSakura.Variables
 {
@@ -47,5 +49,20 @@ namespace BehaveAsSakura.Variables
         }
 
         public VariableDesc() { }
+
+        public void Validate()
+        {
+            Type.ValidateIsEnumDefined(nameof(Type));
+            Source.ValidateIsEnumDefined(nameof(Source));
+            Value.ValidateNotEmpty(nameof(Value));
+        }
+
+        public void ValidateType(VariableType type)
+        {
+            Validate();
+
+            if (Type != type)
+                throw new ArgumentException($"Type not match. expected: {type}, actual: {Type}");
+        }
     }
 }

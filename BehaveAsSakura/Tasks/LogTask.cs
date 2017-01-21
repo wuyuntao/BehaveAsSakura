@@ -1,4 +1,5 @@
 ﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Utils;
 using BehaveAsSakura.Variables;
 using System;
 
@@ -13,6 +14,17 @@ namespace BehaveAsSakura.Tasks
 
         [BehaveAsField(2, IsRequired = false)]
         public VariableDesc[] MessageParameters { get; set; }
+
+        void ITaskDesc.Validate()
+        {
+            Message.ValidateNotEmpty(nameof(Message));
+
+            if (MessageParameters != null)
+            {
+                foreach (var mp in MessageParameters)
+                    mp.Validate();
+            }
+        }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {

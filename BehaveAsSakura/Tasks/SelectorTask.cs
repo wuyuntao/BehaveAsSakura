@@ -6,6 +6,10 @@ namespace BehaveAsSakura.Tasks
     [BehaveAsUnionInclude(typeof(ITaskDesc), 10)]
     public class SelectorTaskDesc : SequenceTaskDesc, ICompositeTaskDesc
     {
+        void ITaskDesc.Validate()
+        {
+        }
+
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
             return new SelectorTask(tree, parentTask, id, this);

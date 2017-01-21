@@ -1,4 +1,5 @@
-﻿using BehaveAsSakura.Attributes;
+﻿using System;
+using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Tasks
 {
@@ -6,6 +7,10 @@ namespace BehaveAsSakura.Tasks
     [BehaveAsUnionInclude(typeof(ITaskDesc), 2)]
     public class InverterTaskDesc : IDecoratorTaskDesc
     {
+        void ITaskDesc.Validate()
+        {
+        }
+
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
             return new InverterTask(tree, parentTask, id, this);

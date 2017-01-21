@@ -1,4 +1,5 @@
-﻿using BehaveAsSakura.Attributes;
+﻿using System;
+using BehaveAsSakura.Attributes;
 using BehaveAsSakura.Tasks;
 
 namespace BehaveAsSakura.Tests
@@ -9,6 +10,10 @@ namespace BehaveAsSakura.Tests
     {
         [BehaveAsField(1)]
         public string Text { get; set; }
+
+        void ITaskDesc.Validate()
+        {
+        }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {
