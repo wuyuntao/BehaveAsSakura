@@ -55,7 +55,7 @@ namespace BehaveAsSakura.Editor
 
             EditorHelper.Foldout(ref showBasic, I18n._("Basic"), () =>
             {
-                taskName = EditorGUILayout.TextField(I18n._("Name"), taskName);
+                taskName = EditorHelper.TextField(I18n._("Name"), taskName);
                 taskComment = EditorHelper.TextArea(I18n._("Comment"), taskComment);
 
                 var help = EditorHelper.GetTaskDescription(descType);

@@ -273,7 +273,7 @@ namespace BehaveAsSakura.Editor
             {
                 EditorHelper.Foldout(ref showList, name, () =>
                 {
-                    var size = Math.Max(0, EditorGUILayout.IntField(I18n._("Size"), elements.Length));
+                    var size = Math.Max(0, EditorHelper.IntField(I18n._("Size"), elements.Length));
 
                     if (size != elements.Length)
                     {
