@@ -10,6 +10,8 @@ namespace BehaveAsSakura.Editor
 
         public EditorRepository Repository { get { return Domain.Repository; } }
 
+        public EditorCommandHandler CommandHandler { get { return Domain.CommandHandler; } }
+
         public EditorComponent Parent { get; private set; }
 
         public List<EditorComponent> Children { get; private set; }

@@ -8,11 +8,13 @@ namespace BehaveAsSakura.Editor
 
         public event EventAppliedHandler OnEventApplied;
 
-        public EditorDomain Domain { get; private set; }
-
         public string Id { get; private set; }
 
+        public EditorDomain Domain { get; private set; }
+
         public EditorRepository Repository { get { return Domain.Repository; } }
+
+        public EditorCommandHandler CommandHandler { get { return Domain.CommandHandler; } }
 
         public static T CreateState<T>(EditorDomain domain, string id)
             where T : EditorState, new()

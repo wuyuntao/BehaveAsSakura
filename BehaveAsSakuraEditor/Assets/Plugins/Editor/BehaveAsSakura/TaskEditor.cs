@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace BehaveAsSakura.Editor
@@ -29,6 +28,11 @@ namespace BehaveAsSakura.Editor
             taskDesc = new PropertyGroup(state.Desc.CustomDesc.GetType(), state.Desc.CustomDesc);
         }
 
+        public void OnDisable()
+        {
+            // Validate
+        }
+
         protected override void OnHeaderGUI()
         {
             // TODO A workaround for display icon and name of task
@@ -55,8 +59,17 @@ namespace BehaveAsSakura.Editor
 
             EditorHelper.Foldout(ref showBasic, I18n._("Basic"), () =>
             {
-                taskName = EditorHelper.TextField(I18n._("Name"), taskName);
-                taskComment = EditorHelper.TextArea(I18n._("Comment"), taskComment);
+                var newTaskName = EditorHelper.TextField(I18n._("Name"), state.Desc.Name);
+                var newTaskComment = EditorHelper.TextArea(I18n._("Comment"), state.Desc.Comment);
+
+                if (newTaskName != state.Desc.Name || newTaskComment != state.Desc.Comment)
+                {
+                    state.CommandHandler.ProcessCommand(new ChangeTaskSummaryCommand(state.Id)
+                    {
+                        Name = newTaskName,
+                        Comment = newTaskComment,
+                    });
+                }
 
                 var help = EditorHelper.GetTaskDescription(descType);
                 if (!string.IsNullOrEmpty(help))

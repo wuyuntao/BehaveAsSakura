@@ -17,6 +17,10 @@ namespace BehaveAsSakura.Editor
             {
                 OnRemoveTaskCommand((RemoveTaskCommand)command);
             }
+            else if (command is ChangeTaskSummaryCommand)
+            {
+                OnChangeTaskSummaryCommand((ChangeTaskSummaryCommand)command);
+            }
         }
 
         private void OnCreateTaskCommand(CreateTaskCommand command)
@@ -75,6 +79,17 @@ namespace BehaveAsSakura.Editor
         private void OnRemoveTaskCommand(RemoveTaskCommand command)
         {
             throw new NotImplementedException();
+        }
+
+        private void OnChangeTaskSummaryCommand(ChangeTaskSummaryCommand command)
+        {
+            var task = Repository.States[command.Id];
+
+            task.ApplyEvent(new TaskSummaryChangedEvent(command.Id)
+            {
+                Name = command.Name,
+                Comment = command.Comment,
+            });
         }
     }
 }

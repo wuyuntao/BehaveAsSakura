@@ -263,7 +263,6 @@ namespace BehaveAsSakura.Editor
                     for (int i = 0; i < list.Count; i++)
                     {
                         elements[i] = owner.CreateItem(I18n._("Element #{0}", i), elementType, list[i]);
-
                         elements[i].OnLabelClick += Item_OnLabelClick;
                     }
                 }

@@ -26,6 +26,10 @@ namespace BehaveAsSakura.Editor
             else if (e is TaskRemovedEvent)
             {
             }
+            else if (e is TaskSummaryChangedEvent)
+            {
+                OnTaskSummaryChangedEvent((TaskSummaryChangedEvent)e);
+            }
 
             base.ApplyEvent(e);
         }
@@ -48,6 +52,12 @@ namespace BehaveAsSakura.Editor
             var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
             tree.NextTaskId = Math.Max(tree.NextTaskId, e.NewTask.Desc.Id) + 1;
             NodeLayoutHelper.Calculate(tree);
+        }
+
+        private void OnTaskSummaryChangedEvent(TaskSummaryChangedEvent e)
+        {
+            Desc.Name = e.Name;
+            Desc.Comment = e.Comment;
         }
     }
 }
