@@ -78,28 +78,110 @@ namespace BehaveAsSakura.Editor
             EditorUtility.DisplayDialog(title, message, ok);
         }
 
-        public static void ReadOnlyTextField(string label, string text)
+        public static string TextField(string label, string text, Action<Event> onLabelClick = null)
         {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, LabelWidth());
-            EditorGUILayout.SelectableLabel(text, EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-            EditorGUILayout.EndHorizontal();
+            ClickableLabel(label, () =>
+            {
+                text = EditorGUILayout.TextField(text, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+            }, onLabelClick);
+            return text;
         }
 
-        public static string TextArea(string label, string text, int lineHeight = 4)
+        public static void ReadOnlyTextField(string label, string text)
         {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, LabelWidth());
-            text = EditorGUILayout.TextArea(text, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
-            EditorGUILayout.EndHorizontal();
+            ClickableLabel(label, () =>
+            {
+                EditorGUILayout.SelectableLabel(text, EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+            });
+        }
+
+        public static string TextArea(string label, string text, int lineHeight = 4, Action<Event> onLabelClick = null)
+        {
+            ClickableLabel(label, () =>
+            {
+                text = EditorGUILayout.TextArea(text, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
+            }, onLabelClick);
             return text;
         }
 
         public static void ReadOnlyTextArea(string label, string text, int lineHeight = 4)
         {
+            ClickableLabel(label, () =>
+            {
+                EditorGUILayout.SelectableLabel(text, EditorStyles.textArea, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
+            });
+        }
+
+        public static bool Toggle(string label, bool value, Action<Event> onLabelClick = null)
+        {
+            ClickableLabel(label, () =>
+            {
+                value = EditorGUILayout.Toggle(value);
+            }, onLabelClick);
+            return value;
+        }
+
+        public static int IntField(string label, int value, Action<Event> onLabelClick = null)
+        {
+            ClickableLabel(label, () =>
+            {
+                value = EditorGUILayout.IntField(value);
+            }, onLabelClick);
+            return value;
+        }
+
+        public static long LongField(string label, long value, Action<Event> onLabelClick = null)
+        {
+            ClickableLabel(label, () =>
+            {
+                value = EditorGUILayout.LongField(value);
+            }, onLabelClick);
+            return value;
+        }
+
+        public static float FloatField(string label, float value, Action<Event> onLabelClick = null)
+        {
+            ClickableLabel(label, () =>
+            {
+                value = EditorGUILayout.FloatField(value);
+            }, onLabelClick);
+            return value;
+        }
+
+        public static double DoubleField(string label, double value, Action<Event> onLabelClick = null)
+        {
+            ClickableLabel(label, () =>
+            {
+                value = EditorGUILayout.DoubleField(value);
+            }, onLabelClick);
+            return value;
+        }
+
+        public static Enum EnumPopup(string label, Enum value, Action<Event> onLabelClick = null)
+        {
+            ClickableLabel(label, () =>
+            {
+                value = EditorGUILayout.EnumPopup(value);
+            }, onLabelClick);
+            return value;
+        }
+
+        private static void ClickableLabel(string label, Action action, Action<Event> onLabelClick = null)
+        {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(label, LabelWidth());
-            EditorGUILayout.SelectableLabel(text, EditorStyles.textArea, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
+
+            if (onLabelClick != null
+                    && Event.current.type == EventType.MouseUp
+                    && IsRightButton(Event.current)
+                    && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
+            {
+                onLabelClick(Event.current);
+
+                Event.current.Use();
+            }
+
+            action();
             EditorGUILayout.EndHorizontal();
         }
 
@@ -108,9 +190,20 @@ namespace BehaveAsSakura.Editor
             return GUILayout.Width(EditorGUIUtility.labelWidth - 4 - 16 * EditorGUI.indentLevel);
         }
 
-        public static void Foldout(ref bool foldout, string name, Action action)
+        public static void Foldout(ref bool foldout, string name, Action action, Action<Event> onlabelClick = null)
         {
             foldout = EditorGUILayout.Foldout(foldout, name);
+
+            if (onlabelClick != null
+                    && Event.current.type == EventType.MouseUp
+                    && IsRightButton(Event.current)
+                    && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
+            {
+                onlabelClick(Event.current);
+
+                Event.current.Use();
+            }
+
             if (foldout)
             {
                 EditorGUI.indentLevel++;

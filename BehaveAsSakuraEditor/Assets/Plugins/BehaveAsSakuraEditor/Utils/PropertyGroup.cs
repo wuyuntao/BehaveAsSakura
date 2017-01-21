@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
@@ -106,20 +107,30 @@ namespace BehaveAsSakura.Editor
 
         abstract class Item
         {
-            protected PropertyGroup owner;
-            protected string name;
-            protected Type valueType;
-            protected object element;
+            public event Action<Item, Event> OnLabelClick;
+
+            public PropertyGroup owner;
+            public string name;
+            public Type valueType;
+            public object value;
 
             protected Item(PropertyGroup owner, string name, Type valueType, object value)
             {
                 this.owner = owner;
                 this.name = name;
                 this.valueType = valueType;
-                this.element = value;
+                this.value = value;
             }
 
             public abstract void OnGUI();
+
+            protected virtual void LabelClick(Event e)
+            {
+                Logger.Debug("LabelClick {0}", name);
+
+                if (OnLabelClick != null)
+                    OnLabelClick(this, e);
+            }
         }
 
         class StringItem : Item
@@ -130,7 +141,7 @@ namespace BehaveAsSakura.Editor
 
             public override void OnGUI()
             {
-                element = EditorGUILayout.TextField(name, (string)element);
+                value = EditorHelper.TextField(name, (string)value, LabelClick);
             }
         }
 
@@ -142,7 +153,7 @@ namespace BehaveAsSakura.Editor
 
             public override void OnGUI()
             {
-                element = EditorGUILayout.Toggle(name, (bool)element);
+                value = EditorHelper.Toggle(name, (bool)value, LabelClick);
             }
         }
 
@@ -155,7 +166,7 @@ namespace BehaveAsSakura.Editor
             public override void OnGUI()
             {
                 // TODO limit range for integer fields
-                element = EditorGUILayout.IntField(name, (int)element);
+                value = EditorHelper.IntField(name, (int)value, LabelClick);
             }
         }
 
@@ -168,7 +179,7 @@ namespace BehaveAsSakura.Editor
             public override void OnGUI()
             {
                 // TODO limit range for integer fields
-                element = EditorGUILayout.LongField(name, (long)element);
+                value = EditorHelper.LongField(name, (long)value, LabelClick);
             }
         }
 
@@ -181,7 +192,7 @@ namespace BehaveAsSakura.Editor
             public override void OnGUI()
             {
                 // TODO limit range for integer fields
-                element = EditorGUILayout.FloatField(name, (float)element);
+                value = EditorHelper.FloatField(name, (float)value, LabelClick);
             }
         }
 
@@ -194,7 +205,7 @@ namespace BehaveAsSakura.Editor
             public override void OnGUI()
             {
                 // TODO limit range for integer fields
-                element = EditorGUILayout.DoubleField(name, (double)element);
+                value = EditorHelper.DoubleField(name, (double)value, LabelClick);
             }
         }
 
@@ -206,7 +217,7 @@ namespace BehaveAsSakura.Editor
 
             public override void OnGUI()
             {
-                element = EditorGUILayout.EnumPopup(name, (Enum)element);
+                value = EditorHelper.EnumPopup(name, (Enum)value, LabelClick);
             }
         }
 
@@ -226,7 +237,7 @@ namespace BehaveAsSakura.Editor
 
             public override void OnGUI()
             {
-                EditorHelper.Foldout(ref showGroup, name, () => group.OnGUI());
+                EditorHelper.Foldout(ref showGroup, name, () => group.OnGUI(), LabelClick);
             }
         }
 
@@ -250,7 +261,11 @@ namespace BehaveAsSakura.Editor
 
                     elements = new Item[list.Count];
                     for (int i = 0; i < list.Count; i++)
+                    {
                         elements[i] = owner.CreateItem(I18n._("Element #{0}", i), elementType, list[i]);
+
+                        elements[i].OnLabelClick += Item_OnLabelClick;
+                    }
                 }
             }
 
@@ -268,7 +283,10 @@ namespace BehaveAsSakura.Editor
                         if (newElements.Length > elements.Length)
                         {
                             for (var i = elements.Length; i < newElements.Length; i++)
+                            {
                                 newElements[i] = owner.CreateItem(I18n._("Element #{0}", i), elementType, Activator.CreateInstance(elementType));
+                                newElements[i].OnLabelClick += Item_OnLabelClick;
+                            }
                         }
 
                         elements = newElements;
@@ -276,7 +294,32 @@ namespace BehaveAsSakura.Editor
 
                     for (int i = 0; i < elements.Length; i++)
                         elements[i].OnGUI();
-                });
+                }, LabelClick);
+            }
+
+            private void Item_OnLabelClick(Item item, Event e)
+            {
+                var menu = new GenericMenu();
+
+                menu.AddItem(new GUIContent(I18n._("Delete element")), false, () => Item_OnDeleteElement(item));
+
+                menu.ShowAsContext();
+            }
+
+            private void Item_OnDeleteElement(Item item)
+            {
+                var newElements = new Item[elements.Length - 1];
+
+                var i = Array.IndexOf(elements, item);
+                if (i > 0)
+                    Array.Copy(elements, newElements, i);
+
+                Array.Copy(elements, i + 1, newElements, i, elements.Length - i - 1);
+
+                for (var j = i; j < newElements.Length; j++)
+                    newElements[j].name = I18n._("Element #{0}", j);
+
+                elements = newElements;
             }
         }
     }
