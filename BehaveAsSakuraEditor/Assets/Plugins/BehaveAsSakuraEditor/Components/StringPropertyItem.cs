@@ -12,7 +12,12 @@ namespace BehaveAsSakura.Editor
         {
             base.OnGUI();
 
-            Value = EditorHelper.TextField(Name, (string)Value, LabelClick);
+            var newValue = EditorHelper.TextField(Name, (string)Value, LabelClick);
+            if (newValue != (string)Value)
+            {
+                Value = newValue;
+                IsDirty = true;
+            }
         }
     }
 }

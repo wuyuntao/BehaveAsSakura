@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -34,6 +35,8 @@ namespace BehaveAsSakura.Editor
 
         public override void OnGUI()
         {
+            base.OnGUI();
+
             EditorHelper.Foldout(ref showList, Name, () =>
             {
                 var size = Math.Max(0, EditorHelper.IntField(I18n._("Size"), elements.Length));
@@ -53,10 +56,19 @@ namespace BehaveAsSakura.Editor
                     }
 
                     elements = newElements;
+
+                    IsDirty = true;
                 }
 
                 for (int i = 0; i < elements.Length; i++)
+                {
                     elements[i].OnGUI();
+                    IsDirty |= elements[i].IsDirty;
+                }
+
+                if (IsDirty)
+                    UpdateValue();
+
             }, LabelClick);
         }
 
@@ -83,6 +95,28 @@ namespace BehaveAsSakura.Editor
                 newElements[j].Name = I18n._("Element #{0}", j);
 
             elements = newElements;
+        }
+
+        private void UpdateValue()
+        {
+            if (ValueType.IsArray)
+            {
+                var array = Array.CreateInstance(elementType, elements.Length);
+                for (int i = 0; i < elements.Length; i++)
+                    array.SetValue(elements[i].Value, i);
+
+                Value = array;
+            }
+            else
+            {
+                var listType = typeof(List<>).MakeGenericType(elementType);
+                var list = (IList)Activator.CreateInstance(listType);
+
+                for (int i = 0; i < elements.Length; i++)
+                    list.Add(elements[i].Value);
+
+                Value = list;
+            }
         }
     }
 }

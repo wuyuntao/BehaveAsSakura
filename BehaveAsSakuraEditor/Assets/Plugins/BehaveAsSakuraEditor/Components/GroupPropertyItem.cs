@@ -20,7 +20,16 @@ namespace BehaveAsSakura.Editor
         {
             base.OnGUI();
 
-            EditorHelper.Foldout(ref showGroup, Name, () => group.OnGUI(), LabelClick);
+            EditorHelper.Foldout(ref showGroup, Name, () =>
+            {
+                group.OnGUI();
+
+                if (group.IsDirty)
+                {
+                    Value = group.Value;
+                    IsDirty = true;
+                }
+            }, LabelClick);
         }
     }
 }

@@ -13,7 +13,12 @@ namespace BehaveAsSakura.Editor
             base.OnGUI();
 
             // TODO limit range for integer fields
-            Value = EditorHelper.IntField(Name, (int)Value, LabelClick);
+            var newValue = EditorHelper.IntField(Name, (int)Value, LabelClick);
+            if (newValue != (int)Value)
+            {
+                Value = newValue;
+                IsDirty = true;
+            }
         }
     }
 }

@@ -9,7 +9,12 @@ namespace BehaveAsSakura.Editor
     public class PropertyGroup : EditorComponent
     {
         public Type ValueType { get; private set; }
+
         public object Value { get; private set; }
+
+        public bool IsDirty { get; private set; }
+
+        private Tuple<PropertyItem, PropertyInfo>[] properties;
 
         public PropertyGroup(EditorDomain domain, EditorComponent parent, Type valueType, object value)
             : base(domain
@@ -19,11 +24,11 @@ namespace BehaveAsSakura.Editor
             ValueType = valueType;
             Value = value;
 
-            Children.AddRange(from p in ValueType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                              where p.GetCustomAttributes(typeof(BehaveAsFieldAttribute), true).Length > 0
-                              select CreateItem(EditorHelper.GetPropertyName(p), p.PropertyType, p.GetValue(value, null)) into i
-                              where i != null
-                              select (EditorComponent)i);
+            properties = (from p in ValueType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                          where p.GetCustomAttributes(typeof(BehaveAsFieldAttribute), true).Length > 0
+                          select Tuple.Create(CreateItem(EditorHelper.GetPropertyName(p), p.PropertyType, p.GetValue(value, null)), p) into t
+                          where t.Item2 != null
+                          select t).ToArray();
         }
 
         public PropertyItem CreateItem(string name, Type valueType, object value)
@@ -81,11 +86,20 @@ namespace BehaveAsSakura.Editor
             return null;
         }
 
-        public bool IsDirty
+        public override void OnGUI()
         {
-            get
+            base.OnGUI();
+
+            IsDirty = false;
+            foreach (var p in properties)
             {
-                return Children.Any(c => c is PropertyItem && ((PropertyItem)c).IsDirty);
+                p.Item1.OnGUI();
+
+                if (p.Item1.IsDirty)
+                {
+                    p.Item2.SetValue(Value, p.Item1.Value, null);
+                    IsDirty |= true;
+                }
             }
         }
     }

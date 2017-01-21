@@ -12,7 +12,12 @@ namespace BehaveAsSakura.Editor
         {
             base.OnGUI();
 
-            Value = EditorHelper.Toggle(Name, (bool)Value, LabelClick);
+            var newValue = EditorHelper.Toggle(Name, (bool)Value, LabelClick);
+            if (newValue != (bool)Value)
+            {
+                Value = newValue;
+                IsDirty = true;
+            }
         }
     }
 }

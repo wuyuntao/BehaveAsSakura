@@ -12,7 +12,12 @@ namespace BehaveAsSakura.Editor
         {
             base.OnGUI();
 
-            Value = EditorHelper.EnumPopup(Name, (Enum)Value, LabelClick);
+            var newValue = EditorHelper.EnumPopup(Name, (Enum)Value, LabelClick);
+            if (newValue != (Enum)Value)
+            {
+                Value = newValue;
+                IsDirty = true;
+            }
         }
     }
 }

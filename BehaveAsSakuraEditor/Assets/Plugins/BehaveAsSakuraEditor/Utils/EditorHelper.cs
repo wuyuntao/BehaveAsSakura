@@ -291,6 +291,11 @@ namespace BehaveAsSakura.Editor
                 return value;
             }
 
+            if (type.GetCustomAttributes(typeof(BehaveAsTableAttribute), true).Length > 0)
+            {
+                return CloneObject(type, value);
+            }
+
             if (type.IsArray)
             {
                 var array = (Array)value;

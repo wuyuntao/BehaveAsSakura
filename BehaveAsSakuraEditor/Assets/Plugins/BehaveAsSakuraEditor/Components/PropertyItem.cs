@@ -13,6 +13,8 @@ namespace BehaveAsSakura.Editor
 
         public object Value { get; protected set; }
 
+        public bool IsDirty { get; protected set; }
+
         protected PropertyItem(EditorDomain domain, PropertyGroup parent, string id, string name, Type valueType, object value)
             : base(domain, parent, id)
         {
@@ -21,17 +23,19 @@ namespace BehaveAsSakura.Editor
             Value = value;
         }
 
+        public override void OnGUI()
+        {
+            IsDirty = false;
+
+            base.OnGUI();
+        }
+
         protected virtual void LabelClick(Event e)
         {
             //Logger.Debug("LabelClick {0}", Name);
 
             if (OnLabelClick != null)
                 OnLabelClick(this, e);
-        }
-
-        public bool IsDirty
-        {
-            get { return true; }
         }
     }
 }
