@@ -25,7 +25,7 @@ namespace BehaveAsSakura.Editor
 
             taskName = state.Desc.Name;
             taskComment = state.Desc.Comment;
-            taskDesc = new PropertyGroup(state.Desc.CustomDesc.GetType(), state.Desc.CustomDesc);
+            taskDesc = new PropertyGroup(state.Domain, null, state.Desc.CustomDesc.GetType(), state.Desc.CustomDesc);
         }
 
         public void OnDisable()
