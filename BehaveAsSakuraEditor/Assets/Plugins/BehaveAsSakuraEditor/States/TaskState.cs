@@ -30,6 +30,10 @@ namespace BehaveAsSakura.Editor
             {
                 OnTaskSummaryChangedEvent((TaskSummaryChangedEvent)e);
             }
+            else if (e is TaskPropertyChangedEvent)
+            {
+                OnTaskPropertyChangedEvent((TaskPropertyChangedEvent)e);
+            }
 
             base.ApplyEvent(e);
         }
@@ -58,6 +62,12 @@ namespace BehaveAsSakura.Editor
         {
             Desc.Name = e.Name;
             Desc.Comment = e.Comment;
+        }
+
+        private void OnTaskPropertyChangedEvent(TaskPropertyChangedEvent e)
+        {
+            foreach (var item in e.Items)
+                item.PropertyInfo.SetValue(item.Target, item.Value, null);
         }
     }
 }

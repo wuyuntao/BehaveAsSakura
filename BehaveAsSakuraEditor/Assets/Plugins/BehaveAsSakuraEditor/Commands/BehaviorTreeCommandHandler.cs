@@ -21,6 +21,10 @@ namespace BehaveAsSakura.Editor
             {
                 OnChangeTaskSummaryCommand((ChangeTaskSummaryCommand)command);
             }
+            else if (command is ChangeTaskPropertyCommand)
+            {
+                OnChangeTaskPropertyCommand((ChangeTaskPropertyCommand)command);
+            }
         }
 
         private void OnCreateTaskCommand(CreateTaskCommand command)
@@ -89,6 +93,16 @@ namespace BehaveAsSakura.Editor
             {
                 Name = command.Name,
                 Comment = command.Comment,
+            });
+        }
+
+        private void OnChangeTaskPropertyCommand(ChangeTaskPropertyCommand command)
+        {
+            var task = Repository.States[command.Id];
+
+            task.ApplyEvent(new TaskPropertyChangedEvent(command.Id)
+            {
+                Items = command.Items,
             });
         }
     }
