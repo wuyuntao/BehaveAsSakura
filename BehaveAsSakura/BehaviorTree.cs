@@ -45,6 +45,65 @@ namespace BehaveAsSakura
         {
             return Array.Find(Tasks, t => t.Id == id);
         }
+
+        public void Validate()
+        {
+            var taskIds = new HashSet<uint>();
+
+            if (RootTaskId == 0)
+                throw new ArgumentException("Missing root task");
+
+            var rootTask = FindTaskDesc(RootTaskId);
+            if (rootTask == null)
+                throw new ArgumentException($"Cannot find task: #{RootTaskId}");
+
+            Validate(taskIds, rootTask);
+
+            if (taskIds.Count != Tasks.Length)
+                throw new ArgumentException($"Contains {Tasks.Length - taskIds.Count} unused task");
+        }
+
+        private void Validate(HashSet<uint> taskIds, TaskDescWrapper task)
+        {
+            if (taskIds.Contains(task.Id))
+                throw new ArgumentException($"Duplicate task id: {task.Id}");
+            taskIds.Add(task.Id);
+
+            if (task.CustomDesc == null)
+                throw new ArgumentNullException("custom desc");
+            task.CustomDesc.Validate();
+
+            var decorator = task as DecoratorTaskDescWrapper;
+            if (decorator != null)
+            {
+                if (decorator.ChildTaskId == 0)
+                    throw new ArgumentException("Missing child task for decorator task");
+
+                var childTask = FindTaskDesc(decorator.ChildTaskId);
+                if (childTask == null)
+                    throw new ArgumentException($"Cannot find task: #{decorator.ChildTaskId}");
+
+                Validate(taskIds, childTask);
+                return;
+            }
+
+            var composite = task as CompositeTaskDescWrapper;
+            if (composite != null)
+            {
+                if (composite.ChildTaskIds.Count == 0)
+                    throw new ArgumentException("Missing child task for composite task");
+
+                foreach (var childTaskId in composite.ChildTaskIds)
+                {
+                    var childTask = FindTaskDesc(childTaskId);
+                    if (childTask == null)
+                        throw new ArgumentException($"Cannot find task: #{childTaskId}");
+
+                    Validate(taskIds, childTask);
+                }
+                return;
+            }
+        }
     }
 
     [BehaveAsTable]

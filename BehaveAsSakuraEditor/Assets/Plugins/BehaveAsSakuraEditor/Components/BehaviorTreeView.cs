@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using BehaveAsSakura.Serialization;
+using System;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
@@ -55,6 +59,50 @@ namespace BehaveAsSakura.Editor
             }
 
             return false;
+        }
+
+        public override bool OnMouseUp(Event e)
+        {
+            if (base.OnMouseUp(e))
+                return true;
+
+            var viewRect = new Rect(0, 0, Size.x, Size.y);
+            if (viewRect.Contains(e.mousePosition))
+            {
+                if (EditorHelper.IsRightButton(e))
+                {
+                    OnContextMenu(e);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void OnContextMenu(Event e)
+        {
+            var menu = new GenericMenu();
+
+            menu.AddItem(new GUIContent(I18n._("Save Behavior Tree")), false, OnContextMenu_SaveBehaviorTree);
+
+            menu.ShowAsContext();
+
+            e.Use();
+        }
+
+        private void OnContextMenu_SaveBehaviorTree()
+        {
+            var desc = Tree.BuildDesc();
+
+            var path = EditorUtility.SaveFilePanelInProject(I18n._("Save Behavior Tree")
+                    , "New Behavior Tree.bas"
+                    , "bas"
+                    , I18n._("Please enter a file name to save the behavior tree to"));
+            if (!string.IsNullOrEmpty(path))
+            {
+                File.WriteAllBytes(path, BehaviorTreeSerializer.SerializeDesc(desc));
+                AssetDatabase.Refresh();
+            }
         }
 
         public override bool OnLayoutChange(Event e, Rect windowPosition)

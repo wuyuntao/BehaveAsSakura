@@ -10,7 +10,7 @@ namespace BehaveAsSakura
         private List<TaskDescWrapper> tasks = new List<TaskDescWrapper>();
 
         public CompositeTaskBuilder Composite<T>(string name, Action<T> initializer = null)
-            where T : ITaskDesc, new()
+            where T : ICompositeTaskDesc, new()
         {
             var task = CreateTask<CompositeTaskDescWrapper, T>(name, initializer);
 
@@ -18,13 +18,13 @@ namespace BehaveAsSakura
         }
 
         public CompositeTaskBuilder Composite<T>(Action<T> initializer = null)
-            where T : ITaskDesc, new()
+            where T : ICompositeTaskDesc, new()
         {
             return Composite<T>(null, initializer);
         }
 
         public DecoratorTaskBuilder Decorator<T>(string name, Action<T> initializer = null)
-            where T : ITaskDesc, new()
+            where T : IDecoratorTaskDesc, new()
         {
             var task = CreateTask<DecoratorTaskDescWrapper, T>(name, initializer);
 
@@ -32,13 +32,13 @@ namespace BehaveAsSakura
         }
 
         public DecoratorTaskBuilder Decorator<T>(Action<T> initializer = null)
-            where T : ITaskDesc, new()
+            where T : IDecoratorTaskDesc, new()
         {
             return Decorator<T>(null, initializer);
         }
 
         public LeafTaskBuilder Leaf<T>(string name, Action<T> initializer = null)
-            where T : ITaskDesc, new()
+            where T : ILeafTaskDesc, new()
         {
             var task = CreateTask<LeafTaskDescWrapper, T>(name, initializer);
 
@@ -46,7 +46,7 @@ namespace BehaveAsSakura
         }
 
         public LeafTaskBuilder Leaf<T>(Action<T> initializer = null)
-            where T : ITaskDesc, new()
+            where T : ILeafTaskDesc, new()
         {
             return Leaf(null, initializer);
         }
@@ -109,7 +109,7 @@ namespace BehaveAsSakura
         public CompositeTaskBuilder AppendChild(TaskBuilder builder)
         {
             task.ChildTaskIds.Add(builder.Task.Id);
-            
+
             return this;
         }
     }
