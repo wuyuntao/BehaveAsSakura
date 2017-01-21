@@ -15,7 +15,7 @@ namespace BehaveAsSakura.Tasks
 
         void ITaskDesc.Validate()
         {
-            Time.ValidateNotNull(nameof(Time));
+            Validation.NotNull(Time, nameof(Time));
             Time.ValidateType(VariableType.UInteger);
         }
 

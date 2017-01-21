@@ -17,7 +17,7 @@ namespace BehaveAsSakura.Tasks
 
         void ITaskDesc.Validate()
         {
-            Message.ValidateNotEmpty(nameof(Message));
+            Validation.NotEmpty(Message, nameof(Message));
 
             if (MessageParameters != null)
             {

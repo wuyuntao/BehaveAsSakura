@@ -20,12 +20,12 @@ namespace BehaveAsSakura.Tasks
 
         void ITaskDesc.Validate()
         {
-            Left.ValidateNotNull(nameof(Left));
+            Validation.NotNull(Left, nameof(Left));
             Left.Validate();
 
-            Op.ValidateIsEnumDefined(nameof(Op));
+            Validation.IsEnumDefined(Op, nameof(Op));
 
-            Right.ValidateNotNull(nameof(Right));
+            Validation.NotNull(Right, nameof(Right));
             Right.Validate();
         }
 

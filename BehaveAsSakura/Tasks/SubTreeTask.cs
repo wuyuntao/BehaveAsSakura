@@ -13,7 +13,7 @@ namespace BehaveAsSakura.Tasks
 
         void ITaskDesc.Validate()
         {
-            SubTreePath.ValidateNotNull(nameof(SubTreePath));
+            Validation.NotNull(SubTreePath, nameof(SubTreePath));
             SubTreePath.ValidateType(VariableType.String);
         }
 

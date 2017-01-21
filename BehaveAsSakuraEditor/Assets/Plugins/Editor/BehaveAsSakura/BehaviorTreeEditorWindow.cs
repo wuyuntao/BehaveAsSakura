@@ -8,12 +8,12 @@ namespace BehaveAsSakura.Editor
         private EditorDomain domain;
         private BehaviorTreeView view;
 
-        [MenuItem("BehaveAsSakura/New Behavior Tree")]
+        [MenuItem("Window/BehaveAsSakura Editor")]
         private static void NewBehaviorTree()
         {
             //I18n.SetLanguage( "zh_CN" );
 
-            var window = GetWindow<BehaviorTreeEditorWindow>(I18n._("Untitled Behavior Tree"), typeof(SceneView));
+            var window = GetWindow<BehaviorTreeEditorWindow>(I18n._("BehaveAsSakura Editor"), typeof(SceneView));
 
             window.minSize = EditorConfiguration.MinWindowSize;
 

@@ -52,9 +52,9 @@ namespace BehaveAsSakura.Variables
 
         public void Validate()
         {
-            Type.ValidateIsEnumDefined(nameof(Type));
-            Source.ValidateIsEnumDefined(nameof(Source));
-            Value.ValidateNotEmpty(nameof(Value));
+            Validation.IsEnumDefined(Type, nameof(Type));
+            Validation.IsEnumDefined(Source, nameof(Source));
+            Validation.NotEmpty(Value, nameof(Value));
         }
 
         public void ValidateType(VariableType type)

@@ -13,7 +13,7 @@ namespace BehaveAsSakura.Tasks
 
         void ITaskDesc.Validate()
         {
-            EventType.ValidateNotEmpty(nameof(EventType));
+            Validation.NotEmpty(EventType, nameof(EventType));
         }
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
