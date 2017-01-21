@@ -81,7 +81,7 @@ namespace BehaveAsSakura.Editor
             {
                 Debug.LogWarningFormat("Missing translation of key '{0}'", key);
 
-                return key;
+                return string.Format(key, args);
             }
         }
 

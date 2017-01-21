@@ -1,5 +1,6 @@
 ﻿using BehaveAsSakura.Attributes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +21,7 @@ namespace BehaveAsSakura.Editor
 
             properties.AddRange(from p in this.valueType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                 where p.GetCustomAttributes(typeof(BehaveAsFieldAttribute), true).Length > 0
-                                select CreateItem(p) into i
+                                select CreateItem(EditorHelper.GetPropertyName(p), p.PropertyType, p.GetValue(value, null)) into i
                                 where i != null
                                 select i);
         }
@@ -31,92 +32,91 @@ namespace BehaveAsSakura.Editor
                 p.OnGUI();
         }
 
-        private Item CreateItem(PropertyInfo pi)
+        private Item CreateItem(string name, Type valueType, object value)
         {
-            if (pi.PropertyType == typeof(string))
-                return new StringItem(this, pi);
+            if (valueType == typeof(string))
+                return new StringItem(this, name, valueType, value);
 
-            if (pi.PropertyType == typeof(bool))
-                return new BooleanItem(this, pi);
+            if (valueType == typeof(bool))
+                return new BooleanItem(this, name, valueType, value);
 
-            if (pi.PropertyType == typeof(byte) || pi.PropertyType == typeof(sbyte)
-                    || pi.PropertyType == typeof(short) || pi.PropertyType == typeof(ushort)
-                    || pi.PropertyType == typeof(int) || pi.PropertyType == typeof(uint)
-                    || pi.PropertyType == typeof(long) || pi.PropertyType == typeof(ulong))
-                return new IntItem(this, pi);
+            if (valueType == typeof(byte) || valueType == typeof(sbyte)
+                    || valueType == typeof(short) || valueType == typeof(ushort)
+                    || valueType == typeof(int) || valueType == typeof(uint)
+                    || valueType == typeof(long) || valueType == typeof(ulong))
+                return new IntItem(this, name, valueType, value);
 
-            if (pi.PropertyType == typeof(long) || pi.PropertyType == typeof(ulong))
-                return new LongItem(this, pi);
+            if (valueType == typeof(long) || valueType == typeof(ulong))
+                return new LongItem(this, name, valueType, value);
 
-            if (pi.PropertyType == typeof(float))
-                return new FloatItem(this, pi);
+            if (valueType == typeof(float))
+                return new FloatItem(this, name, valueType, value);
 
-            if (pi.PropertyType == typeof(double))
-                return new DoubleItem(this, pi);
+            if (valueType == typeof(double))
+                return new DoubleItem(this, name, valueType, value);
 
-            if (pi.PropertyType.IsEnum)
-                return new EnumItem(this, pi);
+            if (valueType.IsEnum)
+                return new EnumItem(this, name, valueType, value);
 
-            if (pi.PropertyType.GetCustomAttributes(typeof(BehaveAsTableAttribute), true).Length > 0)
-                return new PropertyGroupItem(this, pi);
+            if (valueType.GetCustomAttributes(typeof(BehaveAsTableAttribute), true).Length > 0)
+                return new PropertyGroupItem(this, name, valueType, value);
 
-            if (pi.PropertyType.IsArray)
-                return CreateListItem(pi, pi.PropertyType.GetElementType());
+            if (valueType.IsArray)
+                return CreateListItem(name, valueType, value, valueType.GetElementType());
 
-            if ((typeof(List<>)).IsAssignableFrom(pi.PropertyType))
-                return CreateListItem(pi, pi.PropertyType.GetGenericArguments()[0]);
+            if ((typeof(List<>)).IsAssignableFrom(valueType))
+                return CreateListItem(name, valueType, value, valueType.GetGenericArguments()[0]);
 
-            Logger.Error("Unsupported property. Name: {0}+{1}, Type: {2}", valueType.FullName, pi.Name, pi.PropertyType);
+            Logger.Error("Unsupported property. Name: {0}, Type: {1}", name, valueType);
             return null;
         }
 
-        private Item CreateListItem(PropertyInfo pi, Type elementType)
+        private Item CreateListItem(string name, Type valueType, object value, Type elementType)
         {
             if (elementType == typeof(string))
-                return new ListItem<StringItem>(this, pi);
+                return new ListItem(this, name, valueType, value, elementType);
 
             if (elementType == typeof(bool))
-                return new ListItem<BooleanItem>(this, pi);
+                return new ListItem(this, name, valueType, value, elementType);
 
             if (elementType == typeof(byte) || elementType == typeof(sbyte)
                     || elementType == typeof(short) || elementType == typeof(ushort)
                     || elementType == typeof(int) || elementType == typeof(uint)
                     || elementType == typeof(long) || elementType == typeof(ulong))
-                return new ListItem<IntItem>(this, pi);
+                return new ListItem(this, name, valueType, value, elementType);
 
             if (elementType == typeof(long) || elementType == typeof(ulong))
-                return new ListItem<LongItem>(this, pi);
+                return new ListItem(this, name, valueType, value, elementType);
 
             if (elementType == typeof(float))
-                return new ListItem<FloatItem>(this, pi);
+                return new ListItem(this, name, valueType, value, elementType);
 
             if (elementType == typeof(double))
-                return new ListItem<DoubleItem>(this, pi);
+                return new ListItem(this, name, valueType, value, elementType);
 
             if (elementType.IsEnum)
-                return new ListItem<EnumItem>(this, pi);
+                return new ListItem(this, name, valueType, value, elementType);
 
             if (elementType.GetCustomAttributes(typeof(BehaveAsTableAttribute), true).Length > 0)
-                return new ListItem<PropertyGroupItem>(this, pi);
+                return new ListItem(this, name, valueType, value, elementType);
 
-            Logger.Error("Unsupported list property. Name: {0}+{1}, Type: {2}", valueType.FullName, pi.Name, pi.PropertyType);
+            Logger.Error("Unsupported list property. Name: {0}, Type: {1}", name, elementType);
             return null;
         }
 
         abstract class Item
         {
             protected PropertyGroup owner;
-            protected PropertyInfo pi;
             protected string name;
-            protected object value;
+            protected Type valueType;
+            protected object element;
 
-            protected Item(PropertyGroup owner, PropertyInfo pi)
+            protected Item(PropertyGroup owner, string name, Type valueType, object value)
             {
                 this.owner = owner;
-                this.pi = pi;
-
-                name = EditorHelper.GetPropertyName(pi);
-                value = pi.GetValue(owner.value, null);
+                this.name = name;
+                this.valueType = valueType;
+                this.element = value;
             }
 
             public abstract void OnGUI();
@@ -124,89 +124,89 @@ namespace BehaveAsSakura.Editor
 
         class StringItem : Item
         {
-            public StringItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public StringItem(PropertyGroup owner, string name, Type valueType, object value)
+                : base(owner, name, valueType, value)
             { }
 
             public override void OnGUI()
             {
-                value = EditorGUILayout.TextField(name, (string)value);
+                element = EditorGUILayout.TextField(name, (string)element);
             }
         }
 
         class BooleanItem : Item
         {
-            public BooleanItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public BooleanItem(PropertyGroup owner, string name, Type valueType, object value)
+                : base(owner, name, valueType, value)
             { }
 
             public override void OnGUI()
             {
-                value = EditorGUILayout.Toggle(name, (bool)value);
+                element = EditorGUILayout.Toggle(name, (bool)element);
             }
         }
 
         class IntItem : Item
         {
-            public IntItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public IntItem(PropertyGroup owner, string name, Type valueType, object value)
+                : base(owner, name, valueType, value)
             { }
 
             public override void OnGUI()
             {
                 // TODO limit range for integer fields
-                value = EditorGUILayout.IntField(name, (int)value);
+                element = EditorGUILayout.IntField(name, (int)element);
             }
         }
 
         class LongItem : Item
         {
-            public LongItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public LongItem(PropertyGroup owner, string name, Type valueType, object value)
+                : base(owner, name, valueType, value)
             { }
 
             public override void OnGUI()
             {
                 // TODO limit range for integer fields
-                value = EditorGUILayout.LongField(name, (long)value);
+                element = EditorGUILayout.LongField(name, (long)element);
             }
         }
 
         class FloatItem : Item
         {
-            public FloatItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public FloatItem(PropertyGroup owner, string name, Type valueType, object value)
+                : base(owner, name, valueType, value)
             { }
 
             public override void OnGUI()
             {
                 // TODO limit range for integer fields
-                value = EditorGUILayout.FloatField(name, (float)value);
+                element = EditorGUILayout.FloatField(name, (float)element);
             }
         }
 
         class DoubleItem : Item
         {
-            public DoubleItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public DoubleItem(PropertyGroup owner, string name, Type valueType, object value)
+                : base(owner, name, valueType, value)
             { }
 
             public override void OnGUI()
             {
                 // TODO limit range for integer fields
-                value = EditorGUILayout.DoubleField(name, (double)value);
+                element = EditorGUILayout.DoubleField(name, (double)element);
             }
         }
 
         class EnumItem : Item
         {
-            public EnumItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public EnumItem(PropertyGroup owner, string name, Type valueType, object value)
+                : base(owner, name, valueType, value)
             { }
 
             public override void OnGUI()
             {
-                value = EditorGUILayout.EnumPopup(name, (Enum)value);
+                element = EditorGUILayout.EnumPopup(name, (Enum)element);
             }
         }
 
@@ -215,13 +215,13 @@ namespace BehaveAsSakura.Editor
             private PropertyGroup group;
             private bool showGroup = true;
 
-            public PropertyGroupItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public PropertyGroupItem(PropertyGroup owner, string name, Type valueType, object value)
+                : base(owner, name, valueType, value)
             {
                 if (value == null)
-                    value = Activator.CreateInstance(pi.PropertyType);
+                    value = Activator.CreateInstance(valueType);
 
-                group = new PropertyGroup(pi.PropertyType, value);
+                group = new PropertyGroup(valueType, value);
             }
 
             public override void OnGUI()
@@ -230,24 +230,51 @@ namespace BehaveAsSakura.Editor
             }
         }
 
-        class ListItem<TElement> : Item
-            where TElement : Item
+        class ListItem : Item
         {
-            private List<TElement> elements = new List<TElement>();
+            private Type elementType;
+
+            private Item[] elements;
             private bool showList = true;
 
-            public ListItem(PropertyGroup owner, PropertyInfo pi)
-                : base(owner, pi)
+            public ListItem(PropertyGroup owner, string name, Type valueType, object value, Type elementType)
+                : base(owner, name, valueType, value)
             {
+                this.elementType = elementType;
+
+                if (value == null)
+                    elements = new Item[0];
+                else
+                {
+                    var list = (IList)value;
+
+                    elements = new Item[list.Count];
+                    for (int i = 0; i < list.Count; i++)
+                        elements[i] = owner.CreateItem(I18n._("Element #{0}", i), elementType, list[i]);
+                }
             }
 
             public override void OnGUI()
             {
                 EditorHelper.Foldout(ref showList, name, () =>
                 {
-                    EditorHelper.ReadOnlyTextField(I18n._("Size"), elements.Count.ToString());
+                    var size = Math.Max(0, EditorGUILayout.IntField(I18n._("Size"), elements.Length));
 
-                    for (int i = 0; i < elements.Count; i++)
+                    if (size != elements.Length)
+                    {
+                        var newElements = new Item[size];
+                        Array.Copy(elements, newElements, Math.Min(size, elements.Length));
+
+                        if (newElements.Length > elements.Length)
+                        {
+                            for (var i = elements.Length; i < newElements.Length; i++)
+                                newElements[i] = owner.CreateItem(I18n._("Element #{0}", i), elementType, Activator.CreateInstance(elementType));
+                        }
+
+                        elements = newElements;
+                    }
+
+                    for (int i = 0; i < elements.Length; i++)
                         elements[i].OnGUI();
                 });
             }

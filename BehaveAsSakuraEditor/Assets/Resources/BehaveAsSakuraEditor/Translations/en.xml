@@ -5,8 +5,11 @@
   <Item Key="Root Node" />
   <Item Key="Ok" />
   <Item Key="Id" />
+  <Item Key="Name" />
+  <Item Key="Comment" />
   <Item Key="Basic" />
   <Item Key="Description" />
+  <Item Key="Size" />
   <Item Key="Behavior tree already has root task" />
   <Item Key="Leaf task cannot have child task" />
   <Item Key="Decorator task can only has one child task" />
