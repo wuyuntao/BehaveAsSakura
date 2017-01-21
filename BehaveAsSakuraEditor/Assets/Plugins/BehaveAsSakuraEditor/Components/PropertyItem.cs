@@ -28,5 +28,10 @@ namespace BehaveAsSakura.Editor
             if (OnLabelClick != null)
                 OnLabelClick(this, e);
         }
+
+        public bool IsDirty
+        {
+            get { return true; }
+        }
     }
 }

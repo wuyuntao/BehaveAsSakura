@@ -21,9 +21,9 @@ namespace BehaveAsSakura.Editor
             {
                 OnChangeTaskSummaryCommand((ChangeTaskSummaryCommand)command);
             }
-            else if (command is ChangeTaskPropertyCommand)
+            else if (command is ChangeTaskDescCommand)
             {
-                OnChangeTaskPropertyCommand((ChangeTaskPropertyCommand)command);
+                OnChangeTaskPropertyCommand((ChangeTaskDescCommand)command);
             }
         }
 
@@ -96,13 +96,13 @@ namespace BehaveAsSakura.Editor
             });
         }
 
-        private void OnChangeTaskPropertyCommand(ChangeTaskPropertyCommand command)
+        private void OnChangeTaskPropertyCommand(ChangeTaskDescCommand command)
         {
             var task = Repository.States[command.Id];
 
-            task.ApplyEvent(new TaskPropertyChangedEvent(command.Id)
+            task.ApplyEvent(new TaskPropertyDescEvent(command.Id)
             {
-                Items = command.Items,
+                CustomDesc = command.CustomDesc,
             });
         }
     }

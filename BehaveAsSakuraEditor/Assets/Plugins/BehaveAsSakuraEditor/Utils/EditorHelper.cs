@@ -1,6 +1,7 @@
 ﻿using BehaveAsSakura.Attributes;
 using BehaveAsSakura.Tasks;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -248,6 +249,76 @@ namespace BehaveAsSakura.Editor
         public static string GetTaskIcon(Type type)
         {
             return string.Format("BehaveAsSakuraEditor/Textures/{0}", type.Name.Replace("TaskDesc", ""));
+        }
+
+        public static object CloneObject(Type type, object original)
+        {
+            if (type.GetCustomAttributes(typeof(BehaveAsTableAttribute), true).Length == 0)
+                throw new InvalidOperationException(string.Format("Cannot clone an object without {0}", typeof(BehaveAsTableAttribute).Name));
+
+            if (original == null)
+                return null;
+
+            var clone = Activator.CreateInstance(type);
+            var properties = from pi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                             where pi.GetCustomAttributes(typeof(BehaveAsFieldAttribute), true).Length > 0
+                             select pi;
+
+            foreach (var pi in properties)
+            {
+                var value = pi.GetValue(original, null);
+                if (value != null)
+                    pi.SetValue(clone, CloneValue(pi.PropertyType, value), null);
+            }
+
+            return clone;
+        }
+
+        private static object CloneValue(Type type, object value)
+        {
+            if (value == null)
+                return null;
+
+            if (type == typeof(string)
+                    || type == typeof(bool)
+                    || type == typeof(byte) || type == typeof(sbyte)
+                    || type == typeof(short) || type == typeof(ushort)
+                    || type == typeof(int) || type == typeof(uint)
+                    || type == typeof(long) || type == typeof(ulong)
+                    || type == typeof(float) || type == typeof(double)
+                    || type.IsEnum)
+            {
+                return value;
+            }
+
+            if (type.IsArray)
+            {
+                var array = (Array)value;
+                var elementType = type.GetElementType();
+                var cloneArray = Array.CreateInstance(elementType, array.Length);
+
+                for (int i = 0; i < array.Length; i++)
+                    cloneArray.SetValue(CloneValue(elementType, array.GetValue(i)), i);
+
+                return cloneArray;
+            }
+
+            if ((typeof(List<>)).IsAssignableFrom(type))
+            {
+                var list = (IList)value;
+
+                var elementType = type.GetGenericArguments()[0];
+                var listType = typeof(List<>).MakeGenericType(elementType);
+                var cloneList = (IList)Activator.CreateInstance(listType);
+
+                for (int i = 0; i < list.Count; i++)
+                    cloneList.Add(CloneValue(elementType, list[i]));
+
+                return cloneList;
+            }
+
+            Logger.Error("Unsupported property. Type: {0}, Value: {1}", type, value);
+            return null;
         }
     }
 }

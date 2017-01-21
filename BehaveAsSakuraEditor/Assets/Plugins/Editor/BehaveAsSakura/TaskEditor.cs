@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using BehaveAsSakura.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace BehaveAsSakura.Editor
@@ -25,7 +26,9 @@ namespace BehaveAsSakura.Editor
 
             taskName = state.Desc.Name;
             taskComment = state.Desc.Comment;
-            taskDesc = new PropertyGroup(state.Domain, null, state.Desc.CustomDesc.GetType(), state.Desc.CustomDesc);
+
+            var taskDescType = state.Desc.CustomDesc.GetType();
+            taskDesc = new PropertyGroup(state.Domain, null, taskDescType, EditorHelper.CloneObject(taskDescType, state.Desc.CustomDesc));
         }
 
         public void OnDisable()
@@ -79,6 +82,13 @@ namespace BehaveAsSakura.Editor
             EditorHelper.Foldout(ref showCustom, EditorHelper.GetTaskTitle(descType), () =>
             {
                 taskDesc.OnGUI();
+                if (taskDesc.IsDirty)
+                {
+                    taskDesc.CommandHandler.ProcessCommand(new ChangeTaskDescCommand(state.Id)
+                    {
+                        CustomDesc = (ITaskDesc)taskDesc.Value,
+                    });
+                }
             });
         }
     }
