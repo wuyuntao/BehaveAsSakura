@@ -63,6 +63,7 @@ namespace BehaveAsSakura.Editor
                     {
                         var taskId = TaskState.GetId(taskDesc.Id);
                         var task = EditorState.CreateInstance<TaskState>(Domain, taskId);
+                        task.ParentTaskId = EditorHelper.FindParentTask(treeDesc.Tasks, taskDesc.Id).Id;
                         task.Desc = taskDesc;
                         repo.States[task.Id] = task;
                     }

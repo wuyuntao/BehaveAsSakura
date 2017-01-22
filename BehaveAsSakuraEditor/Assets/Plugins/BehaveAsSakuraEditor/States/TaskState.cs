@@ -11,6 +11,8 @@ namespace BehaveAsSakura.Editor
             return string.Format("Task-{0}", taskId);
         }
 
+        public uint ParentTaskId { get; set; }
+
         public TaskDescWrapper Desc { get; set; }
 
         public Vector2 Position { get; set; }

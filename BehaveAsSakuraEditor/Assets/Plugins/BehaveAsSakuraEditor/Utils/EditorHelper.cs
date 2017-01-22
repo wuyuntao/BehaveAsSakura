@@ -28,6 +28,25 @@ namespace BehaveAsSakura.Editor
                    select t;
         }
 
+        public static TaskDescWrapper FindParentTask(IEnumerable<TaskDescWrapper> tasks, uint childTaskId)
+        {
+            foreach (var task in tasks)
+            {
+                if (task is DecoratorTaskDescWrapper)
+                {
+                    if (((DecoratorTaskDescWrapper)task).ChildTaskId == childTaskId)
+                        return task;
+                }
+                else if (task is CompositeTaskDescWrapper)
+                {
+                    if (((CompositeTaskDescWrapper)task).ChildTaskIds.Contains(childTaskId))
+                        return task;
+                }
+            }
+
+            return null;
+        }
+
         public static IEnumerable<PropertyInfo> FindAllProperties(object obj)
         {
             return from p in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)

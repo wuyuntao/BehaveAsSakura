@@ -30,6 +30,7 @@ namespace BehaveAsSakura.Editor
         private void OnCreateTaskCommand(CreateTaskCommand command)
         {
             var parent = Repository.States[command.Id];
+            var parentTaskId = 0u;
             if (parent is BehaviorTreeState)
             {
                 var tree = (BehaviorTreeState)parent;
@@ -56,6 +57,8 @@ namespace BehaveAsSakura.Editor
                         return;
                     }
                 }
+
+                parentTaskId = task.Id;
             }
             else
                 throw new NotSupportedException(command.Id);
@@ -74,6 +77,7 @@ namespace BehaveAsSakura.Editor
                 taskDescWrapper.Id = tree.NextTaskId;
                 taskDescWrapper.CustomDesc = (ITaskDesc)Activator.CreateInstance(command.TaskType);
                 var taskState = EditorState.CreateInstance<TaskState>(Domain, TaskState.GetId(tree.NextTaskId));
+                taskState.ParentTaskId = parentTaskId;
                 taskState.Desc = taskDescWrapper;
 
                 parent.ApplyEvent(new TaskCreatedEvent(command.Id) { NewTask = taskState });
