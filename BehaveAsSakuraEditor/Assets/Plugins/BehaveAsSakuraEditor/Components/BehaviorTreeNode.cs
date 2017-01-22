@@ -44,7 +44,39 @@ namespace BehaveAsSakura.Editor
 
             var iconRect = new Rect(nodeRect.position + new Vector2(15, 15), new Vector2(32, 32));
             var iconTexture = (Texture2D)Resources.Load(EditorConfiguration.BehaviorTreeNodeIconPath);
-            GUI.Box(iconRect, iconTexture);
+            GUI.Box(iconRect, iconTexture, new GUIStyle()
+            {
+                normal = new GUIStyleState()
+                {
+                    background = null,
+                    textColor = Color.white,
+                }
+            });
+
+            var titleRect = new Rect(nodeRect.position + new Vector2(15 + 32 + 10, 12), new Vector2(50, EditorGUIUtility.singleLineHeight));
+            var title = I18n._("Root");
+            GUI.Box(titleRect, title, new GUIStyle()
+            {
+                fontStyle = FontStyle.Bold,
+                normal = new GUIStyleState()
+                {
+                    background = null,
+                    textColor = Color.white,
+                }
+            });
+
+            if (!string.IsNullOrEmpty(Tree.Title))
+            {
+                var summaryRect= new Rect(nodeRect.position + new Vector2(15 + 32 + 10, 12 + EditorGUIUtility.singleLineHeight + 5 ), new Vector2(50, EditorGUIUtility.singleLineHeight));
+                GUI.Box(summaryRect, Tree.Title, new GUIStyle()
+                {
+                    normal = new GUIStyleState()
+                    {
+                        background = null,
+                        textColor = Color.white,
+                    }
+                });
+            }
         }
 
         protected override Rect CalculateGUIRect()

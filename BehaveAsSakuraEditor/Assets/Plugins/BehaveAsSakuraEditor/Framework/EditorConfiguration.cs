@@ -11,7 +11,7 @@ namespace BehaveAsSakura.Editor
 
         public static readonly int BehaviorTreeBackgroundDepth = 100;
 
-        public static readonly Vector2 BehaviorTreeNodeSize = new Vector2(100, 64);
+        public static readonly Vector2 BehaviorTreeNodeSize = new Vector2(140, 64);
 
         public static readonly Vector2 BehaviorTreeNodePosition = new Vector2(0, 0);
 
@@ -29,7 +29,7 @@ namespace BehaveAsSakura.Editor
             border = new RectOffset(12, 12, 12, 12),
         };
 
-        public static readonly Vector2 TaskNodeSize = new Vector2(100, 64);
+        public static readonly Vector2 TaskNodeSize = new Vector2(140, 64);
 
         public static readonly GUIStyle TaskNodeStyle = new GUIStyle()
         {
