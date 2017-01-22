@@ -40,7 +40,7 @@ namespace BehaveAsSakura.Editor
         protected override void OnHeaderGUI()
         {
             // TODO A workaround for display icon and name of task
-            if (state == null || state.Desc != null)
+            if (state != null && state.Desc != null)
             {
                 var icon = Resources.Load(EditorHelper.GetTaskIcon(state.Desc.CustomDesc.GetType())) as Texture2D;
                 if (icon == null)

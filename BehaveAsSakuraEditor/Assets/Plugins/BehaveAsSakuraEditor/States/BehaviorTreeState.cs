@@ -53,8 +53,8 @@ namespace BehaveAsSakura.Editor
 
         private void OnBehaviorTreeSummaryChangedEvent(BehaviorTreeSummaryChangedEvent e)
         {
-            e.Title = e.Title;
-            e.Comment = e.Comment;
+            Title = e.Title;
+            Comment = e.Comment;
         }
 
         public BehaviorTreeDesc BuildDesc()

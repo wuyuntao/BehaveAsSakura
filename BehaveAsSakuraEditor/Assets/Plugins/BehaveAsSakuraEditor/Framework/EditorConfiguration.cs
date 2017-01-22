@@ -61,7 +61,7 @@ namespace BehaveAsSakura.Editor
 
         public static readonly string TaskIconPath = "BehaveAsSakuraEditor/Textures";
 
-        public static readonly string DefaultBehaviorTreeIconPath = "BehaveAsSakuraEditor/Textures/Default";
+        public static readonly string DefaultBehaviorTreeIconPath = "BehaveAsSakuraEditor/Textures/Root";
 
         public static readonly string DefaultTaskIconPath = "BehaveAsSakuraEditor/Textures/Default";
     }

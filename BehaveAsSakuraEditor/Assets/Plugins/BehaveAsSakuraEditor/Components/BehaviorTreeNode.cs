@@ -12,7 +12,7 @@ namespace BehaveAsSakura.Editor
             : base(domain
                   , parent
                   , string.Format("{0}-Node", parent.Tree.Id)
-                  , I18n._("Root Node")
+                  , I18n._("Root")
                   , EditorConfiguration.BehaviorTreeNodePosition
                   , EditorConfiguration.BehaviorTreeNodeSize
                   , EditorConfiguration.BehaviorTreeNodeStyle)

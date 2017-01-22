@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
@@ -17,12 +18,15 @@ namespace BehaveAsSakura.Editor
 
         protected override void OnHeaderGUI()
         {
-            // TODO A workaround for display icon and name of task
-            //var icon = (Texture2D)Resources.Load(EditorConfiguration.DefaultBehaviorTreeIconPath);
-            //var title = I18n._("Behavior Tree");
+            if (asset != null && asset.Tree != null)
+            {
+                // TODO A workaround for display icon and name of task
+                var icon = (Texture2D)Resources.Load(EditorConfiguration.DefaultBehaviorTreeIconPath);
+                var title = asset.name;
 
-            //EditorHelper.HeaderIconAndTitle(asset, icon, title);
-
+                EditorHelper.HeaderIconAndTitle(asset, icon, title);
+            }
+                
             base.OnHeaderGUI();
         }
 
