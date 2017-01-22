@@ -17,7 +17,12 @@ namespace BehaveAsSakura.Editor
 
         public uint NextTaskId { get; set; }
 
-        public BehaviorTreeState()
+        public string Title { get; set; }
+
+        public string Comment { get; set; }
+
+        public BehaviorTreeState(EditorDomain domain, string id)
+            : base(domain, id)
         {
             NextTaskId = 1;
         }
@@ -28,8 +33,9 @@ namespace BehaveAsSakura.Editor
             {
                 OnTaskCreatedEvent((TaskCreatedEvent)e);
             }
-            else if (e is TaskRemovedEvent)
+            else if (e is BehaviorTreeSummaryChangedEvent)
             {
+                OnBehaviorTreeSummaryChangedEvent((BehaviorTreeSummaryChangedEvent)e);
             }
 
             base.ApplyEvent(e);
@@ -45,6 +51,12 @@ namespace BehaveAsSakura.Editor
             NodeLayoutHelper.Calculate(this);
         }
 
+        private void OnBehaviorTreeSummaryChangedEvent(BehaviorTreeSummaryChangedEvent e)
+        {
+            e.Title = e.Title;
+            e.Comment = e.Comment;
+        }
+
         public BehaviorTreeDesc BuildDesc()
         {
             var tasks = new List<TaskDescWrapper>();
@@ -54,6 +66,8 @@ namespace BehaveAsSakura.Editor
 
             var desc = new BehaviorTreeDesc()
             {
+                Title = Title,
+                Comment = Comment,
                 RootTaskId = RootTaskId,
                 Tasks = tasks.ToArray(),
             };

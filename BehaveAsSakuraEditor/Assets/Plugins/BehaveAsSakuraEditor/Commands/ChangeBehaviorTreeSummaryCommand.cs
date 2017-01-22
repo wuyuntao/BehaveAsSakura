@@ -1,12 +1,12 @@
 ﻿namespace BehaveAsSakura.Editor
 {
-    public class ChangeTaskSummaryCommand : EditorCommand
+    public class ChangeBehaviorTreeSummaryCommand : EditorCommand
     {
         public string Title { get; set; }
 
         public string Comment { get; set; }
 
-        public ChangeTaskSummaryCommand(string id)
+        public ChangeBehaviorTreeSummaryCommand(string id)
             : base(id)
         {
         }

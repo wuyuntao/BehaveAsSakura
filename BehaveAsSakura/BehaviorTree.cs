@@ -41,6 +41,12 @@ namespace BehaveAsSakura
         [BehaveAsField(2)]
         public uint RootTaskId { get; set; }
 
+        [BehaveAsField(3, IsRequired = false)]
+        public string Title { get; set; }
+
+        [BehaveAsField(4, IsRequired = false)]
+        public string Comment { get; set; }
+
         internal TaskDescWrapper FindTaskDesc(uint id)
         {
             return Array.Find(Tasks, t => t.Id == id);

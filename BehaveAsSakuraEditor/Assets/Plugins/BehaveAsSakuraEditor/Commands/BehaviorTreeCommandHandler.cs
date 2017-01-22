@@ -25,6 +25,10 @@ namespace BehaveAsSakura.Editor
             {
                 OnChangeTaskPropertyCommand((ChangeTaskDescCommand)command);
             }
+            else if (command is ChangeBehaviorTreeSummaryCommand)
+            {
+                OnChangeBehaviorTreeSummaryCommand((ChangeBehaviorTreeSummaryCommand)command);
+            }
         }
 
         private void OnCreateTaskCommand(CreateTaskCommand command)
@@ -76,7 +80,7 @@ namespace BehaveAsSakura.Editor
                     throw new NotSupportedException(command.TaskType.ToString());
                 taskDescWrapper.Id = tree.NextTaskId;
                 taskDescWrapper.CustomDesc = (ITaskDesc)Activator.CreateInstance(command.TaskType);
-                var taskState = EditorState.CreateInstance<TaskState>(Domain, TaskState.GetId(tree.NextTaskId));
+                var taskState = new TaskState(Domain, TaskState.GetId(tree.NextTaskId));
                 taskState.ParentTaskId = parentTaskId;
                 taskState.Desc = taskDescWrapper;
 
@@ -97,7 +101,7 @@ namespace BehaveAsSakura.Editor
 
             task.ApplyEvent(new TaskSummaryChangedEvent(command.Id)
             {
-                Name = command.Name,
+                Title = command.Title,
                 Comment = command.Comment,
             });
         }
@@ -109,6 +113,17 @@ namespace BehaveAsSakura.Editor
             task.ApplyEvent(new TaskPropertyDescEvent(command.Id)
             {
                 CustomDesc = command.CustomDesc,
+            });
+        }
+
+        private void OnChangeBehaviorTreeSummaryCommand(ChangeBehaviorTreeSummaryCommand command)
+        {
+            var tree = Repository.States[command.Id];
+
+            tree.ApplyEvent(new BehaviorTreeSummaryChangedEvent(command.Id)
+            {
+                Title = command.Title,
+                Comment = command.Comment,
             });
         }
     }

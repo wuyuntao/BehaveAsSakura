@@ -46,7 +46,7 @@ namespace BehaveAsSakura.Editor
             domain.OnEventApplied += Domain_OnEventApplied;
 
             var treeId = BehaviorTreeState.GetId();
-            var tree = EditorState.CreateInstance<BehaviorTreeState>(domain, treeId);
+            var tree = new BehaviorTreeState(domain, treeId);
             tree.Asset = this;
             repo.States[treeId] = tree;
 
@@ -62,7 +62,7 @@ namespace BehaveAsSakura.Editor
                     foreach (var taskDesc in treeDesc.Tasks)
                     {
                         var taskId = TaskState.GetId(taskDesc.Id);
-                        var task = EditorState.CreateInstance<TaskState>(domain, taskId);
+                        var task = new TaskState(domain, taskId);
                         if (taskDesc.Id != treeDesc.RootTaskId)
                             task.ParentTaskId = EditorHelper.FindParentTask(treeDesc.Tasks, taskDesc.Id).Id;
                         task.Desc = taskDesc;

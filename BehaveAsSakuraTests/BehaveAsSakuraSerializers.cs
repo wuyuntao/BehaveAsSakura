@@ -3008,8 +3008,8 @@ namespace BehaveAsSakura.Serialization
             if (obj == null)
                 return null;
             var offsetName = default(StringOffset?);
-            if (!string.IsNullOrEmpty(obj.Name))
-                offsetName = fbb.CreateString(obj.Name);
+            if (!string.IsNullOrEmpty(obj.Title))
+                offsetName = fbb.CreateString(obj.Title);
             var offsetComment = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Comment))
                 offsetComment = fbb.CreateString(obj.Comment);
@@ -3040,7 +3040,7 @@ namespace BehaveAsSakura.Serialization
             {
                 ChildTaskId = obj.ChildTaskId,
                 Id = obj.Id,
-                Name = obj.Name,
+                Title = obj.Name,
                 Comment = obj.Comment,
                 CustomDesc = DeserializeCustomDesc(obj),
             };
@@ -3128,8 +3128,8 @@ namespace BehaveAsSakura.Serialization
             if (obj.ChildTaskIds != null)
                 vectorChildTaskIds = BehaveAsSakura__Tasks__CompositeTaskDescWrapper.CreateChildTaskIdsVector(fbb, obj.ChildTaskIds.ToArray());
             var offsetName = default(StringOffset?);
-            if (!string.IsNullOrEmpty(obj.Name))
-                offsetName = fbb.CreateString(obj.Name);
+            if (!string.IsNullOrEmpty(obj.Title))
+                offsetName = fbb.CreateString(obj.Title);
             var offsetComment = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Comment))
                 offsetComment = fbb.CreateString(obj.Comment);
@@ -3161,7 +3161,7 @@ namespace BehaveAsSakura.Serialization
             {
                 ChildTaskIds = DeserializeScalar<System.UInt32>(obj.ChildTaskIdsLength, obj.ChildTaskIds).ToList(),
                 Id = obj.Id,
-                Name = obj.Name,
+                Title = obj.Name,
                 Comment = obj.Comment,
                 CustomDesc = DeserializeCustomDesc(obj),
             };
@@ -3269,8 +3269,8 @@ namespace BehaveAsSakura.Serialization
             if (obj == null)
                 return null;
             var offsetName = default(StringOffset?);
-            if (!string.IsNullOrEmpty(obj.Name))
-                offsetName = fbb.CreateString(obj.Name);
+            if (!string.IsNullOrEmpty(obj.Title))
+                offsetName = fbb.CreateString(obj.Title);
             var offsetComment = default(StringOffset?);
             if (!string.IsNullOrEmpty(obj.Comment))
                 offsetComment = fbb.CreateString(obj.Comment);
@@ -3299,7 +3299,7 @@ namespace BehaveAsSakura.Serialization
             return new BehaveAsSakura.Tasks.LeafTaskDescWrapper()
             {
                 Id = obj.Id,
-                Name = obj.Name,
+                Title = obj.Name,
                 Comment = obj.Comment,
                 CustomDesc = DeserializeCustomDesc(obj),
             };

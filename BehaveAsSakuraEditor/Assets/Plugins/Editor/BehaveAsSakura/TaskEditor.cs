@@ -5,30 +5,26 @@ using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
-    [CustomEditor(typeof(TaskState))]
+    [CustomEditor(typeof(TaskStateWrapper))]
     public class TaskEditor : UnityEditor.Editor
     {
         private TaskState state;
-
-        private bool showBasic = true;
-        private bool showCustom = true;
-
-        private PropertyGroup taskDesc;
+        private PropertyGroup view;
 
         public void OnEnable()
         {
-            state = (TaskState)target;
+            state = ((TaskStateWrapper)target).State;
 
-            if (state.Desc == null)
+            if (state == null || state.Desc == null)
                 return;
 
             var taskDescType = state.Desc.CustomDesc.GetType();
-            taskDesc = new PropertyGroup(state.Domain, null, taskDescType, EditorHelper.CloneObject(taskDescType, state.Desc.CustomDesc));
+            view = new PropertyGroup(state.Domain, null, taskDescType, EditorHelper.CloneObject(taskDescType, state.Desc.CustomDesc));
         }
 
         public void OnDisable()
         {
-            if (state.Desc == null)
+            if (state == null || state.Desc == null)
                 return;
 
             try
@@ -44,7 +40,7 @@ namespace BehaveAsSakura.Editor
         protected override void OnHeaderGUI()
         {
             // TODO A workaround for display icon and name of task
-            if (state.Desc != null)
+            if (state == null || state.Desc != null)
             {
                 var icon = Resources.Load(EditorHelper.GetTaskIcon(state.Desc.CustomDesc.GetType())) as Texture2D;
                 if (icon == null)
@@ -52,7 +48,7 @@ namespace BehaveAsSakura.Editor
 
                 var title = GetTaskTitle(state.Desc);
 
-                EditorHelper.HeaderIconAndTitle(state, icon, title);
+                EditorHelper.HeaderIconAndTitle(state.Wrapper, icon, title);
             }
 
             base.OnHeaderGUI();
@@ -62,8 +58,8 @@ namespace BehaveAsSakura.Editor
         {
             var title = string.Format("{0} #{1}", EditorHelper.GetTaskTitle(desc.CustomDesc.GetType()), desc.Id);
 
-            if (!string.IsNullOrEmpty(desc.Name))
-                title = string.Format("{0} ({1})", title, desc.Name);
+            if (!string.IsNullOrEmpty(desc.Title))
+                title = string.Format("{0} ({1})", title, desc.Title);
 
             return title;
         }
@@ -73,38 +69,34 @@ namespace BehaveAsSakura.Editor
             if (state.Desc == null)
                 return;
 
-            var descType = state.Desc.CustomDesc.GetType();
-
-            EditorHelper.Foldout(ref showBasic, I18n._("Basic"), () =>
+            var help = EditorHelper.GetTaskDescription(state.Desc.CustomDesc.GetType());
+            if (!string.IsNullOrEmpty(help))
             {
-                var newTaskName = EditorHelper.TextField(I18n._("Name"), state.Desc.Name);
-                var newTaskComment = EditorHelper.TextArea(I18n._("Comment"), state.Desc.Comment);
+                EditorHelper.ReadOnlyTextArea(I18n._("Help"), help);
+                EditorGUILayout.Space();
+            }
 
-                if (newTaskName != state.Desc.Name || newTaskComment != state.Desc.Comment)
-                {
-                    state.CommandHandler.ProcessCommand(new ChangeTaskSummaryCommand(state.Id)
-                    {
-                        Name = newTaskName,
-                        Comment = newTaskComment,
-                    });
-                }
+            var newTaskTitle = EditorHelper.TextField(I18n._("Title"), state.Desc.Title);
+            var newTaskComment = EditorHelper.TextArea(I18n._("Comment"), state.Desc.Comment);
 
-                var help = EditorHelper.GetTaskDescription(descType);
-                if (!string.IsNullOrEmpty(help))
-                    EditorHelper.ReadOnlyTextArea(I18n._("Help"), help);
-            });
-
-            EditorHelper.Foldout(ref showCustom, EditorHelper.GetTaskTitle(descType), () =>
+            if (newTaskTitle != state.Desc.Title || newTaskComment != state.Desc.Comment)
             {
-                taskDesc.OnGUI();
-                if (taskDesc.IsDirty)
+                state.CommandHandler.ProcessCommand(new ChangeTaskSummaryCommand(state.Id)
                 {
-                    taskDesc.CommandHandler.ProcessCommand(new ChangeTaskDescCommand(state.Id)
-                    {
-                        CustomDesc = (ITaskDesc)taskDesc.Value,
-                    });
-                }
-            });
+                    Title = newTaskTitle,
+                    Comment = newTaskComment,
+                });
+            }
+
+            EditorGUILayout.Space();
+            view.OnGUI();
+            if (view.IsDirty)
+            {
+                view.CommandHandler.ProcessCommand(new ChangeTaskDescCommand(state.Id)
+                {
+                    CustomDesc = (ITaskDesc)view.Value,
+                });
+            }
         }
     }
 }

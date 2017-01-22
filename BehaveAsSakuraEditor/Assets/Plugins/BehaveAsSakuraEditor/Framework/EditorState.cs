@@ -2,11 +2,9 @@
 
 namespace BehaveAsSakura.Editor
 {
-    public abstract class EditorState : ScriptableObject
+    public abstract class EditorState : EditorObject
     {
         public event EventAppliedHandler OnEventApplied;
-
-        public string Id { get; private set; }
 
         public EditorDomain Domain { get; private set; }
 
@@ -14,14 +12,10 @@ namespace BehaveAsSakura.Editor
 
         public EditorCommandHandler CommandHandler { get { return Domain.CommandHandler; } }
 
-        public static T CreateInstance<T>(EditorDomain domain, string id)
-            where T : EditorState, new()
+        protected EditorState(EditorDomain domain, string id)
+            : base(id)
         {
-            var state = CreateInstance<T>();
-            state.Domain = domain;
-            state.Id = id;
-
-            return state;
+            Domain = domain;
         }
 
         public override string ToString()

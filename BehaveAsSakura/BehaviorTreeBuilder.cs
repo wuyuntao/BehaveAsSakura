@@ -6,13 +6,21 @@ namespace BehaveAsSakura
 {
     public sealed class BehaviorTreeBuilder
     {
+        private string title;
+        private string comment;
         private uint maxTaskId;
         private List<TaskDescWrapper> tasks = new List<TaskDescWrapper>();
 
-        public CompositeTaskBuilder Composite<T>(string name, Action<T> initializer = null)
+        public BehaviorTreeBuilder(string title = null, string comment = null)
+        {
+            this.title = title;
+            this.comment = comment;
+        }
+
+        public CompositeTaskBuilder Composite<T>(string title, Action<T> initializer = null)
             where T : ICompositeTaskDesc, new()
         {
-            var task = CreateTask<CompositeTaskDescWrapper, T>(name, initializer);
+            var task = CreateTask<CompositeTaskDescWrapper, T>(title, initializer);
 
             return new CompositeTaskBuilder(task);
         }
@@ -23,10 +31,10 @@ namespace BehaveAsSakura
             return Composite<T>(null, initializer);
         }
 
-        public DecoratorTaskBuilder Decorator<T>(string name, Action<T> initializer = null)
+        public DecoratorTaskBuilder Decorator<T>(string title, Action<T> initializer = null)
             where T : IDecoratorTaskDesc, new()
         {
-            var task = CreateTask<DecoratorTaskDescWrapper, T>(name, initializer);
+            var task = CreateTask<DecoratorTaskDescWrapper, T>(title, initializer);
 
             return new DecoratorTaskBuilder(task);
         }
@@ -37,10 +45,10 @@ namespace BehaveAsSakura
             return Decorator<T>(null, initializer);
         }
 
-        public LeafTaskBuilder Leaf<T>(string name, Action<T> initializer = null)
+        public LeafTaskBuilder Leaf<T>(string title, Action<T> initializer = null)
             where T : ILeafTaskDesc, new()
         {
-            var task = CreateTask<LeafTaskDescWrapper, T>(name, initializer);
+            var task = CreateTask<LeafTaskDescWrapper, T>(title, initializer);
 
             return new LeafTaskBuilder(task);
         }
@@ -55,12 +63,14 @@ namespace BehaveAsSakura
         {
             return new BehaviorTreeDesc()
             {
+                Title = title,
+                Comment = comment,
                 Tasks = tasks.ToArray(),
                 RootTaskId = 1,
             };
         }
 
-        TTaskDescWrapper CreateTask<TTaskDescWrapper, TTaskDesc>(string name, Action<TTaskDesc> initializer)
+        TTaskDescWrapper CreateTask<TTaskDescWrapper, TTaskDesc>(string title, Action<TTaskDesc> initializer)
             where TTaskDescWrapper : TaskDescWrapper, new()
             where TTaskDesc : ITaskDesc, new()
         {
@@ -69,7 +79,7 @@ namespace BehaveAsSakura
             var task = new TTaskDescWrapper()
             {
                 Id = id,
-                Name = name != null ? name : string.Format("{0}-{1}", typeof(TTaskDesc).Name, id),
+                Title = title != null ? title : string.Format("{0}-{1}", typeof(TTaskDesc).Name, id),
                 CustomDesc = desc,
             };
 

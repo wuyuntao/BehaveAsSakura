@@ -41,7 +41,7 @@ namespace BehaveAsSakura.Tasks
         public uint Id { get; set; }
 
         [BehaveAsField(2, IsRequired = false)]
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         [BehaveAsField(3, IsRequired = false)]
         public string Comment { get; set; }

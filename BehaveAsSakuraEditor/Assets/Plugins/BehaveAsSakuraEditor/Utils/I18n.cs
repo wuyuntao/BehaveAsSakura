@@ -66,8 +66,7 @@ namespace BehaveAsSakura.Editor
                 return value;
             else
             {
-                Debug.LogWarningFormat("Missing translation of key '{0}'", key);
-
+                //Debug.LogWarningFormat("Missing translation of key '{0}'", key);
                 return key;
             }
         }
@@ -79,8 +78,7 @@ namespace BehaveAsSakura.Editor
                 return string.Format(value, args);
             else
             {
-                Debug.LogWarningFormat("Missing translation of key '{0}'", key);
-
+                //Debug.LogWarningFormat("Missing translation of key '{0}'", key);
                 return string.Format(key, args);
             }
         }

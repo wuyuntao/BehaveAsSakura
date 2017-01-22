@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
+    public class TaskStateWrapper : ScriptableObject
+    {
+        public TaskState State;
+    }
+
     public class TaskState : EditorState
     {
         public static string GetId(uint taskId)
@@ -39,6 +44,27 @@ namespace BehaveAsSakura.Editor
             }
 
             base.ApplyEvent(e);
+        }
+
+        private TaskStateWrapper wrapper;
+
+        public TaskStateWrapper Wrapper
+        {
+            get
+            {
+                if (wrapper == null)
+                {
+                    wrapper = ScriptableObject.CreateInstance<TaskStateWrapper>();
+                    wrapper.State = this;
+                }
+
+                return wrapper;
+            }
+        }
+
+        public TaskState(EditorDomain domain, string id)
+            : base(domain, id)
+        {
         }
 
         private void OnTaskCreatedEvent(TaskCreatedEvent e)
@@ -112,7 +138,7 @@ namespace BehaveAsSakura.Editor
 
         private void OnTaskSummaryChangedEvent(TaskSummaryChangedEvent e)
         {
-            Desc.Name = e.Name;
+            Desc.Title = e.Title;
             Desc.Comment = e.Comment;
         }
 

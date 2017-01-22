@@ -130,7 +130,7 @@ namespace BehaveAsSakura.Editor
         {
             base.OnSelect(e);
 
-            Selection.activeObject = Task;
+            Selection.activeObject = Task.Wrapper;
         }
 
         public override void OnContextMenu(Event e)
