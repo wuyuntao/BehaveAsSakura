@@ -3,16 +3,17 @@ using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
-    [CustomEditor(typeof(BehaviorTreeState))]
-    public class BehaviorTreeEditor : UnityEditor.Editor
+    [CustomEditor(typeof(BehaviorTreeAsset))]
+    public class BehaviorTreeAssetEditor : UnityEditor.Editor
     {
-        private BehaviorTreeState state;
-
-        private bool showBasic = true;
+        private BehaviorTreeAsset asset;
 
         public void OnEnable()
         {
-            state = (BehaviorTreeState)target;
+            asset = (BehaviorTreeAsset)target;
+            asset.Deserialize();
+
+            BehaviorTreeEditorWindow.CreateWindow(asset);
         }
 
         protected override void OnHeaderGUI()
@@ -21,17 +22,13 @@ namespace BehaveAsSakura.Editor
             var icon = (Texture2D)Resources.Load(EditorConfiguration.DefaultBehaviorTreeIconPath);
             var title = I18n._("Behavior Tree");
 
-            EditorHelper.HeaderIconAndTitle(state, icon, title);
+            EditorHelper.HeaderIconAndTitle(asset, icon, title);
 
             base.OnHeaderGUI();
         }
 
         public override void OnInspectorGUI()
         {
-            EditorHelper.Foldout(ref showBasic, I18n._("Basic"), () =>
-            {
-                EditorHelper.ReadOnlyTextField(I18n._("Id"), state.Id);
-            });
         }
     }
 }

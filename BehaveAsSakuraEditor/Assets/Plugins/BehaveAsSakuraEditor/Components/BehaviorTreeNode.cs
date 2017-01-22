@@ -19,13 +19,19 @@ namespace BehaveAsSakura.Editor
         {
             Tree = parent.Tree;
             Tree.OnEventApplied += Tree_OnEventApplied;
+
+            if (Tree.RootTaskId > 0)
+            {
+                var task = (TaskState)Repository.States[TaskState.GetId(Tree.RootTaskId)];
+                Children.Add(TaskNode.Create(this, task));
+            }
         }
 
         private void Tree_OnEventApplied(EditorState state, EditorEvent e)
         {
             if (e is TaskCreatedEvent)
             {
-                Children.Add(TaskNode.Create(this, (TaskCreatedEvent)e));
+                Children.Add(TaskNode.Create(this, ((TaskCreatedEvent)e).NewTask));
             }
             else if (e is TaskNotCreatedEvent)
             {
@@ -37,7 +43,7 @@ namespace BehaveAsSakura.Editor
         {
             base.OnSelect(e);
 
-            Selection.activeObject = Tree;
+            Selection.activeObject = Tree.Asset;
         }
 
         public override void OnContextMenu(Event e)

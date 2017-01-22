@@ -5,28 +5,25 @@ namespace BehaveAsSakura.Editor
 {
     public class BehaviorTreeEditorWindow : EditorWindow
     {
+        private static BehaviorTreeEditorWindow current;
+
+        private BehaviorTreeAsset asset;
         private EditorDomain domain;
         private BehaviorTreeView view;
 
-        [MenuItem("Window/BehaveAsSakura Editor")]
-        private static void NewBehaviorTree()
+        public static void CreateWindow(BehaviorTreeAsset asset)
         {
-            //I18n.SetLanguage( "zh_CN" );
+            if (current != null && current.asset == asset)
+                return;
 
-            var window = GetWindow<BehaviorTreeEditorWindow>(I18n._("BehaveAsSakura Editor"), typeof(SceneView));
+            current = GetWindow<BehaviorTreeEditorWindow>(I18n._("BehaveAsSakura Editor"), typeof(SceneView));
 
-            window.minSize = EditorConfiguration.MinWindowSize;
+            current.minSize = EditorConfiguration.MinWindowSize;
+            current.asset = asset;
+            current.domain = asset.Domain;
+            current.view = new BehaviorTreeView(current.domain, asset.Tree, current.position.size);
 
-            var repo = new EditorRepository();
-            var handler = new BehaviorTreeCommandHandler();
-            var domain = new EditorDomain(repo, handler);
-
-            var treeId = BehaviorTreeState.GetId();
-            var tree = EditorState.CreateState<BehaviorTreeState>(domain, treeId);
-            repo.States[treeId] = tree;
-
-            window.domain = domain;
-            window.view = new BehaviorTreeView(window.domain, tree, window.position.size);
+            return;
         }
 
         private void OnGUI()

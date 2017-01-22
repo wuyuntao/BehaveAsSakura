@@ -4,8 +4,6 @@ namespace BehaveAsSakura.Editor
 {
     public abstract class EditorState : ScriptableObject
     {
-        public delegate void EventAppliedHandler(EditorState state, EditorEvent e);
-
         public event EventAppliedHandler OnEventApplied;
 
         public string Id { get; private set; }
@@ -16,7 +14,7 @@ namespace BehaveAsSakura.Editor
 
         public EditorCommandHandler CommandHandler { get { return Domain.CommandHandler; } }
 
-        public static T CreateState<T>(EditorDomain domain, string id)
+        public static T CreateInstance<T>(EditorDomain domain, string id)
             where T : EditorState, new()
         {
             var state = CreateInstance<T>();
@@ -37,6 +35,8 @@ namespace BehaveAsSakura.Editor
 
             if (OnEventApplied != null)
                 OnEventApplied(this, e);
+
+            Domain.EventApplied(this, e);
         }
     }
 }

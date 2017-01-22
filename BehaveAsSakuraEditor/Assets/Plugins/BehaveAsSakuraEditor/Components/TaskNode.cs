@@ -20,31 +20,52 @@ namespace BehaveAsSakura.Editor
         {
             Task = task;
             Task.OnEventApplied += Task_OnEventApplied;
+
+            if (task.Desc is DecoratorTaskDescWrapper)
+            {
+                var desc = (DecoratorTaskDescWrapper)task.Desc;
+
+                CreateChildTaskNode(desc.ChildTaskId);
+            }
+            else if (task.Desc is CompositeTaskDescWrapper)
+            {
+                var desc = (CompositeTaskDescWrapper)task.Desc;
+
+                foreach (var id in desc.ChildTaskIds)
+                    CreateChildTaskNode(id);
+            }
         }
 
-        public static TaskNode Create(EditorComponent parent, TaskCreatedEvent e)
+        private void CreateChildTaskNode(uint taskId)
         {
-            if (e.NewTask.Desc is LeafTaskDescWrapper)
+            var task = (TaskState)Repository.States[TaskState.GetId(taskId)];
+
+            Children.Add(Create(this, task));
+        }
+
+        public static TaskNode Create(EditorComponent parent, TaskState state)
+        {
+            if (state.Desc is LeafTaskDescWrapper)
             {
-                return new LeafTaskNode(parent.Domain, parent, e.NewTask);
+                return new LeafTaskNode(parent.Domain, parent, state);
             }
-            else if (e.NewTask.Desc is DecoratorTaskDescWrapper)
+            else if (state.Desc is DecoratorTaskDescWrapper)
             {
-                return new DecoratorTaskNode(parent.Domain, parent, e.NewTask);
+                return new DecoratorTaskNode(parent.Domain, parent, state);
             }
-            else if (e.NewTask.Desc is CompositeTaskDescWrapper)
+            else if (state.Desc is CompositeTaskDescWrapper)
             {
-                return new CompositeTaskNode(parent.Domain, parent, e.NewTask);
+                return new CompositeTaskNode(parent.Domain, parent, state);
             }
             else
-                throw new NotSupportedException(e.NewTask.Desc.ToString());
+                throw new NotSupportedException(state.Desc.ToString());
         }
 
         private void Task_OnEventApplied(EditorState state, EditorEvent e)
         {
             if (e is TaskCreatedEvent)
             {
-                Children.Add(Create(this, (TaskCreatedEvent)e));
+                Children.Add(Create(this, ((TaskCreatedEvent)e).NewTask));
             }
             else if (e is TaskNotCreatedEvent)
             {

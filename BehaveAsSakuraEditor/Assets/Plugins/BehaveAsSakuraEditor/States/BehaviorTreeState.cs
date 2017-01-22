@@ -1,7 +1,6 @@
 ﻿using BehaveAsSakura.Tasks;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
@@ -12,9 +11,9 @@ namespace BehaveAsSakura.Editor
             return "BehaviorTree";
         }
 
-        public string FilePath { get; private set; }
+        public BehaviorTreeAsset Asset { get; set; }
 
-        public uint RootTaskId { get; private set; }
+        public uint RootTaskId { get; set; }
 
         public uint NextTaskId { get; set; }
 
