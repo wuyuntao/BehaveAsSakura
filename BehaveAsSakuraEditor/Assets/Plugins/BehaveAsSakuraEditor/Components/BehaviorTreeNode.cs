@@ -11,11 +11,7 @@ namespace BehaveAsSakura.Editor
         public BehaviorTreeNode(EditorDomain domain, BehaviorTreeView parent)
             : base(domain
                   , parent
-                  , string.Format("{0}-Node", parent.Tree.Id)
-                  , I18n._("Root")
-                  , EditorConfiguration.BehaviorTreeNodePosition
-                  , EditorConfiguration.BehaviorTreeNodeSize
-                  , EditorConfiguration.BehaviorTreeNodeStyle)
+                  , string.Format("{0}-Node", parent.Tree.Id))
         {
             Tree = parent.Tree;
             Tree.OnEventApplied += Tree_OnEventApplied;
@@ -37,6 +33,23 @@ namespace BehaveAsSakura.Editor
             {
                 EditorHelper.DisplayDialog("Failed to create task", ((TaskNotCreatedEvent)e).Reason);
             }
+        }
+
+        public override void OnGUI()
+        {
+            base.OnGUI();
+
+            var nodeRect = CalculateGUIRect();
+            GUI.Box(nodeRect, string.Empty, EditorConfiguration.BehaviorTreeNodeStyle);
+
+            var iconRect = new Rect(nodeRect.position + new Vector2(15, 15), new Vector2(32, 32));
+            var iconTexture = (Texture2D)Resources.Load(EditorConfiguration.BehaviorTreeNodeIconPath);
+            GUI.Box(iconRect, iconTexture);
+        }
+
+        protected override Rect CalculateGUIRect()
+        {
+            return new Rect(RootView.ToWindowPosition(EditorConfiguration.BehaviorTreeNodePosition - EditorConfiguration.BehaviorTreeNodeSize / 2), EditorConfiguration.BehaviorTreeNodeSize);
         }
 
         public override void OnSelect(Event e)

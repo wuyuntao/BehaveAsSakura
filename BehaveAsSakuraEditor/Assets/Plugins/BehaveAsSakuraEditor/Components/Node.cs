@@ -7,21 +7,17 @@ namespace BehaveAsSakura.Editor
     {
         public BehaviorTreeView RootView { get; private set; }
 
-        public string Title { get; protected set; }
+        //public string Title { get; protected set; }
 
-        public Vector2 Position { get; protected set; }
+        //public Vector2 Position { get; protected set; }
 
-        public Vector2 Size { get; protected set; }
+        //public Vector2 Size { get; protected set; }
 
-        public GUIStyle Style { get; protected set; }
+        //public GUIStyle Style { get; protected set; }
 
-        protected Node(EditorDomain domain, EditorComponent parent, string id, string title, Vector2 position, Vector2 size, GUIStyle style)
+        protected Node(EditorDomain domain, EditorComponent parent, string id)
             : base(domain, parent, id)
         {
-            Title = title;
-            Position = position;
-            Size = size;
-            Style = style;
             RootView = FindRootView();
         }
 
@@ -39,8 +35,6 @@ namespace BehaveAsSakura.Editor
         public override void OnGUI()
         {
             GUI.depth = EditorConfiguration.BehaviorTreeNodeDepth;
-
-            GUI.Box(CalculateGUIRect(), Title, Style);
 
             base.OnGUI();
         }
@@ -89,9 +83,6 @@ namespace BehaveAsSakura.Editor
         {
         }
 
-        private Rect CalculateGUIRect()
-        {
-            return new Rect(RootView.ToWindowPosition(Position - Size / 2), Size);
-        }
+        protected abstract Rect CalculateGUIRect();
     }
 }

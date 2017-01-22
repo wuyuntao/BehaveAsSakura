@@ -12,11 +12,7 @@ namespace BehaveAsSakura.Editor
         protected TaskNode(EditorDomain domain, EditorComponent parent, TaskState task)
             : base(domain
                   , parent
-                  , string.Format("{0}-Node", task.Id)
-                  , EditorHelper.GetTaskTitle(task.Desc.CustomDesc.GetType())
-                  , task.Position
-                  , EditorConfiguration.TaskNodeSize
-                  , EditorConfiguration.TaskNodeStyle)
+                  , string.Format("{0}-Node", task.Id))
         {
             Task = task;
             Task.OnEventApplied += Task_OnEventApplied;
@@ -80,28 +76,45 @@ namespace BehaveAsSakura.Editor
 
         public override void OnGUI()
         {
-            Position = Task.Position;
-
             base.OnGUI();
+
+            var descType = Task.Desc.CustomDesc.GetType();
+
+            var nodeRect = CalculateGUIRect();
+            GUI.Box(nodeRect, string.Empty, EditorConfiguration.BehaviorTreeNodeStyle);
+
+            var iconTexture = Resources.Load(EditorHelper.GetTaskIcon(descType)) as Texture2D;
+            if (iconTexture == null)
+                iconTexture = (Texture2D)Resources.Load(EditorConfiguration.DefaultTaskIconPath);
+
+            var iconRect = new Rect(nodeRect.position + new Vector2(15, 15), new Vector2(32, 32));
+            GUI.Box(iconRect, iconTexture);
+
+            var title = EditorHelper.GetTaskTitle(descType);
 
             DrawConnection();
         }
 
+        protected override Rect CalculateGUIRect()
+        {
+            return new Rect(RootView.ToWindowPosition(Task.Position - EditorConfiguration.TaskNodeSize / 2), EditorConfiguration.TaskNodeSize);
+        }
+
         private void DrawConnection()
         {
-            var fromPoint = RootView.ToWindowPosition(Position + new Vector2(0, -EditorConfiguration.TaskNodeSize.y / 2 + EditorConfiguration.TaskNodeConnectionPadding));
+            var fromPoint = RootView.ToWindowPosition(Task.Position + new Vector2(0, -EditorConfiguration.TaskNodeSize.y / 2 + EditorConfiguration.TaskNodeConnectionPadding));
             Vector2 toPoint;
             if (Parent is BehaviorTreeNode)
             {
                 var parent = (BehaviorTreeNode)Parent;
 
-                toPoint = parent.Position + new Vector2(0, EditorConfiguration.BehaviorTreeNodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
+                toPoint = EditorConfiguration.BehaviorTreeNodePosition + new Vector2(0, EditorConfiguration.BehaviorTreeNodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
             }
             else if (Parent is TaskNode)
             {
                 var parent = (TaskNode)Parent;
 
-                toPoint = parent.Position + new Vector2(0, EditorConfiguration.TaskNodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
+                toPoint = parent.Task.Position + new Vector2(0, EditorConfiguration.TaskNodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
             }
             else
                 throw new NotSupportedException(Parent.ToString());

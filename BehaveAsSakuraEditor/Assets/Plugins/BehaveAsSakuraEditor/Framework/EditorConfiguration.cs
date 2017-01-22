@@ -11,11 +11,13 @@ namespace BehaveAsSakura.Editor
 
         public static readonly int BehaviorTreeBackgroundDepth = 100;
 
-        public static readonly Vector2 BehaviorTreeNodeSize = new Vector2(100, 60);
+        public static readonly Vector2 BehaviorTreeNodeSize = new Vector2(100, 64);
 
         public static readonly Vector2 BehaviorTreeNodePosition = new Vector2(0, 0);
 
         public static readonly int BehaviorTreeNodeDepth = 90;
+
+        public static readonly string BehaviorTreeNodeIconPath = "BehaveAsSakuraEditor/Textures/Root";
 
         public static readonly GUIStyle BehaviorTreeNodeStyle = new GUIStyle()
         {
@@ -27,7 +29,7 @@ namespace BehaveAsSakura.Editor
             border = new RectOffset(12, 12, 12, 12),
         };
 
-        public static readonly Vector2 TaskNodeSize = new Vector2(100, 60);
+        public static readonly Vector2 TaskNodeSize = new Vector2(100, 64);
 
         public static readonly GUIStyle TaskNodeStyle = new GUIStyle()
         {
@@ -60,8 +62,6 @@ namespace BehaveAsSakura.Editor
         public static readonly int PropertyGridViewWidth = 400;
 
         public static readonly string TaskIconPath = "BehaveAsSakuraEditor/Textures";
-
-        public static readonly string DefaultBehaviorTreeIconPath = "BehaveAsSakuraEditor/Textures/Root";
 
         public static readonly string DefaultTaskIconPath = "BehaveAsSakuraEditor/Textures/Default";
     }
