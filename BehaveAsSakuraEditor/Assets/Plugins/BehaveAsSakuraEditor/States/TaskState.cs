@@ -27,6 +27,7 @@ namespace BehaveAsSakura.Editor
             }
             else if (e is TaskRemovedEvent)
             {
+                OnTaskRemovedEvent((TaskRemovedEvent)e);
             }
             else if (e is TaskSummaryChangedEvent)
             {
@@ -57,6 +58,55 @@ namespace BehaveAsSakura.Editor
 
             var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
             tree.NextTaskId = Math.Max(tree.NextTaskId, e.NewTask.Desc.Id) + 1;
+            NodeLayoutHelper.Calculate(tree);
+        }
+
+        private void OnTaskRemovedEvent(TaskRemovedEvent e)
+        {
+            var parent = Repository.States[GetId(ParentTaskId)];
+            if (parent is BehaviorTreeState)
+            {
+                var s = (BehaviorTreeState)parent;
+                s.RootTaskId = 0;
+            }
+            else if (parent is TaskState)
+            {
+                var desc = ((TaskState)parent).Desc;
+                if (desc is DecoratorTaskDescWrapper)
+                {
+                    var d = (DecoratorTaskDescWrapper)desc;
+                    d.ChildTaskId = 0;
+                }
+                else if (desc is CompositeTaskDescWrapper)
+                {
+                    var d = (CompositeTaskDescWrapper)desc;
+                    d.ChildTaskIds.Remove(Desc.Id);
+                }
+            }
+
+            Repository.States.Remove(Id);
+
+            if (Desc is DecoratorTaskDescWrapper)
+            {
+                var d = (DecoratorTaskDescWrapper)Desc;
+                if (d.ChildTaskId > 0)
+                {
+                    var taskId = GetId(d.ChildTaskId);
+                    Repository.States[taskId].ApplyEvent(new TaskRemovedEvent(taskId));
+                }
+            }
+            else if (Desc is CompositeTaskDescWrapper)
+            {
+                var d = (CompositeTaskDescWrapper)Desc;
+
+                foreach (var childTaskId in d.ChildTaskIds)
+                {
+                    var taskId = GetId(childTaskId);
+                    Repository.States[taskId].ApplyEvent(new TaskRemovedEvent(taskId));
+                }
+            }
+
+            var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
             NodeLayoutHelper.Calculate(tree);
         }
 

@@ -25,7 +25,8 @@ namespace BehaveAsSakura.Editor
             {
                 var desc = (DecoratorTaskDescWrapper)task.Desc;
 
-                CreateChildTaskNode(desc.ChildTaskId);
+                if (desc.ChildTaskId > 0)
+                    CreateChildTaskNode(desc.ChildTaskId);
             }
             else if (task.Desc is CompositeTaskDescWrapper)
             {
@@ -70,6 +71,10 @@ namespace BehaveAsSakura.Editor
             else if (e is TaskNotCreatedEvent)
             {
                 EditorHelper.DisplayDialog("Failed to create task", ((TaskNotCreatedEvent)e).Reason);
+            }
+            else if (e is TaskRemovedEvent)
+            {
+                Parent.Children.Remove(this);
             }
         }
 
@@ -134,6 +139,9 @@ namespace BehaveAsSakura.Editor
 
             var menu = new GenericMenu();
             EditorHelper.AddNewTaskMenuItems(menu, CanCreateChildTask(), (s) => OnContextMenu_NewTask((Type)s));
+
+            menu.AddItem(new GUIContent(I18n._("Remove Task")), false, OnContextMenu_RemoveTask);
+
             menu.ShowAsContext();
 
             e.Use();
@@ -145,6 +153,11 @@ namespace BehaveAsSakura.Editor
             {
                 TaskType = taskType,
             });
+        }
+
+        private void OnContextMenu_RemoveTask()
+        {
+            Domain.CommandHandler.ProcessCommand(new RemoveTaskCommand(Task.Id));
         }
 
         protected abstract bool CanCreateChildTask();

@@ -42,33 +42,37 @@ namespace BehaveAsSakura.Editor
 
             var repo = new EditorRepository();
             var handler = new BehaviorTreeCommandHandler();
-            Domain = new EditorDomain(repo, handler);
-            Domain.OnEventApplied += Domain_OnEventApplied;
+            var domain = new EditorDomain(repo, handler);
+            domain.OnEventApplied += Domain_OnEventApplied;
 
             var treeId = BehaviorTreeState.GetId();
-            Tree = EditorState.CreateInstance<BehaviorTreeState>(Domain, treeId);
-            Tree.Asset = this;
-            repo.States[treeId] = Tree;
+            var tree = EditorState.CreateInstance<BehaviorTreeState>(domain, treeId);
+            tree.Asset = this;
+            repo.States[treeId] = tree;
 
             if (bytes != null && bytes.Length > 0)
             {
                 var treeDesc = BehaviorTreeSerializer.DeserializeDesc(bytes);
-                Tree.RootTaskId = treeDesc.RootTaskId;
+                tree.RootTaskId = treeDesc.RootTaskId;
 
                 if (treeDesc.Tasks != null && treeDesc.Tasks.Length > 0)
                 {
-                    Tree.NextTaskId = treeDesc.Tasks.Max(t => t.Id) + 1;
+                    tree.NextTaskId = treeDesc.Tasks.Max(t => t.Id) + 1;
 
                     foreach (var taskDesc in treeDesc.Tasks)
                     {
                         var taskId = TaskState.GetId(taskDesc.Id);
-                        var task = EditorState.CreateInstance<TaskState>(Domain, taskId);
-                        task.ParentTaskId = EditorHelper.FindParentTask(treeDesc.Tasks, taskDesc.Id).Id;
+                        var task = EditorState.CreateInstance<TaskState>(domain, taskId);
+                        if (taskDesc.Id != treeDesc.RootTaskId)
+                            task.ParentTaskId = EditorHelper.FindParentTask(treeDesc.Tasks, taskDesc.Id).Id;
                         task.Desc = taskDesc;
                         repo.States[task.Id] = task;
                     }
                 }
             }
+
+            Domain = domain;
+            Tree = tree;
         }
 
         private void Domain_OnEventApplied(EditorState state, EditorEvent e)

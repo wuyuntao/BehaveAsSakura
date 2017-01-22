@@ -56,7 +56,7 @@ namespace BehaveAsSakura.Editor
 
         public static void AddNewTaskMenuItems(GenericMenu menu, bool enabled, GenericMenu.MenuFunction2 callback)
         {
-            var newTaskText = I18n._("New task");
+            var newTaskText = I18n._("Create task");
             if (enabled)
             {
                 foreach (var t in FindAllTaskDescs())

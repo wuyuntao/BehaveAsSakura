@@ -58,7 +58,7 @@ namespace BehaveAsSakura.Editor
                     }
                 }
 
-                parentTaskId = task.Id;
+                parentTaskId = task.Desc.Id;
             }
             else
                 throw new NotSupportedException(command.Id);
@@ -86,7 +86,9 @@ namespace BehaveAsSakura.Editor
 
         private void OnRemoveTaskCommand(RemoveTaskCommand command)
         {
-            throw new NotImplementedException();
+            var task = (TaskState)Repository.States[command.Id];
+
+            task.ApplyEvent(new TaskRemovedEvent(command.Id));
         }
 
         private void OnChangeTaskSummaryCommand(ChangeTaskSummaryCommand command)
