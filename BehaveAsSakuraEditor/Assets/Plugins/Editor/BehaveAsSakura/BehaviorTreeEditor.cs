@@ -19,10 +19,10 @@ namespace BehaveAsSakura.Editor
         protected override void OnHeaderGUI()
         {
             // TODO A workaround for display icon and name of task
-            var icon = (Texture2D)Resources.Load(EditorConfiguration.DefaultBehaviorTreeIconPath);
-            var title = I18n._("Behavior Tree");
+            //var icon = (Texture2D)Resources.Load(EditorConfiguration.DefaultBehaviorTreeIconPath);
+            //var title = I18n._("Behavior Tree");
 
-            EditorHelper.HeaderIconAndTitle(asset, icon, title);
+            //EditorHelper.HeaderIconAndTitle(asset, icon, title);
 
             base.OnHeaderGUI();
         }
