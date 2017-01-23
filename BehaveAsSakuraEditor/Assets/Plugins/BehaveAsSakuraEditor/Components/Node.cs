@@ -34,7 +34,7 @@ namespace BehaveAsSakura.Editor
 
         public override void OnGUI()
         {
-            GUI.depth = EditorConfiguration.BehaviorTreeNodeDepth;
+            GUI.depth = EditorConfiguration.NodeDepth;
 
             base.OnGUI();
         }

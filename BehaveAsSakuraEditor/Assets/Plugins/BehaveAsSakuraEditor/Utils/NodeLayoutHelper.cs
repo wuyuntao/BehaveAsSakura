@@ -14,7 +14,7 @@ namespace BehaveAsSakura.Editor
             var root = CreateTaskLayoutInfos(tree, tree.RootTaskId);
 
             root.Task.Position = new Vector2(EditorConfiguration.BehaviorTreeNodePosition.x, 
-                EditorConfiguration.BehaviorTreeNodePosition.y + EditorConfiguration.TaskNodeMinSpace.y + EditorConfiguration.BehaviorTreeNodeSize.y / 2 + EditorConfiguration.TaskNodeSize.y / 2);
+                EditorConfiguration.BehaviorTreeNodePosition.y + EditorConfiguration.TaskNodeMinSpace.y + EditorConfiguration.NodeSize.y / 2 + EditorConfiguration.NodeSize.y / 2);
 
             CalculateTaskPosition(root);
         }
@@ -24,7 +24,7 @@ namespace BehaveAsSakura.Editor
             var task = (TaskState)tree.Repository.States[TaskState.GetId(taskId)];
             var node = new Node() { Task = task };
 
-            node.LaneWidth = EditorConfiguration.TaskNodeSize.x + EditorConfiguration.TaskNodeMinSpace.x / 2;
+            node.LaneWidth = EditorConfiguration.NodeSize.x + EditorConfiguration.TaskNodeMinSpace.x / 2;
 
             if (!node.Task.IsCollapsed)
             {
@@ -59,7 +59,7 @@ namespace BehaveAsSakura.Editor
                 return;
 
             var x = node.Task.Position.x - node.Children.Sum(i => i.LaneWidth) / 2;
-            var y = node.Task.Position.y + EditorConfiguration.TaskNodeMinSpace.y + EditorConfiguration.TaskNodeSize.y;
+            var y = node.Task.Position.y + EditorConfiguration.TaskNodeMinSpace.y + EditorConfiguration.NodeSize.y;
 
             foreach (var child in node.Children)
             {

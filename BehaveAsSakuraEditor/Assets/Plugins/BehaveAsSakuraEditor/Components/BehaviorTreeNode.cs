@@ -40,48 +40,29 @@ namespace BehaveAsSakura.Editor
             base.OnGUI();
 
             var nodeRect = CalculateGUIRect();
-            GUI.Box(nodeRect, string.Empty, EditorConfiguration.BehaviorTreeNodeStyle);
+            GUI.Box(nodeRect, string.Empty, EditorConfiguration.NodeBackgroundStyle);
 
-            var iconRect = new Rect(nodeRect.position + new Vector2(15, 15), new Vector2(32, 32));
+            var iconRect = EditorConfiguration.NodeIconPosition;
+            iconRect.position += nodeRect.position;
             var iconTexture = (Texture2D)Resources.Load(EditorConfiguration.BehaviorTreeNodeIconPath);
-            GUI.Box(iconRect, iconTexture, new GUIStyle()
-            {
-                normal = new GUIStyleState()
-                {
-                    background = null,
-                    textColor = Color.white,
-                }
-            });
+            GUI.Box(iconRect, iconTexture, EditorConfiguration.NodeIconStyle);
 
-            var titleRect = new Rect(nodeRect.position + new Vector2(15 + 32 + 10, 12), new Vector2(50, EditorGUIUtility.singleLineHeight));
+            var titleRect = EditorConfiguration.NodeTitlePosition;
+            titleRect.position += nodeRect.position;
             var title = I18n._("Root");
-            GUI.Box(titleRect, title, new GUIStyle()
-            {
-                fontStyle = FontStyle.Bold,
-                normal = new GUIStyleState()
-                {
-                    background = null,
-                    textColor = Color.white,
-                }
-            });
+            GUI.Box(titleRect, title, EditorConfiguration.NodeTitleStyle);
 
             if (!string.IsNullOrEmpty(Tree.Title))
             {
-                var summaryRect= new Rect(nodeRect.position + new Vector2(15 + 32 + 10, 12 + EditorGUIUtility.singleLineHeight + 5 ), new Vector2(50, EditorGUIUtility.singleLineHeight));
-                GUI.Box(summaryRect, Tree.Title, new GUIStyle()
-                {
-                    normal = new GUIStyleState()
-                    {
-                        background = null,
-                        textColor = Color.white,
-                    }
-                });
+                var summaryRect = EditorConfiguration.NodeSummaryPosition;
+                summaryRect.position += nodeRect.position;
+                GUI.Box(summaryRect, Tree.Title, EditorConfiguration.NodeSummaryStyle);
             }
         }
 
         protected override Rect CalculateGUIRect()
         {
-            return new Rect(RootView.ToWindowPosition(EditorConfiguration.BehaviorTreeNodePosition - EditorConfiguration.BehaviorTreeNodeSize / 2), EditorConfiguration.BehaviorTreeNodeSize);
+            return new Rect(RootView.ToWindowPosition(EditorConfiguration.BehaviorTreeNodePosition - EditorConfiguration.NodeSize / 2), EditorConfiguration.NodeSize);
         }
 
         public override void OnSelect(Event e)

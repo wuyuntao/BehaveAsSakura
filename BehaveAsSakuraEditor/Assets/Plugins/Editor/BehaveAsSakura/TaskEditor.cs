@@ -66,7 +66,7 @@ namespace BehaveAsSakura.Editor
 
         public override void OnInspectorGUI()
         {
-            if (state.Desc == null)
+            if (state == null || state.Desc == null)
                 return;
 
             var help = EditorHelper.GetTaskDescription(state.Desc.CustomDesc.GetType());

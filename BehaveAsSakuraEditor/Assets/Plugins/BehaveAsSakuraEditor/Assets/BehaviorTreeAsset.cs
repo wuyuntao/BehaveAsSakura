@@ -53,6 +53,8 @@ namespace BehaveAsSakura.Editor
             if (bytes != null && bytes.Length > 0)
             {
                 var treeDesc = BehaviorTreeSerializer.DeserializeDesc(bytes);
+                tree.Title = treeDesc.Title;
+                tree.Comment = treeDesc.Comment;
                 tree.RootTaskId = treeDesc.RootTaskId;
 
                 if (treeDesc.Tasks != null && treeDesc.Tasks.Length > 0)
@@ -85,7 +87,7 @@ namespace BehaveAsSakura.Editor
 
                 EditorUtility.SetDirty(this);
 
-                Logger.Debug("Save asset of {0}", desc.Title);
+                Logger.Debug("Save asset of '{0}'", desc.Title);
             }
             catch (Exception ex)
             {

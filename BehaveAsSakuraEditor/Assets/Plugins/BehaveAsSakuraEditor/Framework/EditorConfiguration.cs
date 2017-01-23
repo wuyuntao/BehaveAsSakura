@@ -11,35 +11,45 @@ namespace BehaveAsSakura.Editor
 
         public static readonly int BehaviorTreeBackgroundDepth = 100;
 
-        public static readonly Vector2 BehaviorTreeNodeSize = new Vector2(140, 64);
+        public static readonly Vector2 NodeSize = new Vector2(140, 64);
 
         public static readonly Vector2 BehaviorTreeNodePosition = new Vector2(0, 0);
 
-        public static readonly int BehaviorTreeNodeDepth = 90;
+        public static readonly int NodeDepth = 90;
 
         public static readonly string BehaviorTreeNodeIconPath = "BehaveAsSakuraEditor/Textures/Root";
 
-        public static readonly GUIStyle BehaviorTreeNodeStyle = new GUIStyle()
+        public static readonly GUIStyle NodeBackgroundStyle = new GUIStyle()
         {
-            normal = new GUIStyleState()
-            {
-                background = (Texture2D)EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png"),
-                textColor = Color.white,
-            },
+            normal = new GUIStyleState() { background = (Texture2D)EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") },
             border = new RectOffset(12, 12, 12, 12),
         };
 
-        public static readonly Vector2 TaskNodeSize = new Vector2(140, 64);
-
-        public static readonly GUIStyle TaskNodeStyle = new GUIStyle()
+        public static readonly GUIStyle NodeIconStyle = new GUIStyle()
         {
-            normal = new GUIStyleState()
-            {
-                background = (Texture2D)EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png"),
-                textColor = Color.white,
-            },
-            border = new RectOffset(12, 12, 12, 12),
+            normal = new GUIStyleState() { background = null },
         };
+
+        public static readonly Rect NodeIconPosition = new Rect(10, 15, 32, 32);
+
+        public static readonly GUIStyle NodeTitleStyle = new GUIStyle()
+        {
+            fontStyle = FontStyle.Bold,
+            fontSize = 13,
+            clipping = TextClipping.Clip,
+            normal = new GUIStyleState() { background = null, textColor = Color.white },
+        };
+
+        public static readonly Rect NodeTitlePosition = new Rect(NodeIconPosition.position.x + NodeIconPosition.width + 5, 12, 80, 16);
+
+        public static readonly GUIStyle NodeSummaryStyle = new GUIStyle()
+        {
+            fontSize = 11,
+            clipping = TextClipping.Clip,
+            normal = new GUIStyleState() { background = null, textColor = Color.white },
+        };
+
+        public static readonly Rect NodeSummaryPosition = new Rect(NodeIconPosition.position.x + NodeIconPosition.width + 5, 12 + NodeTitlePosition.height + 5, 80, 16);
 
         public static readonly Vector2 TaskNodeMinSpace = new Vector2(30, 30);
 

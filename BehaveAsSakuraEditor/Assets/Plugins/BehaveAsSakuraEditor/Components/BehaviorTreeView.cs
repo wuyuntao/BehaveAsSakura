@@ -16,7 +16,7 @@ namespace BehaveAsSakura.Editor
         {
             Tree = tree;
             Size = windowSize;
-            scrollOffset = new Vector2(windowSize.x / 2, EditorConfiguration.BehaviorTreeNodeSize.y);
+            scrollOffset = new Vector2(windowSize.x / 2, EditorConfiguration.NodeSize.y);
             background = (Texture2D)Resources.Load(EditorConfiguration.BehaviorTreeBackgroundPath);
 
             Children.Add(new BehaviorTreeNode(domain, this));
