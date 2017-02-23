@@ -85,9 +85,7 @@ namespace BehaveAsSakura.Editor
 
                 bytes = BehaviorTreeSerializer.SerializeDesc(desc);
 
-                EditorUtility.SetDirty(this);
-
-                Logger.Debug("Save asset of '{0}'", desc.Title);
+                Logger.Debug("Save behavior tree asset of '{0}'", desc.Title);
             }
             catch (Exception ex)
             {

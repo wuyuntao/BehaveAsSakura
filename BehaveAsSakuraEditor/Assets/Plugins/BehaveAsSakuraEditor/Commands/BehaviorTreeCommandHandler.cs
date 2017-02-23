@@ -1,5 +1,6 @@
 ﻿using BehaveAsSakura.Tasks;
 using System;
+using UnityEditor;
 
 namespace BehaveAsSakura.Editor
 {
@@ -97,7 +98,7 @@ namespace BehaveAsSakura.Editor
 
         private void OnChangeTaskSummaryCommand(ChangeTaskSummaryCommand command)
         {
-            var task = Repository.States[command.Id];
+            var task = (TaskState)Repository.States[command.Id];
 
             task.ApplyEvent(new TaskSummaryChangedEvent(command.Id)
             {
@@ -108,7 +109,7 @@ namespace BehaveAsSakura.Editor
 
         private void OnChangeTaskPropertyCommand(ChangeTaskDescCommand command)
         {
-            var task = Repository.States[command.Id];
+            var task = (TaskState)Repository.States[command.Id];
 
             task.ApplyEvent(new TaskPropertyDescEvent(command.Id)
             {
@@ -118,7 +119,7 @@ namespace BehaveAsSakura.Editor
 
         private void OnChangeBehaviorTreeSummaryCommand(ChangeBehaviorTreeSummaryCommand command)
         {
-            var tree = Repository.States[command.Id];
+            var tree = (BehaviorTreeState)Repository.States[command.Id];
 
             tree.ApplyEvent(new BehaviorTreeSummaryChangedEvent(command.Id)
             {

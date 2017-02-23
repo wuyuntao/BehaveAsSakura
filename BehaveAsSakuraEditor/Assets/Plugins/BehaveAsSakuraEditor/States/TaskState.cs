@@ -1,5 +1,6 @@
 ﻿using BehaveAsSakura.Tasks;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace BehaveAsSakura.Editor
@@ -24,6 +25,27 @@ namespace BehaveAsSakura.Editor
 
         public bool IsCollapsed { get; set; }
 
+        private TaskStateWrapper wrapper;
+
+        public TaskStateWrapper Wrapper
+        {
+            get
+            {
+                if (wrapper == null)
+                {
+                    wrapper = ScriptableObject.CreateInstance<TaskStateWrapper>();
+                    wrapper.State = this;
+                }
+
+                return wrapper;
+            }
+        }
+
+        public TaskState(EditorDomain domain, string id)
+            : base(domain, id)
+        {
+        }
+
         public override void ApplyEvent(EditorEvent e)
         {
             if (e is TaskCreatedEvent)
@@ -44,27 +66,6 @@ namespace BehaveAsSakura.Editor
             }
 
             base.ApplyEvent(e);
-        }
-
-        private TaskStateWrapper wrapper;
-
-        public TaskStateWrapper Wrapper
-        {
-            get
-            {
-                if (wrapper == null)
-                {
-                    wrapper = ScriptableObject.CreateInstance<TaskStateWrapper>();
-                    wrapper.State = this;
-                }
-
-                return wrapper;
-            }
-        }
-
-        public TaskState(EditorDomain domain, string id)
-            : base(domain, id)
-        {
         }
 
         private void OnTaskCreatedEvent(TaskCreatedEvent e)
