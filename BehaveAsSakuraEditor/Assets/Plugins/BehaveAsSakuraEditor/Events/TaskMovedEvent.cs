@@ -4,7 +4,7 @@ namespace BehaveAsSakura.Editor
 {
     public class TaskMovedEvent : EditorEvent
     {
-        public bool Left { get; set; }
+        public int Offset { get; set; }
 
         public TaskMovedEvent(string id)
             : base(id)

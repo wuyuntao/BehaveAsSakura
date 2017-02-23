@@ -91,10 +91,10 @@ namespace BehaveAsSakura.Editor
                 menu.AddSeparator("");
 
             if (canMoveLeft)
-                menu.AddItem(new GUIContent(I18n._("Move left")), false, callback, true);
+                menu.AddItem(new GUIContent(I18n._("Move left")), false, callback, -1);
 
             if (canMoveRight)
-                menu.AddItem(new GUIContent(I18n._("Move Right")), false, callback, false);
+                menu.AddItem(new GUIContent(I18n._("Move Right")), false, callback, 1);
         }
 
         public static bool IsLeftButton(Event e)

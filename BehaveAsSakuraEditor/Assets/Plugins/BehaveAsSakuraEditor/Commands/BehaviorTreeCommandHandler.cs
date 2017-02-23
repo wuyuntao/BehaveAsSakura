@@ -124,6 +124,12 @@ namespace BehaveAsSakura.Editor
         private void OnMoveTaskCommand(MoveTaskCommand command)
         {
             var task = (TaskState)Repository.States[command.Id];
+            if (command.Offset == 0)
+            {
+                task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Zero offset" });
+                return;
+            }
+
             if (task.ParentTask == null)
             {
                 task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Cannot move task" });
@@ -144,19 +150,19 @@ namespace BehaveAsSakura.Editor
             }
 
             var taskIndex = parentTask.ChildTaskIds.IndexOf(task.Desc.Id);
-            if (command.Left && taskIndex == 0)
+            if (taskIndex + command.Offset < 0)
             {
                 task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Cannot move task to left" });
                 return;
             }
 
-            if (!command.Left && taskIndex == parentTask.ChildTaskIds.Count - 1)
+            if (taskIndex + command.Offset >= parentTask.ChildTaskIds.Count)
             {
                 task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Cannot move task to right" });
                 return;
             }
 
-            task.ApplyEvent(new TaskMovedEvent(command.Id) { Left = command.Left });
+            task.ApplyEvent(new TaskMovedEvent(command.Id) { Offset = command.Offset });
         }
 
         private void OnChangeBehaviorTreeSummaryCommand(ChangeBehaviorTreeSummaryCommand command)

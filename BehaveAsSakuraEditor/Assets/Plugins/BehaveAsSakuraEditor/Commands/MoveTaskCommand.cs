@@ -4,7 +4,7 @@ namespace BehaveAsSakura.Editor
 {
     public class MoveTaskCommand : EditorCommand
     {
-        public bool Left { get; set; }
+        public int Offset { get; set; }
 
         public MoveTaskCommand(string id)
             : base(id)

@@ -171,12 +171,10 @@ namespace BehaveAsSakura.Editor
         {
             var parentTaskDesc = (CompositeTaskDescWrapper)ParentTask.Desc;
             var index = parentTaskDesc.ChildTaskIds.IndexOf(Desc.Id);
+            var moveIndex = index + e.Offset;
 
-            var swapIndex = e.Left ? index - 1 : index + 1;
-            var swapTaskId = parentTaskDesc.ChildTaskIds[swapIndex];
-
-            parentTaskDesc.ChildTaskIds[swapIndex] = Desc.Id;
-            parentTaskDesc.ChildTaskIds[index] = swapTaskId;
+            parentTaskDesc.ChildTaskIds.RemoveAt(index);
+            parentTaskDesc.ChildTaskIds.Insert(moveIndex, Desc.Id);
 
             NodeLayoutHelper.Calculate(Tree);
         }
