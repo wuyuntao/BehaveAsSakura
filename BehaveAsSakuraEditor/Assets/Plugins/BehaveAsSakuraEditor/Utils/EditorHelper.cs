@@ -74,6 +74,29 @@ namespace BehaveAsSakura.Editor
             }
         }
 
+        public static void AddMoveTaskMenuItems(GenericMenu menu, TaskState task, GenericMenu.MenuFunction2 callback)
+        {
+            if (task.ParentTask == null || task.ParentTask.Desc is LeafTaskDescWrapper || task.ParentTask.Desc is DecoratorTaskDescWrapper)
+                return;
+
+            var parentTask = (CompositeTaskDescWrapper)task.ParentTask.Desc;
+            if (parentTask.ChildTaskIds.Count <= 1)
+                return;
+
+            var taskIndex = parentTask.ChildTaskIds.IndexOf(task.Desc.Id);
+            var canMoveLeft = taskIndex > 0;
+            var canMoveRight = taskIndex < parentTask.ChildTaskIds.Count - 1;
+
+            if (canMoveLeft || canMoveRight)
+                menu.AddSeparator("");
+
+            if (canMoveLeft)
+                menu.AddItem(new GUIContent(I18n._("Move left")), false, callback, true);
+
+            if (canMoveRight)
+                menu.AddItem(new GUIContent(I18n._("Move Right")), false, callback, false);
+        }
+
         public static bool IsLeftButton(Event e)
         {
             return e.button == 0;

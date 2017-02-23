@@ -26,6 +26,10 @@ namespace BehaveAsSakura.Editor
             {
                 OnChangeTaskPropertyCommand((ChangeTaskDescCommand)command);
             }
+            else if (command is MoveTaskCommand)
+            {
+                OnMoveTaskCommand((MoveTaskCommand)command);
+            }
             else if (command is ChangeBehaviorTreeSummaryCommand)
             {
                 OnChangeBehaviorTreeSummaryCommand((ChangeBehaviorTreeSummaryCommand)command);
@@ -115,6 +119,44 @@ namespace BehaveAsSakura.Editor
             {
                 CustomDesc = command.CustomDesc,
             });
+        }
+
+        private void OnMoveTaskCommand(MoveTaskCommand command)
+        {
+            var task = (TaskState)Repository.States[command.Id];
+            if (task.ParentTask == null)
+            {
+                task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Cannot move task" });
+                return;
+            }
+
+            if (task.ParentTask.Desc is LeafTaskDescWrapper || task.ParentTask.Desc is DecoratorTaskDescWrapper)
+            {
+                task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Cannot move task" });
+                return;
+            }
+
+            var parentTask = (CompositeTaskDescWrapper)task.ParentTask.Desc;
+            if (parentTask.ChildTaskIds.Count == 1)
+            {
+                task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Cannot move task" });
+                return;
+            }
+
+            var taskIndex = parentTask.ChildTaskIds.IndexOf(task.Desc.Id);
+            if (command.Left && taskIndex == 0)
+            {
+                task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Cannot move task to left" });
+                return;
+            }
+
+            if (!command.Left && taskIndex == parentTask.ChildTaskIds.Count - 1)
+            {
+                task.ApplyEvent(new TaskNotMovedEvent(command.Id) { Reason = "Cannot move task to right" });
+                return;
+            }
+
+            task.ApplyEvent(new TaskMovedEvent(command.Id) { Left = command.Left });
         }
 
         private void OnChangeBehaviorTreeSummaryCommand(ChangeBehaviorTreeSummaryCommand command)

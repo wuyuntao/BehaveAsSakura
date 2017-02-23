@@ -19,6 +19,17 @@ namespace BehaveAsSakura.Editor
 
         public uint ParentTaskId { get; set; }
 
+        public TaskState ParentTask
+        {
+            get
+            {
+                if (ParentTaskId == 0)
+                    return null;
+
+                return (TaskState)Repository.States[GetId(ParentTaskId)];
+            }
+        }
+
         public TaskDescWrapper Desc { get; set; }
 
         public Vector2 Position { get; set; }
@@ -39,6 +50,11 @@ namespace BehaveAsSakura.Editor
 
                 return wrapper;
             }
+        }
+
+        public BehaviorTreeState Tree
+        {
+            get { return (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()]; }
         }
 
         public TaskState(EditorDomain domain, string id)
@@ -63,6 +79,10 @@ namespace BehaveAsSakura.Editor
             else if (e is TaskPropertyDescEvent)
             {
                 OnTaskPropertyChangedEvent((TaskPropertyDescEvent)e);
+            }
+            else if (e is TaskMovedEvent)
+            {
+                OnTaskMovedEvent((TaskMovedEvent)e);
             }
 
             base.ApplyEvent(e);
@@ -133,8 +153,7 @@ namespace BehaveAsSakura.Editor
                 }
             }
 
-            var tree = (BehaviorTreeState)Repository.States[BehaviorTreeState.GetId()];
-            NodeLayoutHelper.Calculate(tree);
+            NodeLayoutHelper.Calculate(Tree);
         }
 
         private void OnTaskSummaryChangedEvent(TaskSummaryChangedEvent e)
@@ -146,6 +165,20 @@ namespace BehaveAsSakura.Editor
         private void OnTaskPropertyChangedEvent(TaskPropertyDescEvent e)
         {
             Desc.CustomDesc = e.CustomDesc;
+        }
+
+        private void OnTaskMovedEvent(TaskMovedEvent e)
+        {
+            var parentTaskDesc = (CompositeTaskDescWrapper)ParentTask.Desc;
+            var index = parentTaskDesc.ChildTaskIds.IndexOf(Desc.Id);
+
+            var swapIndex = e.Left ? index - 1 : index + 1;
+            var swapTaskId = parentTaskDesc.ChildTaskIds[swapIndex];
+
+            parentTaskDesc.ChildTaskIds[swapIndex] = Desc.Id;
+            parentTaskDesc.ChildTaskIds[index] = swapTaskId;
+
+            NodeLayoutHelper.Calculate(Tree);
         }
     }
 }

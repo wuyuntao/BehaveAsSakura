@@ -163,6 +163,8 @@ namespace BehaveAsSakura.Editor
 
             menu.AddItem(new GUIContent(I18n._("Remove Task")), false, OnContextMenu_RemoveTask);
 
+            EditorHelper.AddMoveTaskMenuItems(menu, Task, (s) => OnContextMenu_MoveTask((bool)s));
+
             menu.ShowAsContext();
 
             e.Use();
@@ -170,15 +172,17 @@ namespace BehaveAsSakura.Editor
 
         private void OnContextMenu_NewTask(Type taskType)
         {
-            Domain.CommandHandler.ProcessCommand(new CreateTaskCommand(Task.Id)
-            {
-                TaskType = taskType,
-            });
+            Domain.CommandHandler.ProcessCommand(new CreateTaskCommand(Task.Id) { TaskType = taskType });
         }
 
         private void OnContextMenu_RemoveTask()
         {
             Domain.CommandHandler.ProcessCommand(new RemoveTaskCommand(Task.Id));
+        }
+
+        private void OnContextMenu_MoveTask(bool left)
+        {
+            Domain.CommandHandler.ProcessCommand(new MoveTaskCommand(Task.Id) { Left = left });
         }
 
         protected abstract bool CanCreateChildTask();
