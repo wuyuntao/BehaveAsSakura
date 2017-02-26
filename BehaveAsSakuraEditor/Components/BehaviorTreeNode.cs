@@ -19,7 +19,7 @@ namespace BehaveAsSakura.Editor
             if (Tree.RootTaskId > 0)
             {
                 var task = (TaskState)Repository.States[TaskState.GetId(Tree.RootTaskId)];
-                Children.Add(TaskNode.Create(this, task));
+                RootView.Children.Add(TaskNode.Create(RootView, task));
             }
         }
 
@@ -27,7 +27,7 @@ namespace BehaveAsSakura.Editor
         {
             if (e is TaskCreatedEvent)
             {
-                Children.Add(TaskNode.Create(this, ((TaskCreatedEvent)e).NewTask));
+                RootView.Children.Add(TaskNode.Create(RootView, ((TaskCreatedEvent)e).NewTask));
             }
             else if (e is TaskNotCreatedEvent)
             {

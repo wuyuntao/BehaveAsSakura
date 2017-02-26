@@ -37,7 +37,7 @@ namespace BehaveAsSakura.Editor
         {
             var task = (TaskState)Repository.States[TaskState.GetId(taskId)];
 
-            Children.Add(Create(this, task));
+            RootView.Children.Add(Create(RootView, task));
         }
 
         public static TaskNode Create(EditorComponent parent, TaskState state)
@@ -62,7 +62,7 @@ namespace BehaveAsSakura.Editor
         {
             if (e is TaskCreatedEvent)
             {
-                Children.Add(Create(this, ((TaskCreatedEvent)e).NewTask));
+                RootView.Children.Add(Create(RootView, ((TaskCreatedEvent)e).NewTask));
             }
             else if (e is TaskNotCreatedEvent)
             {
@@ -70,7 +70,7 @@ namespace BehaveAsSakura.Editor
             }
             else if (e is TaskRemovedEvent)
             {
-                Parent.Children.Remove(this);
+                RootView.Children.Remove(this);
             }
         }
 
@@ -113,20 +113,17 @@ namespace BehaveAsSakura.Editor
         {
             var fromPoint = RootView.ToWindowPosition(Task.Position + new Vector2(0, -EditorConfiguration.NodeSize.y / 2 + EditorConfiguration.TaskNodeConnectionPadding));
             Vector2 toPoint;
-            if (Parent is BehaviorTreeNode)
+            if (Task.ParentTask == null)
             {
-                var parent = (BehaviorTreeNode)Parent;
-
                 toPoint = EditorConfiguration.BehaviorTreeNodePosition + new Vector2(0, EditorConfiguration.NodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
             }
-            else if (Parent is TaskNode)
-            {
-                var parent = (TaskNode)Parent;
-
-                toPoint = parent.Task.Position + new Vector2(0, EditorConfiguration.NodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
-            }
             else
-                throw new NotSupportedException(Parent.ToString());
+            {
+                var parentNodeId = string.Format("{0}-Node", Task.ParentTask.Id);
+                var parentNode = RootView.Children.Find(n => n.Id == parentNodeId) as TaskNode;
+
+                toPoint = parentNode.Task.Position + new Vector2(0, EditorConfiguration.NodeSize.y / 2 - EditorConfiguration.TaskNodeConnectionPadding);
+            }
 
             toPoint = RootView.ToWindowPosition(toPoint);
 
