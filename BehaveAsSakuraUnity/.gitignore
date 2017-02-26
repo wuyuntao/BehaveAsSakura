@@ -22,8 +22,16 @@
 sysinfo.txt
 
 # Plugins
+Assets/BehaveAsSakura/Runtime
+
+# Node Editor
 Assets/Plugins/Node_Editor
 Assets/Plugins/Node_Editor.meta
 Assets/Plugins/Editor/Node_Editor
 Assets/Plugins/Editor/Node_Editor.meta
-Assets/Plugins/BehaveAsSakuraEditor/Assemblies
+
+# Behavior Designe
+Assets/Behavior Designer
+Assets/Behavior Designer.meta
+Assets/Gizmos
+Assets/Gizmos.meta
