@@ -1,0 +1,6 @@
+language: csharp
+
+solution: BehaveAsSakura.sln
+
+install:
+  - nuget restore BehaveAsSakura.sln
