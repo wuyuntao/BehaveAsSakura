@@ -71,6 +71,6 @@ namespace BehaveAsSakura.Editor
 
         public static readonly int PropertyGridViewWidth = 400;
 
-        public static readonly string DefaultTaskIconPath = "Icons/Default.png";
+        public static readonly string DefaultTaskIconPath = "DefaultTaskIcon.png";
     }
 }

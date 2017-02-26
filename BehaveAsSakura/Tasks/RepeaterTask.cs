@@ -1,4 +1,5 @@
 ﻿using BehaveAsSakura.Attributes;
+using BehaveAsSakura.Variables;
 
 namespace BehaveAsSakura.Tasks
 {
@@ -9,6 +10,9 @@ namespace BehaveAsSakura.Tasks
     {
         [BehaveAsField(1)]
         public uint Count { get; set; }
+
+        [BehaveAsField(2)]
+        public bool ShareCount { get; set; }
 
         void ITaskDesc.Validate()
         {
@@ -58,6 +62,9 @@ namespace BehaveAsSakura.Tasks
             props.WaitForChildCompleted = true;
             props.Count = 0;
 
+            if (description.ShareCount)
+                SetSharedVariable("LoopCount", VariableType.UInteger, VariableSource.LiteralConstant, props.Count.ToString());
+
             ChildTask.EnqueueForUpdate();
         }
 
@@ -68,7 +75,11 @@ namespace BehaveAsSakura.Tasks
                 if (ChildTask.LastResult == TaskResult.Running)
                     return TaskResult.Running;
 
-                if (description.Count > 0 && ++props.Count >= description.Count)
+                ++props.Count;
+                if (description.ShareCount)
+                    SetSharedVariable("LoopCount", VariableType.UInteger, VariableSource.LiteralConstant, props.Count.ToString());
+
+                if (description.Count > 0 && props.Count >= description.Count)
                     return TaskResult.Failure;
 
                 if (!IsRepeaterCompleted(ChildTask.LastResult))

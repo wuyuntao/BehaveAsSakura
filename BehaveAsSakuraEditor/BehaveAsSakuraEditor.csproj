@@ -68,9 +68,6 @@
     <Compile Include="Components\PropertyItem.cs" />
     <Compile Include="Components\StringPropertyItem.cs" />
     <Compile Include="Components\TaskNode.cs" />
-    <Compile Include="Editor\BehaviorTreeEditor.cs" />
-    <Compile Include="Editor\BehaviorTreeEditorWindow.cs" />
-    <Compile Include="Editor\TaskEditor.cs" />
     <Compile Include="Events\BehaviorTreeSummaryChangedEvent.cs" />
     <Compile Include="Events\TaskCreatedEvent.cs" />
     <Compile Include="Events\TaskDescChangedEvent.cs" />
@@ -103,8 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\BehavioreTreeViewBackground.png" />
+    <EmbeddedResource Include="Resources\DefaultTaskIcon.png" />
     <EmbeddedResource Include="Resources\Icons\ConditionalEvaluator.png" />
-    <EmbeddedResource Include="Resources\Icons\Default.png" />
     <EmbeddedResource Include="Resources\Icons\Inverter.png" />
     <EmbeddedResource Include="Resources\Icons\ListenEvent.png" />
     <EmbeddedResource Include="Resources\Icons\Log.png" />

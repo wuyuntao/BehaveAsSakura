@@ -23,12 +23,16 @@ namespace BehaveAsSakura
             this.owner = owner;
         }
 
+        public BehaviorTree CreateTree(IBehaviorTreeOwner owner, BehaviorTreeDesc treeDesc, Task parentTask = null)
+        {
+            return new BehaviorTree(this, owner, treeDesc, parentTask);
+        }
+
         public BehaviorTree CreateTree(IBehaviorTreeOwner owner, string path, Task parentTask = null)
         {
             var treeDesc = this.owner.LoadTree(path);
-            var tree = new BehaviorTree(this, owner, treeDesc, parentTask);
 
-            return tree;
+            return CreateTree(owner, treeDesc, parentTask);
         }
 
         internal Task CreateTask(BehaviorTree tree, BehaviorTreeDesc treeDesc, Task parentTask, uint taskId)

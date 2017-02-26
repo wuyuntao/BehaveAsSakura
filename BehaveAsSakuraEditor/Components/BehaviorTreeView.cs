@@ -48,7 +48,7 @@ namespace BehaveAsSakura.Editor
             if (base.OnMouseDrag(e))
                 return true;
 
-            if (EditorHelper.IsLeftButton(e))
+            if (EditorHelper.IsMiddleButton(e))
             {
                 scrollOffset += e.delta;
                 e.Use();

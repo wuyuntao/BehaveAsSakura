@@ -141,7 +141,12 @@ namespace BehaveAsSakura.Editor
         {
             ClickableLabel(label, () =>
             {
-                text = EditorGUILayout.TextArea(text, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
+                EditorStyles.textArea.wordWrap = true;
+
+                text = EditorGUILayout.TextArea(text,
+                    FieldWidth(),
+                    GUILayout.ExpandWidth(false),
+                    GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
             }, onLabelClick);
             return text;
         }
@@ -150,7 +155,12 @@ namespace BehaveAsSakura.Editor
         {
             ClickableLabel(label, () =>
             {
-                EditorGUILayout.SelectableLabel(text, EditorStyles.textArea, GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
+                EditorStyles.textArea.wordWrap = true;
+
+                EditorGUILayout.SelectableLabel(text, EditorStyles.textArea,
+                    FieldWidth(),
+                    GUILayout.ExpandWidth(false),
+                    GUILayout.Height(EditorGUIUtility.singleLineHeight * lineHeight));
             });
         }
 
@@ -230,6 +240,11 @@ namespace BehaveAsSakura.Editor
         private static GUILayoutOption LabelWidth()
         {
             return GUILayout.Width(EditorGUIUtility.labelWidth - 4 - 16 * EditorGUI.indentLevel);
+        }
+
+        private static GUILayoutOption FieldWidth()
+        {
+            return GUILayout.Width(EditorGUIUtility.currentViewWidth - EditorGUIUtility.labelWidth - 23);
         }
 
         public static void Foldout(ref bool foldout, string name, Action action, Action<Event> onlabelClick = null)
@@ -321,7 +336,7 @@ namespace BehaveAsSakura.Editor
             if (string.IsNullOrEmpty(icon))
                 icon = EditorConfiguration.DefaultTaskIconPath;
 
-            return LoadTexture2D(icon, type.Assembly);
+            return LoadTexture2D(icon);
         }
 
         public static object CloneObject(Type type, object original)
@@ -399,11 +414,11 @@ namespace BehaveAsSakura.Editor
             return null;
         }
 
-        public static Texture2D LoadTexture2D(string path, Assembly assembly = null)
+        public static Texture2D LoadTexture2D(string path)
         {
             var internalPath = string.Format("BehaveAsSakura.Editor.Resources.{0}", path.Replace('/', '.'));
-            if (assembly == null)
-                assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
+
             var stream = assembly.GetManifestResourceStream(internalPath);
             if (stream != null)
             {

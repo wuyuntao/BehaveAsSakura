@@ -9,7 +9,7 @@ namespace BehaveAsSakura.Editor
     public sealed class BehaviorTreeAsset : ScriptableObject
     {
         [SerializeField]
-        private byte[] bytes;
+        public byte[] bytes;
 
         public EditorDomain Domain { get; private set; }
 
