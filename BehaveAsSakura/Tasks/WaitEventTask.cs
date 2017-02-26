@@ -6,6 +6,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 16)]
+    [Task("Event/Wait Event")]
     public class WaitEventTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]

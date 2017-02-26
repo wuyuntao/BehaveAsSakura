@@ -6,6 +6,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 3)]
+    [Task("Event/Listen Event")]
     public class ListenEventTaskDesc : IDecoratorTaskDesc
     {
         [BehaveAsField(1)]

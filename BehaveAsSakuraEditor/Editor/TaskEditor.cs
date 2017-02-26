@@ -41,10 +41,7 @@ namespace BehaveAsSakura.Editor
             // TODO A workaround for display icon and name of task
             if (state != null && state.Desc != null)
             {
-                var icon = EditorHelper.LoadTexture2D(EditorHelper.GetTaskIcon(state.Desc.CustomDesc.GetType()));
-                if (icon == null)
-                    icon = EditorHelper.LoadTexture2D(EditorConfiguration.DefaultTaskIconPath);
-
+                var icon = EditorHelper.LoadTaskIcon(state.Desc.CustomDesc.GetType());
                 var title = GetTaskTitle(state.Desc);
 
                 EditorHelper.HeaderIconAndTitle(state.Wrapper, icon, title);
@@ -55,7 +52,7 @@ namespace BehaveAsSakura.Editor
 
         private static string GetTaskTitle(TaskDescWrapper desc)
         {
-            var title = string.Format("{0} #{1}", EditorHelper.GetTaskTitle(desc.CustomDesc.GetType()), desc.Id);
+            var title = string.Format("{0} #{1}", EditorHelper.GetTaskTitle(desc.CustomDesc.GetType(), false), desc.Id);
 
             if (!string.IsNullOrEmpty(desc.Title))
                 title = string.Format("{0} ({1})", title, desc.Title);

@@ -8,6 +8,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 17)]
+    [Task("Action/Wait Timer")]
     public class WaitTimerTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]
@@ -18,7 +19,6 @@ namespace BehaveAsSakura.Tasks
             Validation.NotNull(Time, nameof(Time));
             Time.ValidateType(VariableType.UInteger);
         }
-
 
         Task ITaskDesc.CreateTask(BehaviorTree tree, Task parentTask, uint id)
         {

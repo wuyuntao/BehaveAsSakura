@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translation>
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.ConditionalEvaluatorTaskDesc'" Value="条件/条件比较" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.InverterTaskDesc'" Value="装饰器/取反" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.ListenEventTaskDesc'" Value="事件/监听事件" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.LogTaskDesc'" Value="行为/日志" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.ParallelSelectorTaskDesc'" Value="流程控制/并行选择" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.ParallelTaskDesc'" Value="流程控制/并行" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.RepeaterTaskDesc'" Value="循环/重复" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.ReturnFailureTaskDesc'" Value="装饰器/返回失败" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.ReturnSuccessTaskDesc'" Value="装饰器/返回成功" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.SelectorTaskDesc'" Value="流程控制/选择" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.SendEventTaskDesc'" Value="事件/发送事件" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.SequenceTaskDesc'" Value="流程控制/序列" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.SubTreeTaskDesc'" Value="行为/内嵌子树" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.UntilFailureTaskDesc'" Value="循环/循环直到失败" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.UntilSuccessTaskDesc'" Value="循环/循环直到成功" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.WaitEventTaskDesc'" Value="事件/等待事件" />
+  <Item Key="Title of task 'BehaveAsSakura.Tasks.WaitTimerTaskDesc'" Value="行为/等待定时器" />
+</Translation>

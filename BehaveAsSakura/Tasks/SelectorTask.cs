@@ -4,6 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 10)]
+    [Task("Flow Control/Selector")]
     public class SelectorTaskDesc : SequenceTaskDesc, ICompositeTaskDesc
     {
         void ITaskDesc.Validate()

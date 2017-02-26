@@ -7,6 +7,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 4)]
+    [Task("Action/Log")]
     public sealed class LogTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]

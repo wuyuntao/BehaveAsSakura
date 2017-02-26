@@ -6,6 +6,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 13)]
+    [Task("Action/Sub Tree")]
     public class SubTreeTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]

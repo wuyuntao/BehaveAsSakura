@@ -4,6 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 14)]
+    [Task("Loop/Until Failure")]
     public class UntilFailureTaskDesc : RepeaterTaskDesc, IDecoratorTaskDesc
     {
         void ITaskDesc.Validate()

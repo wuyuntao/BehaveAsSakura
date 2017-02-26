@@ -6,6 +6,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 11)]
+    [Task("Event/Send Event")]
     public class SendEventTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]

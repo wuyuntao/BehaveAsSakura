@@ -7,6 +7,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 1)]
+    [Task("Condition/Conditional Evaluator")]
     public class ConditionalEvaluatorTaskDesc : ILeafTaskDesc
     {
         [BehaveAsField(1)]

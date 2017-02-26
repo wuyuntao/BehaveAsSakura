@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using UnityEngine;
+using UnityEditor;
 
 namespace BehaveAsSakura.Editor
 {
@@ -18,12 +19,12 @@ namespace BehaveAsSakura.Editor
         {
             this.language = language;
 
-            var path = string.Format("{0}/{1}", translationDirectory, language);
-            var xml = Resources.Load(path) as TextAsset;
+            var path = string.Format("{0}/{1}.xml", translationDirectory, language);
+            var xml = EditorGUIUtility.Load(path) as TextAsset;
             if (xml != null)
                 ParseXml(xml.bytes);
-            else
-                throw new InvalidOperationException(string.Format("Failed to load translation from '{0}'", path));
+            //else
+            //    throw new InvalidOperationException(string.Format("Failed to load translation from '{0}'", path));
         }
 
         private void ParseXml(byte[] bytes)

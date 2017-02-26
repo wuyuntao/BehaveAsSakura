@@ -4,6 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 7)]
+    [Task("Loop/Repeater")]
     public class RepeaterTaskDesc : IDecoratorTaskDesc
     {
         [BehaveAsField(1)]

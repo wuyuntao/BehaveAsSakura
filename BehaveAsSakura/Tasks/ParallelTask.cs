@@ -4,6 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 6)]
+    [Task("Flow Control/Parallel")]
     public class ParallelTaskDesc : ICompositeTaskDesc
     {
         void ITaskDesc.Validate()

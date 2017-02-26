@@ -61,9 +61,8 @@ namespace BehaveAsSakura.Editor
             {
                 foreach (var t in FindAllTaskDescs())
                 {
-                    var categoryText = GetTaskCategory(t);
-                    var titleText = GetTaskTitle(t);
-                    var menuItemText = string.Format("{0}/{1}/{2}", newTaskText, categoryText, titleText);
+                    var titleText = GetTaskTitle(t, true);
+                    var menuItemText = string.Format("{0}/{1}", newTaskText, titleText);
 
                     menu.AddItem(new GUIContent(menuItemText), false, callback, t);
                 }
@@ -271,26 +270,58 @@ namespace BehaveAsSakura.Editor
             return t ?? pi.Name;
         }
 
-        public static string GetTaskCategory(Type type)
+        public static string GetTaskTitle(Type type, bool includingCategory)
         {
-            return I18n._(string.Format("Category of task '{0}'", type.FullName));
-        }
+            var title = I18n.__(string.Format("Title of task '{0}'", type.FullName));
 
-        public static string GetTaskTitle(Type type)
-        {
-            var t = I18n.__(string.Format("Title of task '{0}'", type.FullName));
+            if (string.IsNullOrEmpty(title))
+            {
+                var attributes = type.GetCustomAttributes(typeof(TaskAttribute), false);
+                if (attributes.Length > 0)
+                    title = ((TaskAttribute)attributes[0]).Title;
+            }
 
-            return t ?? type.Name.Replace("TaskDesc", "");
+            if (string.IsNullOrEmpty(title))
+                throw new ArgumentException($"Missing title translation for task '{type.FullName}'");
+
+            if (!includingCategory)
+            {
+                var slashIndex = title.LastIndexOf('/');
+                if (slashIndex > 0)
+                    title = title.Substring(slashIndex + 1);
+            }
+
+            return title;
         }
 
         public static string GetTaskDescription(Type type)
         {
-            return I18n.__(string.Format("Description of task '{0}'", type.FullName));
+            var desc = I18n.__(string.Format("Description of task '{0}'", type.FullName));
+
+            if (string.IsNullOrEmpty(desc))
+            {
+                var attributes = type.GetCustomAttributes(typeof(TaskAttribute), false);
+                if (attributes.Length > 0)
+                    desc = ((TaskAttribute)attributes[0]).Description;
+            }
+
+            return desc;
         }
 
-        public static string GetTaskIcon(Type type)
+        public static Texture2D LoadTaskIcon(Type type)
         {
-            return string.Format("Icons/{0}.png", type.Name.Replace("TaskDesc", ""));
+            string icon = null;
+            var attributes = type.GetCustomAttributes(typeof(TaskAttribute), false);
+            if (attributes.Length > 0)
+                icon = ((TaskAttribute)attributes[0]).Icon;
+
+            if (string.IsNullOrEmpty(icon))
+                icon = string.Format("Icons/{0}.png", type.Name.Replace("TaskDesc", ""));
+
+            if (string.IsNullOrEmpty(icon))
+                icon = EditorConfiguration.DefaultTaskIconPath;
+
+            return LoadTexture2D(icon);
         }
 
         public static object CloneObject(Type type, object original)

@@ -4,6 +4,7 @@ namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 9)]
+    [Task("Decorator/Return Success")]
     public class ReturnSuccessTaskDesc : IDecoratorTaskDesc
     {
         void ITaskDesc.Validate()

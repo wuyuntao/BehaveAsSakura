@@ -63,15 +63,13 @@ namespace BehaveAsSakura.Editor
 
         public static readonly float TaskNodeConnectionLineWidth = 3;
 
-        public static readonly string TranslationPath = "BehaveAsSakuraEditor/Translations";
+        public static readonly string TranslationPath = "BehaveAsSakura/Translations";
 
         public static readonly string Language = "en";
 
         public static readonly int PropertyGridViewDepth = 80;
 
         public static readonly int PropertyGridViewWidth = 400;
-
-        public static readonly string TaskIconPath = "BehaveAsSakuraEditor/Textures";
 
         public static readonly string DefaultTaskIconPath = "Icons/Default.png";
     }

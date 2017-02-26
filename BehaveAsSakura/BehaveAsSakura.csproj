@@ -41,6 +41,7 @@
     <Compile Include="Attributes\BehaveAsTableAttribute.cs" />
     <Compile Include="Attributes\BehaveAsFieldAttribute.cs" />
     <Compile Include="Attributes\BehaveAsUnionIncludeAttribute.cs" />
+    <Compile Include="Attributes\TaskAttribute.cs" />
     <Compile Include="BehaviorTree.cs" />
     <Compile Include="BehaviorTreeBuilder.cs" />
     <Compile Include="BehaviorTreeManager.cs" />

@@ -1,10 +1,10 @@
-﻿using System;
-using BehaveAsSakura.Attributes;
+﻿using BehaveAsSakura.Attributes;
 
 namespace BehaveAsSakura.Tasks
 {
     [BehaveAsTable]
     [BehaveAsUnionInclude(typeof(ITaskDesc), 2)]
+    [Task("Decorator/Inverter")]
     public class InverterTaskDesc : IDecoratorTaskDesc
     {
         void ITaskDesc.Validate()
