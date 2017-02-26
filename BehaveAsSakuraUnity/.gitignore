@@ -22,7 +22,20 @@
 sysinfo.txt
 
 # Plugins
-Assets/BehaveAsSakura/Runtime
+Assets/BehaveAsSakura/Runtime/FlatBuffersSerializer.cs
+Assets/BehaveAsSakura/Runtime/FlatBuffersSerializer.cs.meta
+Assets/BehaveAsSakura/Runtime/*.dll
+Assets/BehaveAsSakura/Runtime/*.dll.meta
+Assets/BehaveAsSakura/Runtime/*.pdb
+Assets/BehaveAsSakura/Runtime/*.pdb.meta
+Assets/BehaveAsSakura/Runtime/*.mdb
+Assets/BehaveAsSakura/Runtime/*.mdb.meta
+Assets/BehaveAsSakura/Editor/*.dll
+Assets/BehaveAsSakura/Editor/*.dll.meta
+Assets/BehaveAsSakura/Editor/*.pdb
+Assets/BehaveAsSakura/Editor/*.pdb.meta
+Assets/BehaveAsSakura/Editor/*.mdb
+Assets/BehaveAsSakura/Editor/*.mdb.meta
 
 # Node Editor
 Assets/Plugins/Node_Editor

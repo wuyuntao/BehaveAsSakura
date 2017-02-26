@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
-    [CustomEditor(typeof(TaskStateWrapper))]
+    [CustomEditor(typeof(TaskAsset))]
     public class TaskEditor : UnityEditor.Editor
     {
         private TaskState state;
@@ -13,7 +13,7 @@ namespace BehaveAsSakura.Editor
 
         public void OnEnable()
         {
-            state = ((TaskStateWrapper)target).State;
+            state = ((TaskAsset)target).State;
 
             if (state == null || state.Desc == null)
                 return;
