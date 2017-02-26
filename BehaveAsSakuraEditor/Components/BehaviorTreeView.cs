@@ -17,7 +17,6 @@ namespace BehaveAsSakura.Editor
             Tree = tree;
             Size = windowSize;
             scrollOffset = new Vector2(windowSize.x / 2, EditorConfiguration.NodeSize.y);
-            background = EditorHelper.LoadTexture2D(EditorConfiguration.BehaviorTreeBackgroundPath);
 
             Children.Add(new BehaviorTreeNode(domain, this));
 
@@ -35,6 +34,10 @@ namespace BehaveAsSakura.Editor
 
         private void DrawBackground()
         {
+            // Try to reload background because texture could be unloaded when player stopped
+            if (!background)
+                background = EditorHelper.LoadTexture2D(EditorConfiguration.BehaviorTreeBackgroundPath);
+
             var width = 1f / background.width;
             var height = 1f / background.height;
             var viewRect = new Rect(0, 0, Size.x, Size.y);

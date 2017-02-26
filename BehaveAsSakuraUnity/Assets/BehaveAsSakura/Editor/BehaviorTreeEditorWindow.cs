@@ -11,6 +11,8 @@ namespace BehaveAsSakura.Editor
         private EditorDomain domain;
         private BehaviorTreeView view;
 
+        private Texture2D background;
+
         public static void CreateWindow(BehaviorTreeAsset asset)
         {
             if (current != null && current.asset == asset)
@@ -29,7 +31,10 @@ namespace BehaveAsSakura.Editor
         private void OnGUI()
         {
             if (view == null)
+            {
+                DrawBackground();
                 return;
+            }
 
             switch (Event.current.type)
             {
@@ -57,6 +62,20 @@ namespace BehaveAsSakura.Editor
             view.OnGUI();
 
             //Logger.Debug("OnGUI: {0}", Event.current);
+        }
+
+        private void DrawBackground()
+        {
+            if (!background)
+                background = EditorHelper.LoadTexture2D(EditorConfiguration.BehaviorTreeBackgroundPath);
+
+            var size = position.size;
+            var width = 1f / background.width;
+            var height = 1f / background.height;
+            var viewRect = new Rect(0, 0, size.x, size.y);
+            var uvMapping = new Rect(0, -size.y * height, size.x * width, size.y * height);
+
+            GUI.DrawTextureWithTexCoords(viewRect, background, uvMapping);
         }
     }
 }
