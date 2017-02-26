@@ -321,7 +321,7 @@ namespace BehaveAsSakura.Editor
             if (string.IsNullOrEmpty(icon))
                 icon = EditorConfiguration.DefaultTaskIconPath;
 
-            return LoadTexture2D(icon);
+            return LoadTexture2D(icon, type.Assembly);
         }
 
         public static object CloneObject(Type type, object original)
@@ -399,10 +399,11 @@ namespace BehaveAsSakura.Editor
             return null;
         }
 
-        public static Texture2D LoadTexture2D(string path)
+        public static Texture2D LoadTexture2D(string path, Assembly assembly = null)
         {
             var internalPath = string.Format("BehaveAsSakura.Editor.Resources.{0}", path.Replace('/', '.'));
-            var assembly = Assembly.GetExecutingAssembly();
+            if (assembly == null)
+                assembly = Assembly.GetExecutingAssembly();
             var stream = assembly.GetManifestResourceStream(internalPath);
             if (stream != null)
             {
