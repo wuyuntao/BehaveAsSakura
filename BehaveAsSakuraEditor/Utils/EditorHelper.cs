@@ -290,7 +290,7 @@ namespace BehaveAsSakura.Editor
 
         public static string GetTaskIcon(Type type)
         {
-            return string.Format("BehaveAsSakuraEditor/Textures/{0}", type.Name.Replace("TaskDesc", ""));
+            return string.Format("Icons/{0}.png", type.Name.Replace("TaskDesc", ""));
         }
 
         public static object CloneObject(Type type, object original)
@@ -366,6 +366,24 @@ namespace BehaveAsSakura.Editor
 
             Logger.Error("Unsupported property. Type: {0}, Value: {1}", type, value);
             return null;
+        }
+
+        public static Texture2D LoadTexture2D(string path)
+        {
+            var internalPath = string.Format("BehaveAsSakura.Editor.Resources.{0}", path.Replace('/', '.'));
+            var assembly = Assembly.GetExecutingAssembly();
+            var stream = assembly.GetManifestResourceStream(internalPath);
+            if (stream != null)
+            {
+                var bytes = new byte[stream.Length];
+                stream.Read(bytes, 0, bytes.Length);
+
+                var texture = new Texture2D(1, 1);
+                texture.LoadImage(bytes);
+                return texture;
+            }
+            else
+                return EditorGUIUtility.Load(string.Format("BehaveAsSakura/{0}", path)) as Texture2D;
         }
     }
 }

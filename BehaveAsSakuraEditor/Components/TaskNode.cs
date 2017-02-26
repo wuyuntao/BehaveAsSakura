@@ -85,9 +85,9 @@ namespace BehaveAsSakura.Editor
 
             var iconRect = EditorConfiguration.NodeIconPosition;
             iconRect.position += nodeRect.position;
-            var iconTexture = Resources.Load(EditorHelper.GetTaskIcon(descType)) as Texture2D;
+            var iconTexture = EditorHelper.LoadTexture2D(EditorHelper.GetTaskIcon(descType));
             if (iconTexture == null)
-                iconTexture = (Texture2D)Resources.Load(EditorConfiguration.DefaultTaskIconPath);
+                iconTexture = EditorHelper.LoadTexture2D(EditorConfiguration.DefaultTaskIconPath);
             GUI.Box(iconRect, iconTexture, EditorConfiguration.NodeIconStyle);
 
             var titleRect = EditorConfiguration.NodeTitlePosition;

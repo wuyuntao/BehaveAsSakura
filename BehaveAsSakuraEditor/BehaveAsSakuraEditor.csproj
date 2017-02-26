@@ -101,7 +101,28 @@
       <Name>BehaveAsSakura</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BehavioreTreeViewBackground.png" />
+    <EmbeddedResource Include="Resources\Icons\ConditionalEvaluator.png" />
+    <EmbeddedResource Include="Resources\Icons\Default.png" />
+    <EmbeddedResource Include="Resources\Icons\Inverter.png" />
+    <EmbeddedResource Include="Resources\Icons\ListenEvent.png" />
+    <EmbeddedResource Include="Resources\Icons\Log.png" />
+    <EmbeddedResource Include="Resources\Icons\Parallel.png" />
+    <EmbeddedResource Include="Resources\Icons\ParallelSelector.png" />
+    <EmbeddedResource Include="Resources\Icons\Repeater.png" />
+    <EmbeddedResource Include="Resources\Icons\ReturnFailure.png" />
+    <EmbeddedResource Include="Resources\Icons\ReturnSuccess.png" />
+    <EmbeddedResource Include="Resources\Icons\Root.png" />
+    <EmbeddedResource Include="Resources\Icons\Selector.png" />
+    <EmbeddedResource Include="Resources\Icons\SendEvent.png" />
+    <EmbeddedResource Include="Resources\Icons\Sequence.png" />
+    <EmbeddedResource Include="Resources\Icons\SubTree.png" />
+    <EmbeddedResource Include="Resources\Icons\UntilFailure.png" />
+    <EmbeddedResource Include="Resources\Icons\UntilSuccess.png" />
+    <EmbeddedResource Include="Resources\Icons\WaitEvent.png" />
+    <EmbeddedResource Include="Resources\Icons\WaitTimer.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

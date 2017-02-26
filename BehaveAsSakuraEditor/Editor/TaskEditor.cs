@@ -1,7 +1,6 @@
 ﻿using BehaveAsSakura.Tasks;
 using System;
 using UnityEditor;
-using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
@@ -42,9 +41,9 @@ namespace BehaveAsSakura.Editor
             // TODO A workaround for display icon and name of task
             if (state != null && state.Desc != null)
             {
-                var icon = Resources.Load(EditorHelper.GetTaskIcon(state.Desc.CustomDesc.GetType())) as Texture2D;
+                var icon = EditorHelper.LoadTexture2D(EditorHelper.GetTaskIcon(state.Desc.CustomDesc.GetType()));
                 if (icon == null)
-                    icon = (Texture2D)Resources.Load(EditorConfiguration.DefaultTaskIconPath);
+                    icon = EditorHelper.LoadTexture2D(EditorConfiguration.DefaultTaskIconPath);
 
                 var title = GetTaskTitle(state.Desc);
 

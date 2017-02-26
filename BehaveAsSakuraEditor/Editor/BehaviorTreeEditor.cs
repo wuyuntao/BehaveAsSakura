@@ -23,7 +23,7 @@ namespace BehaveAsSakura.Editor
             if (asset != null && asset.Tree != null)
             {
                 // TODO A workaround for display icon and name of task
-                var icon = (Texture2D)Resources.Load(EditorConfiguration.BehaviorTreeNodeIconPath);
+                var icon = EditorHelper.LoadTexture2D(EditorConfiguration.BehaviorTreeNodeIconPath);
                 var title = asset.name;
 
                 EditorHelper.HeaderIconAndTitle(asset, icon, title);

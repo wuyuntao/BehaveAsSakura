@@ -44,7 +44,7 @@ namespace BehaveAsSakura.Editor
 
             var iconRect = EditorConfiguration.NodeIconPosition;
             iconRect.position += nodeRect.position;
-            var iconTexture = (Texture2D)Resources.Load(EditorConfiguration.BehaviorTreeNodeIconPath);
+            var iconTexture = EditorHelper.LoadTexture2D(EditorConfiguration.BehaviorTreeNodeIconPath);
             GUI.Box(iconRect, iconTexture, EditorConfiguration.NodeIconStyle);
 
             var titleRect = EditorConfiguration.NodeTitlePosition;
