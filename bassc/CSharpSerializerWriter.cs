@@ -629,24 +629,24 @@ namespace {schema.Namespace}
             builder.AppendLine($@"
 namespace {schema.Namespace}
 {{
-    public static class BehaviorTreeSerializer
+    public class FlatBuffersSerializer : IBehaviorTreeSerializer
     {{
-        public static byte[] SerializeDesc(BehaviorTreeDesc desc)
+        public byte[] SerializeDesc(BehaviorTreeDesc desc)
         {{
             return {descSerializer}.Instance.Serialize(desc);
         }}
 
-        public static BehaviorTreeDesc DeserializeDesc(byte[] data)
+        public BehaviorTreeDesc DeserializeDesc(byte[] data)
         {{
             return {descSerializer}.Instance.Deserialize(data) as BehaviorTreeDesc;
         }}
 
-        public static byte[] SerializeProps(BehaviorTreeProps props)
+        public byte[] SerializeProps(BehaviorTreeProps props)
         {{
             return {propsSerializer}.Instance.Serialize(props);
         }}
 
-        public static BehaviorTreeProps DeserializeProps(byte[] data)
+        public BehaviorTreeProps DeserializeProps(byte[] data)
         {{
             return {propsSerializer}.Instance.Deserialize(data) as BehaviorTreeProps;
         }}

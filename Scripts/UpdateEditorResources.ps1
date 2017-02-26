@@ -9,9 +9,6 @@ git submodule update
 
 mkdir -force $PluginsPath
 
-cp -recurse -force "$NodeEditorPath\Editor" $PluginsPath
-cp -recurse -force "$NodeEditorPath\Node_Editor" $PluginsPath
-
 mkdir -force "$PluginsPath\BehaveAsSakuraEditor\Assemblies"
 
 cp -recurse -force "$BehaveAsSakuraPath\BehaveAsSakura.*" "$PluginsPath\BehaveAsSakuraEditor\Assemblies"

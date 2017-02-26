@@ -11,6 +11,8 @@ namespace BehaveAsSakura.Tests
         [Test]
         public void TestSerialization()
         {
+            BehaviorTreeSerializer.Initialize(new FlatBuffersSerializer());
+
             var tree1 = BuildTreeDesc();
 
             var data1 = BehaviorTreeSerializer.SerializeDesc(tree1);

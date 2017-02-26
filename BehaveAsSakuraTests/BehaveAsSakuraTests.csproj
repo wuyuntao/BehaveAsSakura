@@ -44,8 +44,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BehaveAsSakuraSerializers.cs" />
     <Compile Include="BehaviorTreeBuilderTests.cs" />
+    <Compile Include="BehaviorTreeSerializer.cs" />
     <Compile Include="Fixtures\BehaviorTreeManagerOwner.cs" />
     <Compile Include="BehaviorTreeManagerTests.cs" />
     <Compile Include="Fixtures\BehaviorTreeOwner.cs" />

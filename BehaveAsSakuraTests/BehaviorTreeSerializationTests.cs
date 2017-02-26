@@ -12,6 +12,8 @@ namespace BehaveAsSakura.Tests
         [Test]
         public void TestRestore()
         {
+            BehaviorTreeSerializer.Initialize(new FlatBuffersSerializer());
+
             var treeManagerOwner = new BehaviorTreeManagerOwner();
             var treeManager = new BehaviorTreeManager(treeManagerOwner);
             var treeOwner = new BehaviorTreeOwner();

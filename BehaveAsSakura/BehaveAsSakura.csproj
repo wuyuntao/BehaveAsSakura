@@ -44,6 +44,7 @@
     <Compile Include="BehaviorTree.cs" />
     <Compile Include="BehaviorTreeBuilder.cs" />
     <Compile Include="BehaviorTreeManager.cs" />
+    <Compile Include="BehaviorTreeSerializer.cs" />
     <Compile Include="Events\EventBus.cs" />
     <Compile Include="Events\SimpleEventTriggeredEvent.cs" />
     <Compile Include="Events\TimerTriggeredEvent.cs" />
