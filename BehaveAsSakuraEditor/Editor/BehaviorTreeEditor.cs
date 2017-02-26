@@ -1,5 +1,4 @@
-﻿using BehaveAsSakura.Serialization;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace BehaveAsSakura.Editor
@@ -11,7 +10,7 @@ namespace BehaveAsSakura.Editor
 
         public void OnEnable()
         {
-            BehaviorTreeSerializer.Initialize(new FlatBuffersSerializer());
+            //BehaviorTreeSerializer.Initialize(new FlatBuffersSerializer());
 
             asset = (BehaviorTreeAsset)target;
             asset.Deserialize();

@@ -68,6 +68,9 @@
     <Compile Include="Components\PropertyItem.cs" />
     <Compile Include="Components\StringPropertyItem.cs" />
     <Compile Include="Components\TaskNode.cs" />
+    <Compile Include="Editor\BehaviorTreeEditor.cs" />
+    <Compile Include="Editor\BehaviorTreeEditorWindow.cs" />
+    <Compile Include="Editor\TaskEditor.cs" />
     <Compile Include="Events\BehaviorTreeSummaryChangedEvent.cs" />
     <Compile Include="Events\TaskCreatedEvent.cs" />
     <Compile Include="Events\TaskDescChangedEvent.cs" />
