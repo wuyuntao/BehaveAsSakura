@@ -8,6 +8,8 @@ namespace BehaveAsSakura.Editor
     {
         public BehaviorTreeState Tree { get; private set; }
 
+        private Texture2D iconTexture;
+
         public BehaviorTreeNode(EditorDomain domain, BehaviorTreeView parent)
             : base(domain
                   , parent
@@ -44,7 +46,8 @@ namespace BehaveAsSakura.Editor
 
             var iconRect = EditorConfiguration.NodeIconPosition;
             iconRect.position += nodeRect.position;
-            var iconTexture = EditorHelper.LoadTexture2D(EditorConfiguration.BehaviorTreeNodeIconPath);
+            if (!iconTexture)
+                iconTexture = EditorHelper.LoadTexture2D(EditorConfiguration.BehaviorTreeNodeIconPath);
             GUI.Box(iconRect, iconTexture, EditorConfiguration.NodeIconStyle);
 
             var titleRect = EditorConfiguration.NodeTitlePosition;

@@ -9,6 +9,8 @@ namespace BehaveAsSakura.Editor
     {
         public TaskState Task { get; private set; }
 
+        private Texture2D iconTexture;
+
         protected TaskNode(EditorDomain domain, EditorComponent parent, TaskState task)
             : base(domain
                   , parent
@@ -88,7 +90,8 @@ namespace BehaveAsSakura.Editor
 
             var iconRect = EditorConfiguration.NodeIconPosition;
             iconRect.position += nodeRect.position;
-            var iconTexture = EditorHelper.LoadTaskIcon(descType);
+            if (!iconTexture)
+                iconTexture = EditorHelper.LoadTaskIcon(descType);
             GUI.Box(iconRect, iconTexture, EditorConfiguration.NodeIconStyle);
 
             var titleRect = EditorConfiguration.NodeTitlePosition;
