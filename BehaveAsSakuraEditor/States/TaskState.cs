@@ -78,6 +78,10 @@ namespace BehaveAsSakura.Editor
             {
                 OnTaskMovedEvent((TaskMovedEvent)e);
             }
+            else if (e is TaskCollapseChangedEvent)
+            {
+                OnTaskCollapseChangedEvent((TaskCollapseChangedEvent)e);
+            }
 
             base.ApplyEvent(e);
         }
@@ -171,6 +175,27 @@ namespace BehaveAsSakura.Editor
             parentTaskDesc.ChildTaskIds.Insert(moveIndex, Desc.Id);
 
             NodeLayoutHelper.Calculate(Tree);
+        }
+
+        private void OnTaskCollapseChangedEvent(TaskCollapseChangedEvent e)
+        {
+            IsCollapsed = e.IsCollapsed;
+
+            NodeLayoutHelper.Calculate(Tree);
+        }
+
+        public bool IsAscendentCollapsed
+        {
+            get
+            {
+                if (ParentTask == null)
+                    return false;
+
+                if (ParentTask.IsCollapsed)
+                    return true;
+
+                return ParentTask.IsAscendentCollapsed;
+            }
         }
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="Commands\BehaviorTreeCommandHandler.cs" />
     <Compile Include="Commands\ChangeBehaviorTreeSummaryCommand.cs" />
     <Compile Include="Commands\ChangeTaskDescCommand.cs" />
+    <Compile Include="Commands\ChangeTaskCollapseCommand.cs" />
     <Compile Include="Commands\ChangeTaskSummaryCommand.cs" />
     <Compile Include="Commands\CreateTaskCommand.cs" />
     <Compile Include="Commands\MoveTaskCommand.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Events\TaskDescChangedEvent.cs" />
     <Compile Include="Events\TaskMovedEvent.cs" />
     <Compile Include="Events\TaskRemovedEvent.cs" />
+    <Compile Include="Events\TaskCollapseChangedEvent.cs" />
     <Compile Include="Events\TaskSummaryChangedEvent.cs" />
     <Compile Include="Framework\EditorCommand.cs" />
     <Compile Include="Framework\EditorCommandHandler.cs" />

@@ -34,6 +34,10 @@ namespace BehaveAsSakura.Editor
             {
                 OnChangeBehaviorTreeSummaryCommand((ChangeBehaviorTreeSummaryCommand)command);
             }
+            else if (command is ChangeTaskCollapseCommand)
+            {
+                OnChangeTaskCollapseCommand((ChangeTaskCollapseCommand)command);
+            }
         }
 
         private void OnCreateTaskCommand(CreateTaskCommand command)
@@ -174,6 +178,14 @@ namespace BehaveAsSakura.Editor
                 Title = command.Title,
                 Comment = command.Comment,
             });
+        }
+
+        private void OnChangeTaskCollapseCommand(ChangeTaskCollapseCommand command)
+        {
+            var task = (TaskState)Repository.States[command.Id];
+
+            if (task.IsCollapsed != command.IsCollapsed)
+                task.ApplyEvent(new TaskCollapseChangedEvent(command.Id) { IsCollapsed = command.IsCollapsed });
         }
     }
 }

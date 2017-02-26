@@ -67,10 +67,6 @@ namespace BehaveAsSakura.Editor
                     menu.AddItem(new GUIContent(menuItemText), false, callback, t);
                 }
             }
-            else
-            {
-                menu.AddDisabledItem(new GUIContent(newTaskText));
-            }
         }
 
         public static void AddMoveTaskMenuItems(GenericMenu menu, TaskState task, GenericMenu.MenuFunction2 callback)
@@ -94,6 +90,24 @@ namespace BehaveAsSakura.Editor
 
             if (canMoveRight)
                 menu.AddItem(new GUIContent(I18n._("Move Right")), false, callback, 1);
+        }
+
+        internal static void AddCollapseTaskMenuItems(GenericMenu menu, TaskState task, GenericMenu.MenuFunction2 callback)
+        {
+            if (task.Desc is LeafTaskDescWrapper)
+                return;
+
+            if (task.Desc is CompositeTaskDescWrapper && ((CompositeTaskDescWrapper)task.Desc).ChildTaskIds.Count == 0)
+                return;
+
+            if (task.Desc is DecoratorTaskDescWrapper && ((DecoratorTaskDescWrapper)task.Desc).ChildTaskId == 0)
+                return;
+
+            var taskText = task.Desc is CompositeTaskDescWrapper ? "tasks" : "task";
+            var toggleText = task.IsCollapsed ? I18n._($"Uncollapse child {taskText}") : I18n._($"Collapse child {taskText}");
+
+            menu.AddSeparator("");
+            menu.AddItem(new GUIContent(toggleText), false, callback, !task.IsCollapsed);
         }
 
         public static bool IsLeftButton(Event e)

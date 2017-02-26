@@ -78,6 +78,9 @@ namespace BehaveAsSakura.Editor
         {
             base.OnGUI();
 
+            if (Task.IsAscendentCollapsed)
+                return;
+
             var descType = Task.Desc.CustomDesc.GetType();
 
             var nodeRect = CalculateGUIRect();
@@ -163,6 +166,8 @@ namespace BehaveAsSakura.Editor
 
             EditorHelper.AddMoveTaskMenuItems(menu, Task, (s) => OnContextMenu_MoveTask((int)s));
 
+            EditorHelper.AddCollapseTaskMenuItems(menu, Task, (c) => OnContextMenu_CollapseTask((bool)c));
+
             menu.ShowAsContext();
 
             e.Use();
@@ -181,6 +186,11 @@ namespace BehaveAsSakura.Editor
         private void OnContextMenu_MoveTask(int offset)
         {
             Domain.CommandHandler.ProcessCommand(new MoveTaskCommand(Task.Id) { Offset = offset });
+        }
+
+        private void OnContextMenu_CollapseTask(bool collapse)
+        {
+            Domain.CommandHandler.ProcessCommand(new ChangeTaskCollapseCommand(Task.Id) { IsCollapsed = collapse });
         }
 
         protected abstract bool CanCreateChildTask();
