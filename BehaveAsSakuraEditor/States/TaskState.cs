@@ -1,15 +1,9 @@
 ﻿using BehaveAsSakura.Tasks;
 using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace BehaveAsSakura.Editor
 {
-    public class TaskStateWrapper : ScriptableObject
-    {
-        public TaskState State;
-    }
-
     public class TaskState : EditorState
     {
         public static string GetId(uint taskId)
@@ -36,15 +30,15 @@ namespace BehaveAsSakura.Editor
 
         public bool IsCollapsed { get; set; }
 
-        private TaskStateWrapper wrapper;
+        private TaskAsset wrapper;
 
-        public TaskStateWrapper Wrapper
+        public TaskAsset Wrapper
         {
             get
             {
                 if (wrapper == null)
                 {
-                    wrapper = ScriptableObject.CreateInstance<TaskStateWrapper>();
+                    wrapper = ScriptableObject.CreateInstance<TaskAsset>();
                     wrapper.State = this;
                 }
 
